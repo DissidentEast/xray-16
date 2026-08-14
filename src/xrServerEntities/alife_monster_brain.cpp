@@ -78,16 +78,7 @@ CSE_ALifeSmartZone& CALifeMonsterBrain::smart_terrain()
 void CALifeMonsterBrain::process_task()
 {
     CALifeSmartTerrainTask* task = smart_terrain().task(&object());
-    if (!task)
-    {
-        // Previously a fatal THROW3: a monster registered in a smart terrain that
-        // returned no task would crash the game (often caused by mod data / save
-        // inconsistencies). Recover by falling back to default behaviour instead.
-        Msg("! [ALife] smart terrain [%d][%s] returned no task for npc [%d][%s], using default behaviour",
-            smart_terrain().ID, smart_terrain().name_replace(), object().ID, object().name_replace());
-        default_behaviour();
-        return;
-    }
+    THROW3(task, make_string("smart terrain returned nil task, while npc is registered in it. Object name: %s is alive: %d, curr smart: %d, smart_id: %d", object().name_replace(), object().g_Alive(), m_smart_terrain->ID, object().m_smart_terrain_id).c_str(), smart_terrain().name_replace());
     movement().path_type(MovementManager::ePathTypeGamePath);
     movement().detail().target(*task);
 }

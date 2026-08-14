@@ -10,7 +10,6 @@
 
 #include "xrServer_Objects_ALife_All.h"
 #include "alife_level_registry.h"
-#include "xrCommon/xr_map.h"
 
 class CSE_ALifeCreatureActor;
 class CSE_ALifeInventoryItem;
@@ -38,10 +37,6 @@ public:
 
 protected:
     GRAPH_REGISTRY m_objects;
-    // Reverse index: object ID -> game vertex the object is registered at in
-    // m_objects. Kept in sync by add()/remove() so the common registration path
-    // is O(1) instead of a full O(V) scan per object.
-    xr_map<ALife::_OBJECT_ID, GameGraph::_GRAPH_ID> m_object_vertex;
     TERRAIN_REGISTRY m_terrain[GameGraph::LOCATION_TYPE_COUNT][GameGraph::LOCATION_COUNT];
     CALifeLevelRegistry* m_level;
     CSE_ALifeCreatureActor* m_actor;

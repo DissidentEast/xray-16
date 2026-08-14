@@ -52,15 +52,7 @@ void CALifeOnlineOfflineGroupBrain::on_location_change() {}
 void CALifeOnlineOfflineGroupBrain::update()
 {
     CALifeSmartTerrainTask* const task = object().get_current_task();
-    if (!task)
-    {
-        // Previously a fatal THROW2: a group registered in a smart terrain that
-        // currently has no task for it would crash the game. Recover by skipping
-        // the update tick instead; the task may reappear on a later update.
-        Msg("! [ALife] group [%d][%s] has no smart terrain task, skipping update", object().ID,
-            object().name_replace());
-        return;
-    }
+    THROW2(task, "CALifeOnlineOfflineGroupBrain returned nil task, while npc is registered in it");
     movement().path_type(MovementManager::ePathTypeGamePath);
     movement().detail().target(*task);
     movement().update();
