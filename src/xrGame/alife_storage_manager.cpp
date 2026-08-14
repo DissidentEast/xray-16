@@ -152,7 +152,7 @@ bool CALifeStorageManager::load(void* buffer, const u32& buffer_size, LPCSTR fil
         object.second->on_register();
 
     if (!g_pGameLevel)
-        return (true);
+        return;
 
     Level().autosave_manager().on_game_loaded();
 
@@ -161,8 +161,6 @@ bool CALifeStorageManager::load(void* buffer, const u32& buffer_size, LPCSTR fil
     if (GEnv.ScriptEngine->functor("alife_storage_manager.CALifeStorageManager_after_load", funct2))
         funct2(file_name);
 	//-Neloreck
-
-    return (true);
 }
 
 bool CALifeStorageManager::load(LPCSTR save_name_no_check)
