@@ -95,7 +95,7 @@ bool CSE_ALifeDynamicObject::synchronize_location()
     // resolve a vertex from the position instead of dereferencing garbage.
     u32 const new_vertex_id = ai().level_graph().valid_vertex_id(m_tNodeID)
         ? ai().level_graph().vertex(m_tNodeID, o_Position)
-        : ai().level_graph().vertex_id(o_Position);
+        : ai().level_graph().vertex(o_Position);
     if (!ai().level_graph().valid_vertex_id(new_vertex_id))
         return (true);
 
