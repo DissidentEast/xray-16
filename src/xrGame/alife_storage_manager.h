@@ -25,7 +25,7 @@ protected:
 
 private:
     void prepare_objects_for_save();
-    void load(void* buffer, const u32& buffer_size, LPCSTR file_name);
+    bool load(void* buffer, const u32& buffer_size, LPCSTR file_name);
 
 public:
     IC CALifeStorageManager(IPureServer* server, LPCSTR section);

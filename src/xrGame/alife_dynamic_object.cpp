@@ -87,10 +87,18 @@ void CSE_ALifeDynamicObject::add_offline(
 bool CSE_ALifeDynamicObject::synchronize_location()
 {
     if (!ai().level_graph().valid_vertex_position(o_Position) ||
-        ai().level_graph().inside(ai().level_graph().vertex(m_tNodeID), o_Position))
+        (ai().level_graph().valid_vertex_id(m_tNodeID) &&
+            ai().level_graph().inside(ai().level_graph().vertex(m_tNodeID), o_Position)))
         return (true);
 
-    u32 const new_vertex_id = ai().level_graph().vertex(m_tNodeID, o_Position);
+    // Invalid/out-of-map vertex (e.g. corpses dropped outside the AI map):
+    // resolve a vertex from the position instead of dereferencing garbage.
+    u32 const new_vertex_id = ai().level_graph().valid_vertex_id(m_tNodeID)
+        ? ai().level_graph().vertex(m_tNodeID, o_Position)
+        : ai().level_graph().vertex(o_Position);
+    if (!ai().level_graph().valid_vertex_id(new_vertex_id))
+        return (true);
+
     if (!m_bOnline && !ai().level_graph().inside(new_vertex_id, o_Position))
         return (true);
 

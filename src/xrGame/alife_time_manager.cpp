@@ -14,9 +14,19 @@ CALifeTimeManager::CALifeTimeManager(LPCSTR section) { init(section); }
 CALifeTimeManager::~CALifeTimeManager() {}
 void CALifeTimeManager::init(LPCSTR section)
 {
-    u32 years, months, days, hours, minutes, seconds;
-    sscanf(pSettings->r_string(section, "start_time"), "%d:%d:%d", &hours, &minutes, &seconds);
-    sscanf(pSettings->r_string(section, "start_date"), "%d.%d.%d", &days, &months, &years);
+    u32 years = 2000, months = 1, days = 1, hours = 0, minutes = 0, seconds = 0;
+    if (sscanf(pSettings->r_string(section, "start_time"), "%d:%d:%d", &hours, &minutes, &seconds) < 3)
+    {
+        Msg("! [ALife] time manager: cannot parse start_time in section '%s', using 00:00:00", section);
+        hours = minutes = seconds = 0;
+    }
+    if (sscanf(pSettings->r_string(section, "start_date"), "%d.%d.%d", &days, &months, &years) < 3)
+    {
+        Msg("! [ALife] time manager: cannot parse start_date in section '%s', using 01.01.2000", section);
+        days = 1;
+        months = 1;
+        years = 2000;
+    }
     m_start_game_time = generate_time(years, months, days, hours, minutes, seconds);
     m_time_factor = pSettings->r_float(section, "time_factor");
     m_normal_time_factor = pSettings->r_float(section, "normal_time_factor");
