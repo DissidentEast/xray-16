@@ -10,7 +10,6 @@
 
 #include "xrServer_Objects_ALife.h"
 #include "xrEngine/profiler.h"
-#include "xrCommon/xr_set.h"
 
 class CALifeObjectRegistry
 {
@@ -21,8 +20,7 @@ protected:
     OBJECT_REGISTRY m_objects;
 
 private:
-    void save(IWriter& memory_stream, CSE_ALifeDynamicObject* object, u32& object_count,
-        xr_set<ALife::_OBJECT_ID>& saved);
+    void save(IWriter& memory_stream, CSE_ALifeDynamicObject* object, u32& object_count);
 
 public:
     static CSE_ALifeDynamicObject* get_object(IReader& file_stream);
@@ -31,8 +29,7 @@ public:
     CALifeObjectRegistry(LPCSTR section);
     virtual ~CALifeObjectRegistry();
     virtual void save(IWriter& memory_stream);
-    /** @return false if the save stream is corrupt/truncated (registry is left empty). */
-    bool load(IReader& file_stream);
+    void load(IReader& file_stream);
     IC void add(CSE_ALifeDynamicObject* object);
     IC void remove(const ALife::_OBJECT_ID& id, bool no_assert = false);
     IC CSE_ALifeDynamicObject* object(const ALife::_OBJECT_ID& id, bool no_assert = false) const;

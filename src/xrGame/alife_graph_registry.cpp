@@ -33,7 +33,6 @@ void CALifeGraphRegistry::on_load()
     }
 
     m_objects.resize(ai().game_graph().header().vertex_count());
-    m_object_vertex.clear();
 
     {
         GRAPH_REGISTRY::iterator I = m_objects.begin();
@@ -197,48 +196,19 @@ void CALifeGraphRegistry::add(CSE_ALifeDynamicObject* object, GameGraph::_GRAPH_
 
         if (!already_registered_here)
         {
-            // O(1) fast path via the reverse index: if the object is already
-            // registered at another vertex, remove it there before re-adding,
-            // so an object can never exist in two vertex maps at once.
-            bool removed = false;
-            auto index_it = m_object_vertex.find(object->ID);
-            if (index_it != m_object_vertex.end())
+            const GameGraph::_GRAPH_ID vertex_count = (GameGraph::_GRAPH_ID)m_objects.size();
+            for (GameGraph::_GRAPH_ID i = 0; i < vertex_count; ++i)
             {
-                const GameGraph::_GRAPH_ID old_vertex = index_it->second;
-                if (old_vertex != game_vertex_id && ai().game_graph().valid_vertex_id(old_vertex) &&
-                    (size_t)old_vertex < m_objects.size())
-                {
-                    OBJECT_REGISTRY& reg = m_objects[old_vertex].objects();
-                    const auto& om = reg.objects();
-                    if (om.find(object->ID) != om.end())
-                    {
-                        reg.remove(object->ID, true);
-                        removed = true;
-                    }
-                }
-            }
-
-            // Fallback for legacy desyncs where the object ended up in a vertex
-            // map without the index knowing about it (rare; O(V) is acceptable).
-            if (!removed)
-            {
-                const GameGraph::_GRAPH_ID vertex_count = (GameGraph::_GRAPH_ID)m_objects.size();
-                for (GameGraph::_GRAPH_ID i = 0; i < vertex_count; ++i)
-                {
-                    if (!ai().game_graph().valid_vertex_id(i))
-                        continue;
-                    OBJECT_REGISTRY& reg = m_objects[i].objects();
-                    const auto& om = reg.objects();
-                    if (om.find(object->ID) == om.end())
-                        continue;
-                    reg.remove(object->ID, true);
-                }
+                if (!ai().game_graph().valid_vertex_id(i))
+                    continue;
+                OBJECT_REGISTRY& reg = m_objects[i].objects();
+                const auto& om = reg.objects();
+                if (om.find(object->ID) == om.end())
+                    continue;
+                reg.remove(object->ID, true);
             }
             target.add(object->ID, object);
         }
-        // Keep the reverse index in sync even when the object was already
-        // registered at the target (the index may have been stale).
-        m_object_vertex[object->ID] = game_vertex_id;
         object->m_tGraphID = game_vertex_id;
     }
     else if (!m_level && update && ai().game_graph().valid_vertex_id(game_vertex_id) &&
@@ -264,9 +234,6 @@ void CALifeGraphRegistry::remove(CSE_ALifeDynamicObject* object, GameGraph::_GRA
                 game_vertex_id);
         }
 #endif
-        // Drop the reverse index entry first (the object is leaving the graph).
-        m_object_vertex.erase(object->ID);
-
         if (ai().game_graph().valid_vertex_id(game_vertex_id))
         {
             OBJECT_REGISTRY& primary = m_objects[game_vertex_id].objects();
@@ -309,8 +276,7 @@ void CALifeGraphRegistry::remove(CSE_ALifeDynamicObject* object, GameGraph::_GRA
     if (update && m_level)
     {
         bool level_no_assert =
-            !ai().game_graph().valid_vertex_id(game_vertex_id) ||
-            (ai().game_graph().vertex(game_vertex_id)->level_id() != level().level_id());
+            ai().game_graph().vertex(game_vertex_id)->level_id() != level().level_id();
         if (object->used_ai_locations() && !removed_from_graph)
             level_no_assert = true;
         level().remove(object, level_no_assert);
