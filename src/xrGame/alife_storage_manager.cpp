@@ -32,11 +32,12 @@ void CALifeStorageManager::save(LPCSTR save_name_no_check, bool update_name)
     if (ShadowOfChernobylMode || ClearSkyMode)
         gameSaveExtension = SAVE_EXTENSION_LEGACY;
 
-    LPCSTR game_saves_path = FS.get_path("$game_saves$")->m_Path;
-
     string_path save_name;
-    strncpy_s(save_name, sizeof(save_name), save_name_no_check,
-        sizeof(save_name) - 5 - xr_strlen(gameSaveExtension) - xr_strlen(game_saves_path));
+    // Leave room for the extension and the null terminator; the previous code
+    // subtracted the full $game_saves$ directory path length from the copy count,
+    // which truncated valid names and could underflow on long paths.
+    const size_t max_name_length = sizeof(save_name) - xr_strlen(gameSaveExtension) - 1;
+    strncpy_s(save_name, sizeof(save_name), save_name_no_check, max_name_length);
 
     xr_strcpy(g_last_saved_game, save_name);
 
@@ -82,6 +83,13 @@ void CALifeStorageManager::save(LPCSTR save_name_no_check, bool update_name)
     string_path temp;
     FS.update_path(temp, "$game_saves$", m_save_name);
     IWriter* writer = FS.w_open(temp);
+    if (!writer)
+    {
+        Msg("! Cannot open file %s for writing, save failed", temp);
+        if (!update_name)
+            xr_strcpy(m_save_name, saveBackup);
+        return;
+    }
     writer->w_u32(u32(-1));
     writer->w_u32(ALIFE_VERSION);
 
@@ -106,7 +114,7 @@ void CALifeStorageManager::save(LPCSTR save_name_no_check, bool update_name)
         xr_strcpy(m_save_name, saveBackup);
 }
 
-void CALifeStorageManager::load(void* buffer, const u32& buffer_size, LPCSTR file_name)
+bool CALifeStorageManager::load(void* buffer, const u32& buffer_size, LPCSTR file_name)
 {
 	//Alundaio: So we can get the fname to make our own custom save states
     luabind::functor<void> funct;
@@ -119,7 +127,11 @@ void CALifeStorageManager::load(void* buffer, const u32& buffer_size, LPCSTR fil
     time_manager().load(source);
     spawns().load(source, file_name);
     graph().on_load();
-    objects().load(source);
+    if (!objects().load(source))
+    {
+        Msg("! [ALife] cannot load saved game %s: object registry data is corrupt", file_name);
+        return (false);
+    }
 
     VERIFY(can_register_objects());
     can_register_objects(false);
@@ -157,11 +169,12 @@ bool CALifeStorageManager::load(LPCSTR save_name_no_check)
     if (ShadowOfChernobylMode || ClearSkyMode)
         gameSaveExtension = SAVE_EXTENSION_LEGACY;
 
-    LPCSTR game_saves_path = FS.get_path("$game_saves$")->m_Path;
-
     string_path save_name;
-    strncpy_s(save_name, sizeof(save_name), save_name_no_check,
-        sizeof(save_name) - 5 - xr_strlen(gameSaveExtension) - xr_strlen(game_saves_path));
+    // Leave room for the extension and the null terminator; the previous code
+    // subtracted the full $game_saves$ directory path length from the copy count,
+    // which truncated valid names and could underflow on long paths.
+    const size_t max_name_length = sizeof(save_name) - xr_strlen(gameSaveExtension) - 1;
+    strncpy_s(save_name, sizeof(save_name), save_name_no_check, max_name_length);
 
     CTimer timer;
     timer.Start();
@@ -219,7 +232,13 @@ bool CALifeStorageManager::load(LPCSTR save_name_no_check)
     void* source_data = xr_malloc(source_count);
     rtc_decompress(source_data, source_count, stream->pointer(), stream->length() - 3 * sizeof(u32));
     FS.r_close(stream);
-    load(source_data, source_count, file_name);
+    if (!load(source_data, source_count, file_name))
+    {
+        xr_free(source_data);
+        Msg("! [ALife] failed to load saved game %s (corrupt or incompatible data)", file_name);
+        xr_strcpy(m_save_name, saveBackup);
+        return (false);
+    }
     xr_free(source_data);
 
     groups().on_after_game_load();

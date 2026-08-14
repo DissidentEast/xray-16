@@ -79,13 +79,13 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject* object, bool upd
     START_PROFILE("ALife/switch/remove_online")
     object->m_bOnline = false;
 
-    m_saved_chidren = object->children;
+    m_saved_children = object->children;
     CSE_ALifeTraderAbstract* inventory_owner = smart_cast<CSE_ALifeTraderAbstract*>(object);
     if (inventory_owner)
     {
-        m_saved_chidren.erase(
-            std::remove_if(m_saved_chidren.begin(), m_saved_chidren.end(), remove_non_savable_predicate(&server())),
-            m_saved_chidren.end());
+        m_saved_children.erase(
+            std::remove_if(m_saved_children.begin(), m_saved_children.end(), remove_non_savable_predicate(&server())),
+            m_saved_children.end());
     }
 
     server().Perform_destroy(object, net_flags(TRUE, TRUE));
@@ -99,7 +99,7 @@ void CALifeSwitchManager::remove_online(CSE_ALifeDynamicObject* object, bool upd
         Msg("[LSS] Destroying object [%s][%s][%d]", object->name_replace(), object->s_name.c_str(), object->ID);
 #endif
 
-    object->add_offline(m_saved_chidren, update_registries);
+    object->add_offline(m_saved_children, update_registries);
     STOP_PROFILE
 }
 

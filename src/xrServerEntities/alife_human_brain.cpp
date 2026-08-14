@@ -38,9 +38,6 @@ CALifeHumanBrain::CALifeHumanBrain(object_type* object) : inherited(object)
     m_object_handler = xr_new<CALifeHumanObjectHandler>(object);
 
     m_dwTotalMoney = 0;
-    m_cpEquipmentPreferences.resize(5);
-    m_cpMainWeaponPreferences.resize(4);
-
     m_cpEquipmentPreferences.resize(iFloor(ai().ef_storage().m_pfEquipmentType->ffGetMaxResultValue() + .5f));
     m_cpMainWeaponPreferences.resize(iFloor(ai().ef_storage().m_pfMainWeaponType->ffGetMaxResultValue() + .5f));
     R_ASSERT2((iFloor(ai().ef_storage().m_pfEquipmentType->ffGetMaxResultValue() + .5f) == 5) &&

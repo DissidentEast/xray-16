@@ -24,7 +24,6 @@ class CALifeUpdateManager : public CALifeSwitchManager,
                             public ScheduledBase
 {
 private:
-    bool m_first_time;
     u32 m_position_update_interval_ms;
     mutable u32 m_last_position_update_time;
 

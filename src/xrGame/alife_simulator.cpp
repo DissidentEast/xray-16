@@ -177,6 +177,16 @@ IReader const* CALifeSimulator::get_config(shared_str config) const
         return 0;
 
     m_configs_lru.insert(m_configs_lru.begin(), std::make_pair(config, FS.r_open(file_name)));
+
+    // Bound the cache: close the least recently used readers instead of leaking
+    // file handles indefinitely.
+    constexpr size_t max_cached_configs = 32;
+    while (m_configs_lru.size() > max_cached_configs)
+    {
+        FS.r_close(m_configs_lru.back().second);
+        m_configs_lru.pop_back();
+    }
+
     return m_configs_lru.front().second;
 }
 

@@ -23,7 +23,7 @@ protected:
     float m_offline_distance;
 
 private:
-    OBJECT_VECTOR m_saved_chidren;
+    OBJECT_VECTOR m_saved_children;
 
 protected:
     bool synchronize_location(CSE_ALifeDynamicObject* object);

@@ -70,7 +70,6 @@ CALifeUpdateManager::CALifeUpdateManager(IPureServer* server, LPCSTR section)
     m_position_update_interval_ms = pSettings->read_if_exists<u32>(section, "position_update_interval_ms", 100);
     m_last_position_update_time = 0;
     m_changing_level = false;
-    m_first_time = true;
 }
 
 CALifeUpdateManager::~CALifeUpdateManager()
@@ -132,17 +131,12 @@ void CALifeUpdateManager::shedule_Update(u32 dt)
     if (!initialized())
         return;
 
-    if (!m_first_time && g_mt_config.test(mtALife))
-    {
-        if (GEnv.Render->GetBackendAPI() == IRender::BackendAPI::OpenGL)
-            CALifeUpdateManager::update();
-        else
-            Device.seqParallel.push_back(fastdelegate::FastDelegate0<>(this, &CALifeUpdateManager::update));
-
-        return;
-    }
-
-    m_first_time = false;
+    // NOTE: mtALife was previously executed on Device.seqParallel (a worker thread)
+    // while the main thread kept mutating the same server/registry state
+    // (switch_online/offline spawn and destroy entities, registries are updated,
+    // NET_Packet state is shared). That is a data race and a known source of
+    // intermittent crashes/desyncs. ALife now always runs synchronously on the
+    // main thread; the mtALife config flag is ignored on purpose.
 
     START_PROFILE("ALife/update")
     update();
@@ -385,7 +379,7 @@ void CALifeUpdateManager::jump_to_level(LPCSTR level_name) const
                     dest = i;
                 }
             }
-        if (!ai().game_graph().vertex(dest))
+        if (!ai().game_graph().valid_vertex_id(dest))
         {
             Msg("! There is no game vertices on the level %s, cannot jump to the specified level", level_name);
             return;
@@ -393,6 +387,15 @@ void CALifeUpdateManager::jump_to_level(LPCSTR level_name) const
     }
     else
         dest = (GameGraph::_GRAPH_ID)evaluator.selected_vertex_id();
+
+    // CGameGraph::vertex() does unchecked pointer arithmetic, so validate the id
+    // before touching it.
+    if (!ai().game_graph().valid_vertex_id(dest))
+    {
+        Msg("! Cannot jump to the level %s: invalid destination vertex %d", level_name, dest);
+        return;
+    }
+
     NET_Packet net_packet;
     net_packet.w_begin(M_CHANGE_LEVEL);
     net_packet.w(&dest, sizeof(dest));
@@ -695,6 +698,7 @@ void CALifeUpdateManager::checks()
             }
 
         }
+        xr_delete(ini_file);
     }
 
     exists_cover_names.clear();

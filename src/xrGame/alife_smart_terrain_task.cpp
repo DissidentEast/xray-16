@@ -75,8 +75,22 @@ void CALifeSmartTerrainTask::setup_patrol_point(const shared_str& patrol_path_na
 
     const CPatrolPath* patrol_path = GetPatrolPath(patrol_path_name);
     VERIFY(patrol_path);
+    if (!patrol_path)
+        return;
 
-    m_patrol_point = &patrol_path->vertex(patrol_point_index)->data();
+    // Bounds check: a mod referencing a point beyond the path's vertex count
+    // used to dereference garbage. Clamp to the last point instead.
+    u32 safe_point_index = patrol_point_index;
+    if (safe_point_index >= patrol_path->vertex_count())
+    {
+        Msg("! [ALife] smart terrain task: patrol point index %u out of range (count %u) for path '%s', clamping",
+            safe_point_index, patrol_path->vertex_count(), patrol_path_name.c_str());
+        safe_point_index = patrol_path->vertex_count() ? patrol_path->vertex_count() - 1 : 0;
+    }
+    if (!patrol_path->vertex_count())
+        return;
+
+    m_patrol_point = &patrol_path->vertex(safe_point_index)->data();
     VERIFY(m_patrol_point);
 }
 
