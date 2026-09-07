@@ -704,8 +704,11 @@ CRenderTarget::CRenderTarget()
 #endif
 
     //
-    dwWidth[RCache.context_id] = Device.dwWidth;
-    dwHeight[RCache.context_id] = Device.dwHeight;
+    for (int id = 0; id < R__NUM_CONTEXTS; ++id)
+    {
+        dwWidth[id] = Device.dwWidth;
+        dwHeight[id] = Device.dwHeight;
+    }
 }
 
 CRenderTarget::~CRenderTarget()

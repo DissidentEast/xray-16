@@ -148,8 +148,16 @@ void CRender::record_second_vp_geometry_into(R_dsgraph_structure& ds)
 // sequential path (immediate cmd list - commands were already executed inline).
 void CRender::SubmitSVPDeferred(R_dsgraph_structure& ds)
 {
-    if (svp_cmd_deferred)
-        ds.cmd_list.submit();
+    if (!svp_cmd_deferred)
+        return;
+    // The combine phase may still reference the immediate context, which is not a deferred command list.
+    VERIFY(ds.cmd_list.context_id != CHW::IMM_CTX_ID);
+    if (ds.cmd_list.context_id == CHW::IMM_CTX_ID)
+        return;
+    ds.cmd_list.submit();
+    // ExecuteCommandList leaves the immediate context's CPU-side cache stale;
+    // force a reset so the next pass re-emits bindings/state.
+    get_imm_context().cmd_list.Invalidate();
 }
 
 void CRender::ReleaseSVPReplayLists()
@@ -524,7 +532,7 @@ void CRender::Render()
                 continue;
             try
             {
-                for (int id = 0; id < 3; ++id)
+                for (int id = 0; id < R__NUM_CONTEXTS; ++id)
                     Lights_LastFrame[it]->svis[id].flushoccq();
             }
             catch (...)
@@ -619,6 +627,9 @@ void CRender::Render()
             {
                 ID3D11Texture2D* dst_tex = static_cast<ID3D11Texture2D*>(Target->svp_rt_smap_depth->pSurface);
                 ID3D11Texture2D* src_tex = static_cast<ID3D11Texture2D*>(Target->rt_smap_depth->pSurface);
+                // The source atlas is still bound from the sun cascade passes; unbind before copying.
+                HW.get_context(CHW::IMM_CTX_ID)->ClearState();
+                dsgraph.cmd_list.Invalidate();
                 for (UINT i = 0; i < R__NUM_SUN_CASCADES; ++i)
                     HW.get_context(CHW::IMM_CTX_ID)->CopySubresourceRegion(
                         dst_tex, D3D11CalcSubresource(0, sun_base + i, 1), 0, 0, 0,
