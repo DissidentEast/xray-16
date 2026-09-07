@@ -240,6 +240,7 @@ public:
     bool SetExternalPointVisual(u32 logical_id, pcstr owner_faction, pcstr icon_texture);
     bool UpdateExternalSpotHint(u32 logical_id, pcstr hint_text);
     void SetPendingFocusActor(bool value) { m_pendingFocusActor = value; }
+    void ClearPendingFocusActor() { m_pendingFocusActor = false; m_view_actor = false; }
     void UpdateScroll();
     shared_str cName() const { return "ui_map_wnd"; }
 

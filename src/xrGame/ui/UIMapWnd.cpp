@@ -1281,10 +1281,11 @@ bool CUIMapWnd::OnControllerAction(int axis, const ControllerAxisState& state, E
 bool CUIMapWnd::OnMouseAction(float x, float y, EUIMessages mouse_action)
 {
     Fvector2 cursor_pos1 = GetUICursor().GetCursorPosition();
+    const bool cursorInsideActiveRect = GlobalMap() && ActiveMapRect().in(cursor_pos1);
 
     // Handle wheel zoom with priority while cursor is over map viewport.
     // This prevents parent scroll containers from consuming wheel events.
-    if (GlobalMap() && ActiveMapRect().in(cursor_pos1) && (!GlobalMap()->Locked() || UsingExternalDataSource()))
+    if (GlobalMap() && cursorInsideActiveRect && (!GlobalMap()->Locked() || UsingExternalDataSource()))
     {
         switch (mouse_action)
         {
@@ -1370,6 +1371,7 @@ bool CUIMapWnd::UpdateZoom(bool b_zoom_in)
         HideCurHint();
         return false;
     }
+
     return true;
 }
 
@@ -1561,7 +1563,8 @@ void CUIMapWnd::ViewActor()
     if (UsingExternalDataSource())
     {
         shared_str focusLevel;
-        if (m_externalDataSource && m_externalDataSource->GetFocusLevel(focusLevel))
+        const bool hasFocusLevel = m_externalDataSource && m_externalDataSource->GetFocusLevel(focusLevel);
+        if (hasFocusLevel)
             SetTargetMap(focusLevel, true);
         else
             ViewGlobalMap();

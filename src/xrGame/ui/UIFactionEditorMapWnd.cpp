@@ -63,6 +63,7 @@ void CUIFactionEditorMapWnd::ReloadInternal(bool focus_default_target)
         return;
 
     m_spawnSource.Reload();
+
     m_mapWnd->ClearExternalDataSource();
     m_mapWnd->SetPendingFocusActor(focus_default_target);
     m_mapWnd->SetExternalDataSource(&m_spawnSource);
