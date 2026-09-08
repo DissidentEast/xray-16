@@ -964,8 +964,32 @@ void player_hud::load(const shared_str& player_hud_sect)
     }
     else
     {
-        if (m_attached_item)
-            m_attached_item->m_parent_hud_item->on_a_hud_attach();
+        // Save reference to the currently attached CHudItem before clearing the pool.
+        // MotionIDs cached in attachable_hud_item::m_hand_motions are resolved against a
+        // specific IKinematicsAnimated model at creation time.  When the hands model changes
+        // (e.g. equipping/removing an outfit with a custom player_hud_section), those cached
+        // MotionIDs become stale (wrong slot/idx for the new model), causing "motion sample OOR"
+        // errors and broken hand geometry.  Clearing the pool forces re-creation of
+        // attachable_hud_item with fresh MotionIDs resolved against the new model.
+        CHudItem* saved_item = m_attached_item ? m_attached_item->m_parent_hud_item : nullptr;
+        m_attached_item = nullptr;
+        for (auto& [name, item] : m_pool)
+            xr_delete(item);
+        m_pool.clear();
+
+        if (saved_item)
+        {
+            attach_item(saved_item);
+            // Force aim offset recalculation for weapons with attachment system.
+            // After clearing the pool the new attachable_hud_item has fresh bone transforms
+            // that may differ from the cached values, so the aim offset must be recomputed.
+            if (CWeapon* wpn = smart_cast<CWeapon*>(saved_item))
+            {
+                if (wpn->bUseAttachmentSystem)
+                    wpn->calc_aim_addon_offset();
+            }
+            hud_aim_offset_update_interval = 0;
+        }
     }
     m_model->dcast_PKinematics()->CalculateBones_Invalidate();
     m_model->dcast_PKinematics()->CalculateBones(TRUE);
