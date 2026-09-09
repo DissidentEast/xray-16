@@ -189,6 +189,45 @@ IC void CPathManagerTemplate::set_evaluator(_VertexEvaluator* evaluator)
 TEMPLATE_SPECIALIZATION
 IC const typename CPathManagerTemplate::PATH& CPathManagerTemplate::path() const { return (m_path); }
 TEMPLATE_SPECIALIZATION
+IC void CPathManagerTemplate::apply_dest_vertex_fallback(const _vertex_id_type vertex_id)
+{
+    // GW workaround: keep the path manager in a sane state after an inaccessible dest vertex.
+    m_actuality = false;
+
+    if (!m_object)
+        return;
+
+    // Restrictions apply to the level graph only; other graphs (game path, patrol) cannot be remapped.
+    if (!std::is_same<_Graph, CLevelGraph>::value || !m_graph || !m_graph->valid_vertex_id(vertex_id))
+        return;
+
+    const CLevelGraph* level_graph = ai().get_level_graph();
+    if (!level_graph)
+        return;
+
+    const Fvector bad_position = level_graph->vertex_position(static_cast<u32>(vertex_id));
+
+    // CRestrictedObject::accessible_nearest asserts the position is NOT accessible - guard it explicitly.
+    if (m_object->accessible(bad_position))
+        return;
+
+    Fvector accessible_position;
+    const u32 new_vertex_id = m_object->accessible_nearest(bad_position, accessible_position);
+
+    if (level_graph->valid_vertex_id(new_vertex_id) && m_object->accessible(new_vertex_id))
+    {
+        Msg("~ [GW] set_dest_vertex fallback: remapped vertex %u -> %u (nearest accessible) for object \"%s\"",
+            static_cast<u32>(vertex_id), new_vertex_id, m_object->object().cName().c_str());
+        m_dest_vertex_id = static_cast<_vertex_id_type>(new_vertex_id);
+        return;
+    }
+
+    // No accessible vertex found: keep previous dest, the movement layer retries with cooldown.
+    Msg("~ [GW] set_dest_vertex fallback: no accessible vertex near %u, keeping previous dest %u for object \"%s\"",
+        static_cast<u32>(vertex_id), static_cast<u32>(m_dest_vertex_id), m_object->object().cName().c_str());
+}
+
+TEMPLATE_SPECIALIZATION
 IC _vertex_id_type CPathManagerTemplate::dest_vertex_id() const { return (m_dest_vertex_id); }
 TEMPLATE_SPECIALIZATION
 IC void CPathManagerTemplate::set_dest_vertex(const _vertex_id_type vertex_id)
@@ -328,7 +367,16 @@ IC void CPathManagerTemplate::set_dest_vertex(const _vertex_id_type vertex_id)
             static_cast<unsigned long long>(m_failed_dest_vertex_id), nearest_info, cause);
 
         Msg("! %s", diag);
-        R_ASSERT2(false, diag);
+
+        // GW workaround: show the ignorable error dialog instead of hard-crashing.
+        // Fail() returns control only for tryAgain/ignore; abort breaks inside via DEBUG_BREAK.
+        static bool ignoreAlways = false;
+        if (!ignoreAlways)
+            xrDebug::Fail(ignoreAlways, DEBUG_INFO, "check_vertex(vertex_id)", diag);
+
+        apply_dest_vertex_fallback(vertex_id);
+        // Must not fall through: the lines below would overwrite the fallback dest with the bad vertex.
+        return;
     }
     m_actuality = m_actuality && (dest_vertex_id() == vertex_id);
     m_dest_vertex_id = vertex_id;

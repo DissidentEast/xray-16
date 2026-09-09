@@ -40,6 +40,8 @@ protected:
     IC virtual void before_search(const _vertex_id_type start_vertex_id, const _vertex_id_type dest_vertex_id);
     IC virtual void after_search();
     IC virtual bool check_vertex(const _vertex_id_type vertex_id) const;
+    // GW workaround: remaps an inaccessible dest vertex to the nearest accessible one (level graph only).
+    IC void apply_dest_vertex_fallback(const _vertex_id_type vertex_id);
 
 public:
     IC CAbstractPathManager(CRestrictedObject* object);
