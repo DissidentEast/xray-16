@@ -4,6 +4,8 @@
 #include "Navigation/game_graph.h"
 #include "Navigation/level_graph.h"
 #include "Navigation/PatrolPath/patrol_path_storage.h"
+#include "Navigation/PatrolPath/patrol_path.h"
+#include "Navigation/PatrolPath/patrol_point.h"
 #include "Navigation/graph_engine.h"
 #include "Navigation/ai_graph_engine_cvars.h"
 #include "Navigation/ai_graph_engine_epoch.h"
@@ -148,6 +150,34 @@ void AISpaceBase::patrol_path_storage_raw(IReader& stream)
     xr_delete(m_patrol_path_storage);
     m_patrol_path_storage = xr_new<CPatrolPathStorage>();
     m_patrol_path_storage->load_raw(get_level_graph(), get_cross_table(), get_game_graph(), stream);
+
+    if (Core.Params && strstr(Core.Params, "-log_patrol_paths"))
+    {
+        Msg("* Dumping patrol paths for level:");
+
+        for (const auto& [pathName, path] : m_patrol_path_storage->patrol_paths())
+        {
+            Msg("  [path] %s", pathName.c_str());
+
+            for (const auto& [vertexId, vertex] : path->vertices())
+            {
+                const CPatrolPoint& point = vertex->data();
+
+                Msg("    [point] %s id=%u pos=(%f,%f,%f) flags=%u lvl_vtx=%u game_vtx=%u",
+                    point.name().c_str(),
+                    vertex->vertex_id(),
+                    VPUSH(point.position()),
+                    point.flags(),
+                    point.level_vertex_id(),
+                    point.game_vertex_id());
+
+                for (const auto& edge : vertex->edges())
+                {
+                    Msg("      [link] -> target_id=%u weight=%f", edge.vertex_id(), edge.weight());
+                }
+            }
+        }
+    }
 }
 
 void AISpaceBase::patrol_path_storage(IReader& stream)
@@ -158,6 +188,34 @@ void AISpaceBase::patrol_path_storage(IReader& stream)
     xr_delete(m_patrol_path_storage);
     m_patrol_path_storage = xr_new<CPatrolPathStorage>();
     m_patrol_path_storage->load(stream);
+
+    if (Core.Params && strstr(Core.Params, "-log_patrol_paths"))
+    {
+        Msg("* Dumping patrol paths for level (ALife/spawn):");
+
+        for (const auto& [pathName, path] : m_patrol_path_storage->patrol_paths())
+        {
+            Msg("  [path] %s", pathName.c_str());
+
+            for (const auto& [vertexId, vertex] : path->vertices())
+            {
+                const CPatrolPoint& point = vertex->data();
+
+                Msg("    [point] %s id=%u pos=(%f,%f,%f) flags=%u lvl_vtx=%u game_vtx=%u",
+                    point.name().c_str(),
+                    vertex->vertex_id(),
+                    VPUSH(point.position()),
+                    point.flags(),
+                    point.level_vertex_id(),
+                    point.game_vertex_id());
+
+                for (const auto& edge : vertex->edges())
+                {
+                    Msg("      [link] -> target_id=%u weight=%f", edge.vertex_id(), edge.weight());
+                }
+            }
+        }
+    }
 }
 
 void AISpaceBase::patrol_path_storage_clear()
