@@ -413,6 +413,7 @@ target_include_directories(xrEngine
     "${XRAY_SOURCE_DIR}/src"
     "${XRAY_SOURCE_DIR}/Externals/imgui"
     "${XRAY_SOURCE_DIR}/Externals/OpenAutomate/inc"
+    "${XRAY_SOURCE_DIR}/Externals/freetype/include"
 )
 
 target_link_libraries(xrEngine
@@ -432,6 +433,7 @@ target_link_libraries(xrEngine
     Ogg::Ogg
     Theora::Theora
     SDL2::SDL2
+    freetype
 )
 
 target_compile_definitions(xrEngine
