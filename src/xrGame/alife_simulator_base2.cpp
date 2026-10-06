@@ -71,15 +71,22 @@ void CALifeSimulatorBase::unregister_object(CSE_ALifeDynamicObject* object, bool
     smart_terrains().remove(object);
     groups().remove(object);
 
-    if (!object->m_bOnline)
+    // Release frees the object, so every registry holding a raw pointer must drop it
+    // here, whatever m_bOnline says. Online victims (rifle kill) and destroyed
+    // entities (grenade blast) otherwise leave a dangling CSE_ALifeSchedulable in
+    // scheduled() - the next update_scheduled() then calls update() on freed
+    // memory (0xC0000005 executing near-null). Both removes below are tolerant
+    // when the object was never registered (graph index-driven, scheduled
+    // no_assert when need_update() is false), so this is safe for all paths.
+    graph().remove(object, object->m_tGraphID);
+    // release must never assert: the object can already be out of scheduled()
+    // (switched online, debug-spawned base coming online, killed offline).
+    scheduled().remove(object, true);
+    if (object->m_bOnline && object->ID_Parent == 0xffff)
     {
-        graph().remove(object, object->m_tGraphID);
-        scheduled().remove(object);
-    }
-    else if (object->ID_Parent == 0xffff)
-    {
-        //			if (object->used_ai_locations())
-        graph().level().remove(object, !object->used_ai_locations());
+        // graph().remove() above already removed the level entry (tolerantly).
+        // This is only a backup for online objects, so never assert here.
+        graph().level().remove(object, true);
     }
 }
 
