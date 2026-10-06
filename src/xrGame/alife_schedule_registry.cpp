@@ -19,6 +19,9 @@ void CALifeScheduleRegistry::add(CSE_ALifeDynamicObject* object)
     if (!schedulable->need_update(object))
         return;
 
+    if (this->object(object->ID, true))
+        return;
+
     inherited::add(object->ID, schedulable);
 }
 
