@@ -87,11 +87,14 @@ void CPlanner::update()
 		Msg("! ERROR: there is no action sequence, which can transfer current world state to the target one: action[%s]", current_action().m_action_name);
 #endif
 
-    THROW(!this->solution().empty());
-	//Alundaio:
-	if (this->solution().empty())
-		return;
-	//-Alundaio
+    // An empty solution is legitimate here: the target state may already hold
+    // (zero-length plan), or a freshly debug-spawned stalker can reach the
+    // combat planner with no enemy selected yet (object 31134 repro). Killing
+    // the game with THROW turns one bad AI tick into a crash; keep the current
+    // action and re-solve next tick instead. The m_failed case is reported
+    // above (LOG_ACTION show() / -dbgact message).
+    if (this->solution().empty())
+        return;
 
     if (initialized())
     {
