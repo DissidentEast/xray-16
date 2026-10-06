@@ -42,11 +42,21 @@ protected:
     CSE_ALifeCreatureActor* m_actor;
     float m_process_time;
     xr_vector<CSE_ALifeDynamicObject*> m_temp;
+    // ALife::_OBJECT_ID -> index of the graph point which really holds the object, or u32(-1)
+    // when the object is not registered in m_objects at all. object->m_tGraphID cannot be used
+    // as the registry key: it is written by code outside of this class (group switch_offline,
+    // spawn, save/load, network spawn), so it may disagree with the registry.
+    xr_vector<u32> m_object_vertex;
 
 protected:
     void setup_current_level();
     template <typename F, typename C>
     IC void iterate(C& c, const F& f);
+    // Removes the object from the graph point it is really registered at (O(1), index driven)
+    // and from the pre-level temporary queue. Does nothing if the object is not registered.
+    void unregister_object(CSE_ALifeDynamicObject* object);
+    IC u32 registered_vertex(const ALife::_OBJECT_ID& id) const;
+    IC void set_registered_vertex(const ALife::_OBJECT_ID& id, u32 vertex_id);
 
 public:
     CALifeGraphRegistry();

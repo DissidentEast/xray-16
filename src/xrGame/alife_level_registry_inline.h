@@ -14,7 +14,10 @@ IC CALifeLevelRegistry::CALifeLevelRegistry(const GameGraph::_LEVEL_ID& level_id
 IC GameGraph::_LEVEL_ID CALifeLevelRegistry::level_id() const { return (m_level_id); }
 IC void CALifeLevelRegistry::add(CSE_ALifeDynamicObject* object)
 {
-    if (ai().game_graph().vertex(object->m_tGraphID)->level_id() != level_id())
+    // an object which was never placed on the graph has no valid graph point, and scripts are
+    // free to ask for one which does not exist - do not dereference it blindly
+    if (!ai().game_graph().valid_vertex_id(object->m_tGraphID) ||
+        ai().game_graph().vertex(object->m_tGraphID)->level_id() != level_id())
         return;
 
 #ifdef DEBUG
