@@ -26,7 +26,20 @@ IC void CALifeLevelRegistry::add(CSE_ALifeDynamicObject* object)
         Msg("[LSS] adding object [%s][%d] to current level", object->name_replace(), object->ID);
     }
 #endif
-    inherited::add(object->ID, object);
+    // the level registry is a cache of the objects living on this level, filled by
+    // setup_current_level() and by every graph().add()/update(), detach() and so on -
+    // the same object legitimately arrives more than once (a squad member which just
+    // died re-registers through unregister_member(), for example). Inserting twice
+    // raises "Specified object has been already found in the registry!", so skip when
+    // the entry is already there and replace it only on id reuse.
+    const auto I = objects().find(object->ID);
+    if (I == objects().end())
+        inherited::add(object->ID, object);
+    else if (I->second != object)
+    {
+        inherited::remove(object->ID, true);
+        inherited::add(object->ID, object);
+    }
 }
 
 IC void CALifeLevelRegistry::remove(CSE_ALifeDynamicObject* object, bool no_assert)
