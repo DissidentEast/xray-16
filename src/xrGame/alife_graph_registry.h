@@ -47,6 +47,18 @@ protected:
     // as the registry key: it is written by code outside of this class (group switch_offline,
     // spawn, save/load, network spawn), so it may disagree with the registry.
     xr_vector<u32> m_object_vertex;
+#ifndef MASTER_GOLD
+    // diagnostics: one bit per object id, so a whole squad going missing is reported once
+    // instead of once per member per frame
+    enum
+    {
+        report_unregistered = 1,
+        report_mismatch = 2
+    };
+    xr_vector<u8> m_reported;
+    u32 m_unregistered_removals;
+    u32 m_reported_removals;
+#endif
 
 protected:
     void setup_current_level();
@@ -57,6 +69,9 @@ protected:
     void unregister_object(CSE_ALifeDynamicObject* object);
     IC u32 registered_vertex(const ALife::_OBJECT_ID& id) const;
     IC void set_registered_vertex(const ALife::_OBJECT_ID& id, u32 vertex_id);
+#ifndef MASTER_GOLD
+    IC u8& report_flags(const ALife::_OBJECT_ID& id);
+#endif
 
 public:
     CALifeGraphRegistry();
