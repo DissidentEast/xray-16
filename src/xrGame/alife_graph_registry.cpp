@@ -17,6 +17,10 @@ CALifeGraphRegistry::CALifeGraphRegistry()
     m_level = 0;
     m_process_time = 0;
     m_actor = 0;
+#ifndef MASTER_GOLD
+    m_unregistered_removals = 0;
+    m_reported_removals = 0;
+#endif
 }
 
 CALifeGraphRegistry::~CALifeGraphRegistry() { xr_delete(m_level); }
@@ -256,7 +260,22 @@ void CALifeGraphRegistry::add(CSE_ALifeDynamicObject* object, GameGraph::_GRAPH_
     }
 
     if (update && m_level && ai().game_graph().valid_vertex_id(game_vertex_id))
-        level().add(object);
+    {
+        // the level registry is a cache of the objects living on this level, and the same object
+        // legitimately reaches it more than once: it is filled by setup_current_level() and by
+        // add(), which is called whenever an object is registered, switches online, joins a
+        // squad, loses an item and so on (graph().update() on a squad member which just died,
+        // for example). Inserting it twice raises "Specified object has been already found in
+        // the registry!", so only replace the entry when it really points at another object.
+        const auto registered = level().objects().find(object->ID);
+        if (registered == level().objects().end())
+            level().add(object);
+        else if (registered->second != object)
+        {
+            level().remove(object, true);
+            level().add(object);
+        }
+    }
 }
 
 void CALifeGraphRegistry::remove(CSE_ALifeDynamicObject* object, GameGraph::_GRAPH_ID game_vertex_id, bool update)
@@ -274,16 +293,39 @@ void CALifeGraphRegistry::remove(CSE_ALifeDynamicObject* object, GameGraph::_GRA
     // reliable source. Removing from a graph point the object is not in raises "Specified object
     // hasn't been found in the registry!" and kills the simulation.
 #ifndef MASTER_GOLD
-    const u32 vertex_id = registered_vertex(object->ID);
-    if (vertex_id != u32(-1))
+    if (object->used_ai_locations())
     {
-        if (!ai().game_graph().valid_vertex_id(game_vertex_id) || vertex_id != (u32)game_vertex_id)
-            Msg("! [ALife] graph registry: object [%s][%d] is registered at graph point %u, not %u - fixed",
-                object->name_replace(), object->ID, vertex_id, game_vertex_id);
+        const u32 vertex_id = registered_vertex(object->ID);
+        if (vertex_id != u32(-1))
+        {
+            u8& reported = report_flags(object->ID);
+            if ((reported & report_mismatch) == 0 &&
+                (!ai().game_graph().valid_vertex_id(game_vertex_id) || vertex_id != (u32)game_vertex_id))
+            {
+                reported |= report_mismatch;
+                Msg("! [ALife] graph registry: object [%s][%d] is registered at graph point %u, not %u - fixed",
+                    object->name_replace(), object->ID, vertex_id, game_vertex_id);
+            }
+        }
+        else
+        {
+            // not an error: an object which is online, or which was saved with direct control
+            // switched off, was never registered in a graph point in the first place
+            ++m_unregistered_removals;
+            u8& reported = report_flags(object->ID);
+            if ((reported & report_unregistered) == 0 && m_reported_removals < 10)
+            {
+                reported |= report_unregistered;
+                ++m_reported_removals;
+                Msg("! [ALife] graph registry: remove [%s][%d] - not in the graph registry (graph point %u), "
+                    "this is expected for online objects",
+                    object->name_replace(), object->ID, game_vertex_id);
+            }
+            if (m_unregistered_removals % 100 == 0)
+                Msg("! [ALife] graph registry: %u objects removed so far which were not in the graph registry",
+                    m_unregistered_removals);
+        }
     }
-    else if (object->used_ai_locations())
-        Msg("! [ALife] graph registry: remove [%s][%d] - not registered (graph point %u), continuing",
-            object->name_replace(), object->ID, game_vertex_id);
 #endif
 
     unregister_object(object);
