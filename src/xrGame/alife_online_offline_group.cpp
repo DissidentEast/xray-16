@@ -54,6 +54,16 @@ void CSE_ALifeOnlineOfflineGroup::update()
     for (; I != E; ++I)
     {
         MEMBER* m = (*I).second;
+        // the squad moves its members by writing their location fields directly, but the graph
+        // registry is not updated, so the members stayed registered at the graph points they
+        // had while the squad was online. Every later graph().change() of such a member (a
+        // teleport of a squad, synchronize_location, a monster which walks off on its own)
+        // then tried to remove it from a graph point it was never in:
+        // "Specified object hasn't been found in the registry!". Move it through the registry
+        // instead, so position, level vertex, graph point and registry always agree.
+        if (!m->m_bOnline && m->m_tGraphID != m_tGraphID && m->used_ai_locations() &&
+            ai().game_graph().valid_vertex_id(m_tGraphID))
+            alife().graph().change(m, m->m_tGraphID, m_tGraphID);
         m->o_Position = o_Position;
         m->m_tNodeID = m_tNodeID;
         m->m_tGraphID = m_tGraphID;

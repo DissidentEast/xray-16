@@ -33,6 +33,7 @@ void CALifeGraphRegistry::on_load()
     }
 
     m_objects.resize(ai().game_graph().header().vertex_count());
+    m_object_vertex.clear();
 
     {
         GRAPH_REGISTRY::iterator I = m_objects.begin();
@@ -165,6 +166,33 @@ void CALifeGraphRegistry::detach(CSE_Abstract& object, CSE_ALifeInventoryItem* i
     }
 }
 
+void CALifeGraphRegistry::unregister_object(CSE_ALifeDynamicObject* object)
+{
+    const u32 vertex_id = registered_vertex(object->ID);
+
+    if (vertex_id != u32(-1))
+    {
+        if (vertex_id < m_objects.size())
+        {
+            OBJECT_REGISTRY& registry = m_objects[vertex_id].objects();
+            const auto& objects = registry.objects();
+            if (objects.find(object->ID) != objects.end())
+                registry.remove(object->ID);
+        }
+        set_registered_vertex(object->ID, u32(-1));
+    }
+
+    // an object can also sit in the pre-level queue, where nothing else removes it. Leaving a
+    // released object there would mean a dangling pointer in setup_current_level()
+    for (u32 i = 0; i < m_temp.size();)
+    {
+        if (m_temp[i] == object)
+            m_temp.erase(m_temp.begin() + i);
+        else
+            ++i;
+    }
+}
+
 void CALifeGraphRegistry::add(CSE_ALifeDynamicObject* object, GameGraph::_GRAPH_ID game_vertex_id, bool update)
 {
 #ifdef DEBUG
@@ -175,14 +203,56 @@ void CALifeGraphRegistry::add(CSE_ALifeDynamicObject* object, GameGraph::_GRAPH_
 #endif
     if (!object->m_bOnline && object->used_ai_locations() /**&& object->interactive()**/)
     {
-        VERIFY(ai().game_graph().valid_vertex_id(game_vertex_id));
-        m_objects[game_vertex_id].objects().add(object->ID, object);
+        if (!ai().game_graph().valid_vertex_id(game_vertex_id))
+        {
+            // scripts may teleport to a graph point which does not exist
+#ifndef MASTER_GOLD
+            Msg("! [ALife] graph registry: add [%s][%d] - invalid graph point %u, object left where it is",
+                object->name_replace(), object->ID, game_vertex_id);
+#endif
+            return;
+        }
+
+        OBJECT_REGISTRY& target = m_objects[game_vertex_id].objects();
+        const auto& target_objects = target.objects();
+        const auto registered_at_target = target_objects.find(object->ID);
+
+        // already registered where it is being added - nothing to do, and doing it again would
+        // raise "Specified object has been already found in the registry!"
+        if (registered_vertex(object->ID) != (u32)game_vertex_id ||
+            registered_at_target == target_objects.end() || registered_at_target->second != object)
+        {
+            // drop the entry in the graph point it is really registered at (if any), so that
+            // relocation is atomic and cannot leave the object in two graph points at once
+            unregister_object(object);
+
+            const auto stale = target.objects().find(object->ID);
+            if (stale != target.objects().end())
+                target.remove(object->ID, true);
+
+            target.add(object->ID, object);
+            set_registered_vertex(object->ID, (u32)game_vertex_id);
+        }
         object->m_tGraphID = game_vertex_id;
     }
-    else if (!m_level && update)
+    else
     {
-        m_temp.push_back(object);
-        object->m_tGraphID = game_vertex_id;
+        if (!m_level && update)
+        {
+            bool queued = false;
+            for (u32 i = 0; i < m_temp.size(); ++i)
+            {
+                if (m_temp[i] == object)
+                {
+                    queued = true;
+                    break;
+                }
+            }
+            if (!queued)
+                m_temp.push_back(object);
+            if (ai().game_graph().valid_vertex_id(game_vertex_id))
+                object->m_tGraphID = game_vertex_id;
+        }
     }
 
     if (update && m_level && ai().game_graph().valid_vertex_id(game_vertex_id))
@@ -191,17 +261,41 @@ void CALifeGraphRegistry::add(CSE_ALifeDynamicObject* object, GameGraph::_GRAPH_
 
 void CALifeGraphRegistry::remove(CSE_ALifeDynamicObject* object, GameGraph::_GRAPH_ID game_vertex_id, bool update)
 {
-    if (object->used_ai_locations() /**&& object->interactive()**/)
-    {
 #ifdef DEBUG
-        if (psAI_Flags.test(aiALife))
-        {
-            Msg("[LSS] removing object [%s][%d] from graph point %d", object->name_replace(), object->ID,
-                game_vertex_id);
-        }
-#endif
-        m_objects[game_vertex_id].objects().remove(object->ID);
+    if (object->used_ai_locations() /**&& object->interactive()**/ && psAI_Flags.test(aiALife))
+    {
+        Msg("[LSS] removing object [%s][%d] from graph point %d", object->name_replace(), object->ID, game_vertex_id);
     }
+#endif
+
+    // game_vertex_id is only a hint: object->m_tGraphID is written by code outside of this class
+    // and does not always match the graph point which holds the object (squads overwrite it for
+    // their members, spawn and save/load write it directly), so the registry index is the only
+    // reliable source. Removing from a graph point the object is not in raises "Specified object
+    // hasn't been found in the registry!" and kills the simulation.
+#ifndef MASTER_GOLD
+    const u32 vertex_id = registered_vertex(object->ID);
+    if (vertex_id != u32(-1))
+    {
+        if (!ai().game_graph().valid_vertex_id(game_vertex_id) || vertex_id != (u32)game_vertex_id)
+            Msg("! [ALife] graph registry: object [%s][%d] is registered at graph point %u, not %u - fixed",
+                object->name_replace(), object->ID, vertex_id, game_vertex_id);
+    }
+    else if (object->used_ai_locations())
+        Msg("! [ALife] graph registry: remove [%s][%d] - not registered (graph point %u), continuing",
+            object->name_replace(), object->ID, game_vertex_id);
+#endif
+
+    unregister_object(object);
+
     if (update && m_level)
-        level().remove(object, ai().game_graph().vertex(game_vertex_id)->level_id() != level().level_id());
+    {
+        // the level registry is a cache of the objects living on this level (used to decide who
+        // switches online/offline), not a source of truth - add() puts the object back, so a
+        // missing entry must not kill the simulation
+        bool level_no_assert = !ai().game_graph().valid_vertex_id(game_vertex_id) ||
+                               object->used_ai_locations() ||
+                               ai().game_graph().vertex(game_vertex_id)->level_id() != level().level_id();
+        level().remove(object, level_no_assert);
+    }
 }

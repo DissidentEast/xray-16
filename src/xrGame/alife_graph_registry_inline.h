@@ -21,9 +21,27 @@ IC void CALifeGraphRegistry::change(
         object->s_name.c_str(), object->name_replace());
     remove(object, tGraphPointID);
     add(object, tNextGraphPointID);
-    object->m_tGraphID = tNextGraphPointID;
-    object->o_Position = ai().game_graph().vertex(object->m_tGraphID)->level_point();
-    object->m_tNodeID = ai().game_graph().vertex(object->m_tGraphID)->level_vertex_id();
+
+    // a script may ask for a graph point which does not exist - keep the last valid location
+    // instead of poisoning object->m_tGraphID, everything else in ALife dereferences it blindly
+    if (ai().game_graph().valid_vertex_id(tNextGraphPointID))
+    {
+        object->m_tGraphID = tNextGraphPointID;
+        object->o_Position = ai().game_graph().vertex(object->m_tGraphID)->level_point();
+        object->m_tNodeID = ai().game_graph().vertex(object->m_tGraphID)->level_vertex_id();
+    }
+}
+
+IC u32 CALifeGraphRegistry::registered_vertex(const ALife::_OBJECT_ID& id) const
+{
+    return (id < m_object_vertex.size() ? m_object_vertex[id] : u32(-1));
+}
+
+IC void CALifeGraphRegistry::set_registered_vertex(const ALife::_OBJECT_ID& id, u32 vertex_id)
+{
+    if (id >= m_object_vertex.size())
+        m_object_vertex.resize(id + 1, u32(-1));
+    m_object_vertex[id] = vertex_id;
 }
 
 IC void CALifeGraphRegistry::assign(CSE_ALifeMonsterAbstract* monster)
