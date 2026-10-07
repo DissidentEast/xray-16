@@ -94,7 +94,7 @@ public:
     void HearSound(const IGameObject* who, int eType, const Fvector& Position, float power, TTime time);
     IC bool IsRememberSound() { return (!Sounds.empty()); }
     // Lain: added
-    int GetNumSounds() { return Sounds.size(); }
+    int GetNumSounds() { return (int)Sounds.size(); }
     void GetFirstSound(SoundElem& s, bool& bDangerous);
 
     void GetSound(SoundElem& s, bool& bDangerous); // возвращает самый опасный звук

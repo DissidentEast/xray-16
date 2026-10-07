@@ -69,7 +69,7 @@ TEMPLATE_SPECIALIZATION
 IC void CPathManagerTemplate::select_intermediate_vertex()
 {
     VERIFY(!failed() && !m_path.empty());
-    m_intermediate_index = m_path.size() - 1;
+    m_intermediate_index = _index_type(m_path.size() - 1);
 }
 
 TEMPLATE_SPECIALIZATION

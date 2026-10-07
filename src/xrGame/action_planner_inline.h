@@ -310,7 +310,7 @@ IC void CPlanner::save(NET_Packet& packet)
     for (auto& it : this->m_operators)
         it.m_operator->save(packet);
 
-    packet.w_u32(m_storage.m_storage.size());
+    packet.w_u32((u32)m_storage.m_storage.size());
     for (const auto& it : m_storage.m_storage)
     {
         packet.w(&it.m_condition, sizeof(it.m_condition));
