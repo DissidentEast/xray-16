@@ -147,7 +147,7 @@ void CConsole::Begin_tips()
 
 void CConsole::End_tips()
 {
-    m_select_tip = m_tips.size() - 1;
+    m_select_tip = (int)(m_tips.size() - 1);
     m_start_tip = m_select_tip - VIEW_TIPS_COUNT + 1;
     check_next_selected_tip();
 }

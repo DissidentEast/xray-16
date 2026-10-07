@@ -278,7 +278,7 @@ void CWeaponKnife::MakeShot(Fvector const& pos, Fvector const& dir, float const 
 
     while (m_magazine.size() < 2)
         m_magazine.push_back(cartridge);
-    iAmmoElapsed = m_magazine.size();
+    iAmmoElapsed = (int)m_magazine.size();
     bool SendHit = SendHitAllowed(H_Parent());
 
     PlaySound("sndShot", pos);
@@ -672,7 +672,7 @@ u32 CWeaponKnife::get_entity_bones_count(CEntityAlive const* entity)
     if (!tmp_accel)
         return 0;
 
-    return tmp_accel->size();
+    return (u32)tmp_accel->size();
 };
 
 void CWeaponKnife::fill_shapes_list(

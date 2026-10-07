@@ -91,7 +91,7 @@ void CItemMgr::Dump() const
 #endif // #ifndef MASTER_GOLD
 }
 
-u32 CItemMgr::GetItemsCount() const { return m_items.size(); }
+u32 CItemMgr::GetItemsCount() const { return (u32)m_items.size(); }
 const shared_str& CItemMgr::GetItemName(u32 Idx) const
 {
     R_ASSERT(Idx < m_items.size());

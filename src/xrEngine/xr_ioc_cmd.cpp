@@ -260,14 +260,14 @@ class CCC_Start : public IConsole_Command
         {
             return;
         }
-        int begin_p = xr_strlen(str) - xr_strlen(name1) + xr_strlen(name_str);
+        int begin_p = (int)(xr_strlen(str) - xr_strlen(name1) + xr_strlen(name_str));
         if (begin_p < 1)
         {
             return;
         }
 
         pcstr name2 = strchr(name1, '/');
-        int end_p = xr_strlen(str) - ((name2) ? xr_strlen(name2) : 0);
+        int end_p = (int)(xr_strlen(str) - ((name2) ? xr_strlen(name2) : 0));
         if (begin_p >= end_p)
         {
             return;

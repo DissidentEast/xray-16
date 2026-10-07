@@ -117,7 +117,7 @@ void* FileDownload(pcstr file_name, const int& file_handle, size_t& file_size)
 {
     void* buffer = xr_malloc(file_size);
 
-    const auto r_bytes = _read(file_handle, buffer, file_size);
+    const auto r_bytes = _read(file_handle, buffer, (u32)file_size);
     R_ASSERT3(file_size == static_cast<size_t>(r_bytes), "Can't read from file : ", file_name);
 
     // file_size = r_bytes;
@@ -223,7 +223,7 @@ void IWriter::close_chunk()
 
     const size_t pos = tell();
     seek(chunk_pos.top());
-    w_u32(pos - chunk_pos.top() - 4);
+    w_u32((u32)(pos - chunk_pos.top() - 4));
     seek(pos);
     chunk_pos.pop();
 }

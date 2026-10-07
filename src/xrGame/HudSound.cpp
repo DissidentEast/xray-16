@@ -93,7 +93,7 @@ void HUD_SOUND_ITEM::PlaySound(
         flags |= sm_Looped;
     //Alundaio: Sanity, don't allow PlaySound of index greater then the size, just play last index
     if (index == u8(-1))
-        index = (u8)Random.randI(hud_snd.sounds.size());
+        index = (u8)Random.randI((int)hud_snd.sounds.size());
     else if (index >= (u8)hud_snd.sounds.size())
         index = (u8)hud_snd.sounds.size()-1;
 

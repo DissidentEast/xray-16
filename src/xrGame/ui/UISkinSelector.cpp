@@ -224,7 +224,7 @@ void CUISkinSelectorWnd::OnBtnOK()
 
     if (m_iActiveIndex == -1)
     {
-        m_iActiveIndex = m_skinsEnabled[::Random.randI(m_skinsEnabled.size())];
+        m_iActiveIndex = m_skinsEnabled[::Random.randI((s32)m_skinsEnabled.size())];
     }
     game->OnSkinMenu_Ok();
 }

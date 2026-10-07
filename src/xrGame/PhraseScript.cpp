@@ -26,7 +26,7 @@ void CDialogScriptHelper::Load(CUIXml* uiXml, XML_NODE phrase_node)
 template <class T>
 void CDialogScriptHelper::LoadSequence(CUIXml* uiXml, XML_NODE phrase_node, LPCSTR tag, T& str_vector)
 {
-    int tag_num = uiXml->GetNodesNum(phrase_node, tag);
+    int tag_num = (int)uiXml->GetNodesNum(phrase_node, tag);
     str_vector.clear();
     for (int i = 0; i < tag_num; ++i)
     {

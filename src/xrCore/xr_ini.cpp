@@ -524,7 +524,7 @@ void CInifile::Load(IReader* F, pcstr path, allow_include_func_t allow_include_f
                     string512 tmp;
                     _GetItem(inherited_names, k, tmp);
                     Sect& inherited_section = r_section(tmp);
-                    total_count += inherited_section.Data.size();
+                    total_count += (u32)inherited_section.Data.size();
                 }
 
                 Current->Data.reserve(Current->Data.size() + total_count);
@@ -735,7 +735,7 @@ u32 CInifile::line_count(pcstr Sname) const
     return C;
 }
 
-u32 CInifile::section_count() const { return DATA.size(); }
+u32 CInifile::section_count() const { return (u32)DATA.size(); }
 //--------------------------------------------------------------------------------------
 CInifile::Sect& CInifile::r_section(const shared_str& S) const { return r_section(S.c_str()); }
 bool CInifile::line_exist(const shared_str& S, const shared_str& L)const { return line_exist(S.c_str(), L.c_str()); }
@@ -791,7 +791,7 @@ shared_str CInifile::r_string_wb(pcstr S, pcstr L) const
 
     string4096 _original;
     xr_strcpy(_original, sizeof _original, _base);
-    u32 _len = xr_strlen(_original);
+    u32 _len = (u32)xr_strlen(_original);
     if (0 == _len)
         return shared_str("");
     if ('"' == _original[_len - 1])

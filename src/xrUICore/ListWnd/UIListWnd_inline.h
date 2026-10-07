@@ -45,7 +45,7 @@ bool CUIListWnd::AddItem(Element* pItem, int insertBeforeIdx)
     if (-1 == insertBeforeIdx)
     {
         m_ItemList.push_back(pItem);
-        pItem->SetIndex(m_ItemList.size() - 1);
+        pItem->SetIndex((int)(m_ItemList.size() - 1));
     }
     else
     {

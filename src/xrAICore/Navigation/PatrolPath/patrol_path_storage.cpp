@@ -87,7 +87,7 @@ void CPatrolPathStorage::load(IReader& stream)
 void CPatrolPathStorage::save(IWriter& stream)
 {
     stream.open_chunk(0);
-    stream.w_u32(m_registry.size());
+    stream.w_u32((u32)m_registry.size());
     stream.close_chunk();
 
     stream.open_chunk(1);

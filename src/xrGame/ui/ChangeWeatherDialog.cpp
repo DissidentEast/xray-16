@@ -51,7 +51,7 @@ bool ButtonListDialog::OnKeyboardAction(int dik, EUIMessages keyboardAction)
             OnCancel();
             return true;
         }
-        int btnCount = buttons.size();
+        int btnCount = (int)buttons.size();
         if (dik >= SDL_SCANCODE_1 && dik <= SDL_SCANCODE_1 - 1 + btnCount && btnCount <= 9) // handle 1..9 keys only
         {
             OnButtonClick(dik - SDL_SCANCODE_1);
@@ -85,7 +85,7 @@ void ChangeWeatherDialog::InitChangeWeather(CUIXml& xmlDoc)
     CUIXmlInit::InitStatic(xmlDoc, "change_weather:background", 0, Background);
     CUIXmlInit::Init3tButton(xmlDoc, "change_weather:btn_cancel", 0, CancelButton);
     auto& gameWeathers = gMapListHelper.GetGameWeathers();
-    Initialize(gameWeathers.size());
+    Initialize((int)gameWeathers.size());
     weathers.resize(gameWeathers.size());
     for (u32 i = 0; i < weathers.size(); i++)
     {

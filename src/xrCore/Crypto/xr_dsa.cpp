@@ -79,7 +79,7 @@ shared_str xr_dsa::sign(private_key_t const& priv_key, u8 const* data, u32 const
     EVP_PKEY_sign(m_context, sign_dest, &sign_size, data, data_size);
 
     // Convert the signature to a BIGNUM
-    BN_bin2bn(sign_dest, sign_size, temp);
+    BN_bin2bn(sign_dest, (int)sign_size, temp);
     shared_str ret = BN_bn2hex(temp);
     BN_free(temp);
     return ret;

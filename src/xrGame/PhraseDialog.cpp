@@ -231,7 +231,7 @@ void CPhraseDialog::load_shared(LPCSTR)
         return;
     }
 
-    [[maybe_unused]] int phrase_num = pXML->GetNodesNum(phrase_list_node, "phrase");
+    [[maybe_unused]] int phrase_num = (int)pXML->GetNodesNum(phrase_list_node, "phrase");
     THROW3(phrase_num, "dialog %s has no phrases at all", item_data.id.c_str());
 
     pXML->SetLocalRoot(phrase_list_node);
@@ -297,7 +297,7 @@ void CPhraseDialog::AddPhrase(
     ph->GetScriptHelper()->Load(pXml, phrase_node);
 
     //фразы которые собеседник может говорить после этой
-    int next_num = pXml->GetNodesNum(phrase_node, "next");
+    int next_num = (int)pXml->GetNodesNum(phrase_node, "next");
     for (int i = 0; i < next_num; ++i)
     {
         LPCSTR next_phrase_id_str = pXml->Read(phrase_node, "next", i, "");

@@ -445,7 +445,7 @@ void game_sv_GameState::Create(shared_str& options)
     if (strstr(Core.Params, svcfg_ltx_name))
     {
         string_path svcfg_name = "";
-        int sz = xr_strlen(svcfg_ltx_name);
+        int sz = (int)xr_strlen(svcfg_ltx_name);
         sscanf(strstr(Core.Params, svcfg_ltx_name) + sz, "%[^ ] ", svcfg_name);
         //		if (FS.exist(svcfg_name))
         {
@@ -932,7 +932,7 @@ u32 game_sv_GameState::getRPcount(u16 team_idx)
     if (!(team_idx < TEAM_COUNT))
         return 0;
     else
-        return rpoints[team_idx].size();
+        return (u32)rpoints[team_idx].size();
 }
 
 RPoint game_sv_GameState::getRP(u16 team_idx, u32 rp_idx)
@@ -1209,7 +1209,7 @@ bool game_sv_GameState::FindPlayerName(char const* name, IClient const* to_exclu
 
 void game_sv_GameState::GenerateNewName(char const* old_name, char* dest, u32 const dest_size)
 {
-    u32 old_name_size = xr_strlen(old_name);
+    u32 old_name_size = (u32)xr_strlen(old_name);
     R_ASSERT(old_name && old_name_size);
 
     static char const suffix_symbol = '#';
@@ -1251,7 +1251,7 @@ void game_sv_GameState::CheckPlayerName(xrClientData* CL)
         current_name = CL->name.c_str();
         CL->ps->m_account.set_player_name(current_name);
     }
-    u32 current_name_length = xr_strlen(current_name);
+    u32 current_name_length = (u32)xr_strlen(current_name);
 
     u32 new_name_dest_size = current_name_length + 16;
     char* new_name_dest = static_cast<char*>(xr_alloca(new_name_dest_size));

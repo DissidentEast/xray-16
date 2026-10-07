@@ -191,7 +191,7 @@ void CGameMtlLibrary::Load()
         return;
     }
 
-	m_library_crc32 = crc32(fs.pointer(), fs.length());
+	m_library_crc32 = crc32(fs.pointer(), (u32)fs.length());
 
     R_ASSERT(fs.find_chunk(GAMEMTLS_CHUNK_AUTOINC));
     material_index = fs.r_u32();
@@ -231,8 +231,8 @@ void CGameMtlLibrary::Load()
     material_pairs_rt.resize(mtlCount * mtlCount, nullptr);
     for (const auto& mtlPair : material_pairs)
     {
-        const int idx0 = GetMaterialIdx(mtlPair->mtl0) * mtlCount + GetMaterialIdx(mtlPair->mtl1);
-        const int idx1 = GetMaterialIdx(mtlPair->mtl1) * mtlCount + GetMaterialIdx(mtlPair->mtl0);
+        const int idx0 = GetMaterialIdx(mtlPair->mtl0) * (int)mtlCount + GetMaterialIdx(mtlPair->mtl1);
+        const int idx1 = GetMaterialIdx(mtlPair->mtl1) * (int)mtlCount + GetMaterialIdx(mtlPair->mtl0);
         material_pairs_rt[idx0] = mtlPair;
         material_pairs_rt[idx1] = mtlPair;
     }

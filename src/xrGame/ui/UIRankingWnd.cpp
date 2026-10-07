@@ -147,10 +147,10 @@ bool CUIRankingWnd::Init()
 
     for (size_t i = 0; i < stat_count; ++i)
     {
-        auto* stat_caption = UIHelper::CreateStatic(xml, "stat", i, this);
+        auto* stat_caption = UIHelper::CreateStatic(xml, "stat", (int)i, this);
         stat_caption->AdjustWidthToText();
 
-        auto* stat_info = m_stat_info.emplace_back(UIHelper::CreateStatic(xml, "stat", i, this));
+        auto* stat_info = m_stat_info.emplace_back(UIHelper::CreateStatic(xml, "stat", (int)i, this));
 
         stat_info->SetTextColor(value_color);
 

@@ -50,7 +50,7 @@ CDemoPlay::CDemoPlay(const char* name, float ms, u32 cycles, float life_time)
             return;
         }
         IReader* fs = FS.r_open(name);
-        u32 sz = fs->length();
+        u32 sz = (u32)fs->length();
         if (sz % sizeof(Fmatrix) != 0)
         {
             FS.r_close(fs);
@@ -59,7 +59,7 @@ CDemoPlay::CDemoPlay(const char* name, float ms, u32 cycles, float life_time)
         }
 
         seq.resize(sz / sizeof(Fmatrix));
-        m_count = seq.size();
+        m_count = (int)seq.size();
         CopyMemory(&*seq.begin(), fs->pointer(), sz);
         FS.r_close(fs);
         Log("~ Total key-frames: ", m_count);

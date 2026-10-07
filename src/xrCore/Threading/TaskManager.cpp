@@ -155,7 +155,7 @@ void TaskManager::SpawnThreads()
 {
     ZoneScoped;
 
-    const u32 threads = workers.capacity() - OTHER_THREADS_COUNT;
+    const u32 threads = (u32)(workers.capacity() - OTHER_THREADS_COUNT);
     workerThreads.reserve(threads);
 
     for (u32 i = 0; i < threads; ++i)

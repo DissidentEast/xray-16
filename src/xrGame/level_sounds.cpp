@@ -262,7 +262,7 @@ void CLevelSoundManager::Update()
             }
             if (!indices.empty())
             {
-                u32 idx = Random.randI(indices.size());
+                u32 idx = Random.randI((s32)indices.size());
                 m_CurrentTrack = indices[idx];
                 SMusicTrack& T = m_MusicTracks[m_CurrentTrack];
                 T.Play();

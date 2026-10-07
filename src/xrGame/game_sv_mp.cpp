@@ -693,7 +693,7 @@ void game_sv_mp::SetSkin(CSE_Abstract* E, u16 Team, u16 ID)
     };
     xr_strcat(SkinName, ".ogf");
     Msg("* Skin - %s", SkinName);
-    int len = xr_strlen(SkinName);
+    int len = (int)xr_strlen(SkinName);
     R_ASSERT2(len < 64, "Skin Name is too LONG!!!");
     pV->set_visual(SkinName);
     //-------------------------------------------
@@ -1018,7 +1018,7 @@ void game_sv_mp::OnVoteStart(LPCSTR VoteCommand, ClientID sender)
     string1024 resVoteCommand = "";
 
     sscanf(VoteCommand, "%255s ", CommandName);
-    u32 tmp_command_len = xr_strlen(CommandName) + 1; // + ' '
+    u32 tmp_command_len = (u32)xr_strlen(CommandName) + 1; // + ' '
     if ((tmp_command_len < 256) && (tmp_command_len < xr_strlen(VoteCommand)))
     {
         strncpy_s(CommandParams, VoteCommand + xr_strlen(CommandName) + 1, 255);

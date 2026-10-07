@@ -103,7 +103,7 @@ public:
     void seek(size_t pos) override
     {
         if (0 != hf)
-            fseek(hf, pos, SEEK_SET);
+            fseek(hf, (long)pos, SEEK_SET);
     };
     size_t tell() override { return (0 != hf) ? ftell(hf) : 0; };
     bool valid() override { return (0 != hf); }

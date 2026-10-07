@@ -88,7 +88,7 @@ void CUISequenceSimpleItem::Load(CUIXml* xml, int idx)
     LPCSTR str_grab_input = xml->Read("grab_input", 0, "on");
     m_flags.set(etiGrabInput, (0 == xr_stricmp(str_grab_input, "on") || 0 == xr_stricmp(str_grab_input, "1")));
 
-    int actions_count = xml->GetNodesNum(0, 0, "action");
+    int actions_count = (int)xml->GetNodesNum(0, 0, "action");
     m_actions.resize(actions_count);
     for (int idx = 0; idx < actions_count; ++idx)
     {
@@ -108,7 +108,7 @@ void CUISequenceSimpleItem::Load(CUIXml* xml, int idx)
     xml->SetLocalRoot(_lsr);
 
     // initialize auto_static
-    int cnt = xml->GetNodesNum("main_wnd", 0, "auto_static");
+    int cnt = (int)xml->GetNodesNum("main_wnd", 0, "auto_static");
     m_subitems.reserve(cnt);
     string64 sname;
     for (int i = 0; i < cnt; ++i)

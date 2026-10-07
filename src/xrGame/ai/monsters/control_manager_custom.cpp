@@ -563,7 +563,7 @@ void CControlManagerCustom::check_rotation_jump()
         (SControlRotationJumpData*)m_man->data(this, ControlCom::eControlRotationJump);
     VERIFY(ctrl_data);
 
-    (*ctrl_data) = m_rot_jump_data[Random.randI(m_rot_jump_data.size())];
+    (*ctrl_data) = m_rot_jump_data[Random.randI((int)m_rot_jump_data.size())];
 
     m_man->activate(ControlCom::eControlRotationJump);
 }

@@ -409,7 +409,7 @@ void Manager::init_install(CInventoryItem& item)
         LPCSTR installed_upgrades_str = pSettings->r_string(item.m_section_id, "installed_upgrades");
         if (installed_upgrades_str)
         {
-            u32 const buffer_size = (xr_strlen(installed_upgrades_str) + 1) * sizeof(char);
+            u32 const buffer_size = (u32)((xr_strlen(installed_upgrades_str) + 1) * sizeof(char));
             PSTR temp = (PSTR)xr_alloca(buffer_size);
 
             for (int n = _GetItemCount(installed_upgrades_str), i = 0; i < n; ++i)

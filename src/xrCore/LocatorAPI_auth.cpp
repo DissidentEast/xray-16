@@ -32,7 +32,7 @@ void CLocatorAPI::auth_runtime(void* params)
 
     CMemoryWriter writer;
     pSettingsAuth->save_as(writer);
-    m_auth_code = crc32(writer.pointer(), writer.size());
+    m_auth_code = crc32(writer.pointer(), (u32)writer.size());
 
 #ifdef DEBUG
     if (strstr(Core.Params, "auth_debug"))
@@ -79,7 +79,7 @@ void CLocatorAPI::auth_runtime(void* params)
                         do_break = true;
                         break;
                     }
-                    u32 crc = crc32(r->pointer(), r->length());
+                    u32 crc = crc32(r->pointer(), (u32)r->length());
 
 #ifdef DEBUG
                     if (strstr(Core.Params, "auth_debug"))

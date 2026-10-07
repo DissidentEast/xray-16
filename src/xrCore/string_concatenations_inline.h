@@ -17,7 +17,7 @@ class XRCORE_API string_tupples
 
 public:
     template <typename... Args>
-    string_tupples(const Args... args) : m_count(sizeof...(Args))
+    string_tupples(const Args... args) : m_count((u32)sizeof...(Args))
     {
         process_args(std::make_tuple(args...), std::index_sequence_for<Args...>{});
     }

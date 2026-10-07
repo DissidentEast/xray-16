@@ -287,7 +287,7 @@ bool CUICellItem::EqualTo(CUICellItem* itm)
     return (m_grid_size.x == itm->GetGridSize().x) && (m_grid_size.y == itm->GetGridSize().y);
 }
 
-u32 CUICellItem::ChildsCount() { return m_childs.size(); }
+u32 CUICellItem::ChildsCount() { return (u32)m_childs.size(); }
 void CUICellItem::PushChild(CUICellItem* c)
 {
     R_ASSERT(c->ChildsCount() == 0);

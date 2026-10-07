@@ -49,7 +49,7 @@ void CStoreHierarchy::LoadLevel(CUIXml& xml, int index, item* _item, int depth_l
     Msg("%s%s", buff, _item->m_name.c_str());
 #endif // #ifndef MASTER_GOLD
 
-    int cnt = xml.GetNodesNum("level", index, "level");
+    int cnt = (int)xml.GetNodesNum("level", index, "level");
     for (int i = 0; i < cnt; ++i)
     {
         xml.SetLocalRoot(node);

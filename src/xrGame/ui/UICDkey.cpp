@@ -82,7 +82,7 @@ void CUICDkey::OnFocusLost()
 void CUICDkey::Draw()
 {
     LPCSTR edt_str = ec().str_edit();
-    u32 edt_size = xr_strlen(edt_str);
+    u32 edt_size = (u32)xr_strlen(edt_str);
 
     if (edt_size == 0)
     {
@@ -105,7 +105,7 @@ void CUICDkey::Draw()
     UI().ClientToScreenScaled(pos);
 
     string64 xx_str = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-    edt_size = xr_strlen(edt_str);
+    edt_size = (u32)xr_strlen(edt_str);
     if (edt_size > 63)
     {
         edt_size = 63;
@@ -114,7 +114,7 @@ void CUICDkey::Draw()
 
     string64 xx_str1 = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
     LPCSTR edt_str1 = ec().str_before_cursor();
-    u32 edt_size1 = xr_strlen(edt_str1);
+    u32 edt_size1 = (u32)xr_strlen(edt_str1);
     if (edt_size1 > 63)
     {
         edt_size1 = 63;

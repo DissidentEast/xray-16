@@ -78,7 +78,7 @@ bool account_manager::verify_nick(char const* nick)
         m_verifyer_error = "mp_gp_no_nick";
         return false;
     }
-    u32 nick_length = xr_strlen(nick);
+    u32 nick_length = (u32)xr_strlen(nick);
     if (nick_length == 0)
     {
         Msg("! ERROR: nick name is empty");
@@ -104,7 +104,7 @@ bool account_manager::verify_unique_nick(char const* unick)
         m_verifyer_error = "mp_gp_no_unique_nick";
         return false;
     }
-    u32 unick_length = xr_strlen(unick);
+    u32 unick_length = (u32)xr_strlen(unick);
     if (unick_length == 0)
     {
         Msg("! ERROR: unique nick name is empty");
@@ -160,7 +160,7 @@ bool account_manager::verify_email(char const* email)
         m_verifyer_error = "mp_gp_no_email";
         return false;
     }
-    u32 email_length = xr_strlen(email);
+    u32 email_length = (u32)xr_strlen(email);
     if (email_length >= GP_EMAIL_LEN)
     {
         Msg("! ERROR: email is too big");
@@ -187,7 +187,7 @@ bool account_manager::verify_password(char const* pass)
         m_verifyer_error = "mp_gp_password_is_too_small";
         return false;
     }
-    u32 pass_length = xr_strlen(pass);
+    u32 pass_length = (u32)xr_strlen(pass);
     if (pass_length <= 1)
     {
         Msg("! ERROR: password is too small, must be greater than 1 symbol");

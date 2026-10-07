@@ -726,7 +726,7 @@ LPCSTR AddHyphens(LPCSTR c)
 {
     static string64 buf;
 
-    u32 sz = xr_strlen(c);
+    u32 sz = (u32)xr_strlen(c);
     u32 j = 0;
 
     for (u32 i = 1; i <= 3; ++i)
@@ -748,7 +748,7 @@ LPCSTR DelHyphens(LPCSTR c)
 {
     static string64 buf;
 
-    u32 sz = xr_strlen(c);
+    u32 sz = (u32)xr_strlen(c);
     u32 sz1 = _min(iFloor(sz / 4.0f), 3);
 
     u32 j = 0;

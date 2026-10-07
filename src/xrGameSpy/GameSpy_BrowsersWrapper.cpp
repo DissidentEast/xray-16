@@ -184,34 +184,34 @@ void CGameSpy_BrowsersWrapper::RefreshQuick(int server_id)
 {
     ScopeLock sl(&servers_lock);
     R_ASSERT(server_id < static_cast<int>(servers.size()));
-    servers[server_id].browser->RefreshQuick(servers[server_id].idx);
+    servers[server_id].browser->RefreshQuick((int)servers[server_id].idx);
 }
 
 bool CGameSpy_BrowsersWrapper::HasAllKeys(int server_id)
 {
     ScopeLock sl(&servers_lock);
     R_ASSERT(server_id < static_cast<int>(servers.size()));
-    return servers[server_id].browser->HasAllKeys(servers[server_id].idx);
+    return servers[server_id].browser->HasAllKeys((int)servers[server_id].idx);
 }
 
 bool CGameSpy_BrowsersWrapper::CheckDirectConnection(int server_id)
 {
     ScopeLock sl(&servers_lock);
     R_ASSERT(server_id < static_cast<int>(servers.size()));
-    return servers[server_id].browser->CheckDirectConnection(servers[server_id].idx);
+    return servers[server_id].browser->CheckDirectConnection((int)servers[server_id].idx);
 }
 
 int CGameSpy_BrowsersWrapper::GetServersCount()
 {
     ScopeLock sl(&servers_lock);
-    return servers.size();
+    return (int)servers.size();
 }
 
 void CGameSpy_BrowsersWrapper::GetServerInfoByIndex(ServerInfo* pServerInfo, int server_id)
 {
     ScopeLock sl(&servers_lock);
     R_ASSERT(server_id < static_cast<int>(servers.size()));
-    servers[server_id].browser->GetServerInfoByIndex(pServerInfo, servers[server_id].idx);
+    servers[server_id].browser->GetServerInfoByIndex(pServerInfo, (int)servers[server_id].idx);
 
     // Correct server ID from 'local' (from the actual browser) to 'global' (from the unified proxy)
     pServerInfo->Index = server_id;
@@ -221,7 +221,7 @@ void* CGameSpy_BrowsersWrapper::GetServerByIndex(int server_id)
 {
     ScopeLock sl(&servers_lock);
     R_ASSERT(server_id < static_cast<int>(servers.size()));
-    servers[server_id].gs_data = servers[server_id].browser->GetServerByIndex(servers[server_id].idx);
+    servers[server_id].gs_data = servers[server_id].browser->GetServerByIndex((int)servers[server_id].idx);
 
     // Returning "raw" gs_data is not the best solution - it forces us to iterate over all servers in the vector (when
     // calling the Get* methods) to determine which browser we should use. However, returning a pointer to

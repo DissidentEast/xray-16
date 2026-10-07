@@ -56,7 +56,7 @@ void Log(pcstr s)
 {
     int i, j;
 
-    const u32 length = xr_strlen(s);
+    const u32 length = (u32)xr_strlen(s);
     pstr split = static_cast<pstr>(xr_alloca((length + 1) * sizeof(char)));
     for (i = 0, j = 0; s[i] != 0; i++)
     {
@@ -100,7 +100,7 @@ void Log(pcstr msg, pcstr dop)
         return;
     }
 
-    const u32 buffer_size = (xr_strlen(msg) + 1 + xr_strlen(dop) + 1) * sizeof(char);
+    const u32 buffer_size = (u32)((xr_strlen(msg) + 1 + xr_strlen(dop) + 1) * sizeof(char));
     pstr buf = static_cast<pstr>(xr_alloca(buffer_size));
     strconcat(buffer_size, buf, msg, " ", dop);
     Log(buf);
@@ -108,7 +108,7 @@ void Log(pcstr msg, pcstr dop)
 
 void Log(pcstr msg, int dop)
 {
-    const u32 buffer_size = (xr_strlen(msg) + 1 + 11 + 1) * sizeof(char);
+    const u32 buffer_size = (u32)((xr_strlen(msg) + 1 + 11 + 1) * sizeof(char));
     pstr buf = static_cast<pstr>(xr_alloca(buffer_size));
 
     xr_sprintf(buf, buffer_size, "%s %i", msg, dop);
@@ -117,7 +117,7 @@ void Log(pcstr msg, int dop)
 
 void Log(pcstr msg, unsigned int dop)
 {
-    const u32 buffer_size = (xr_strlen(msg) + 1 + 10 + 1) * sizeof(char);
+    const u32 buffer_size = (u32)((xr_strlen(msg) + 1 + 10 + 1) * sizeof(char));
     pstr buf = static_cast<pstr>(xr_alloca(buffer_size));
 
     xr_sprintf(buf, buffer_size, "%s %u", msg, dop);
@@ -126,7 +126,7 @@ void Log(pcstr msg, unsigned int dop)
 
 void Log(pcstr msg, long dop)
 {
-    const u32 buffer_size = (xr_strlen(msg) + 1 + 64 + 1) * sizeof(char);
+    const u32 buffer_size = (u32)((xr_strlen(msg) + 1 + 64 + 1) * sizeof(char));
     pstr buf = static_cast<pstr>(xr_alloca(buffer_size));
 
     xr_sprintf(buf, buffer_size, "%s %li", msg, dop);
@@ -135,7 +135,7 @@ void Log(pcstr msg, long dop)
 
 void Log(pcstr msg, unsigned long dop)
 {
-    const u32 buffer_size = (xr_strlen(msg) + 1 + 64 + 1) * sizeof(char);
+    const u32 buffer_size = (u32)((xr_strlen(msg) + 1 + 64 + 1) * sizeof(char));
     pstr buf = static_cast<pstr>(xr_alloca(buffer_size));
 
     xr_sprintf(buf, buffer_size, "%s %lu", msg, dop);
@@ -144,7 +144,7 @@ void Log(pcstr msg, unsigned long dop)
 
 void Log(pcstr msg, long long dop)
 {
-    const u32 buffer_size = (xr_strlen(msg) + 1 + 64 + 1) * sizeof(char);
+    const u32 buffer_size = (u32)((xr_strlen(msg) + 1 + 64 + 1) * sizeof(char));
     pstr buf = static_cast<pstr>(xr_alloca(buffer_size));
 
     xr_sprintf(buf, buffer_size, "%s %lli", msg, dop);
@@ -153,7 +153,7 @@ void Log(pcstr msg, long long dop)
 
 void Log(pcstr msg, unsigned long long dop)
 {
-    const u32 buffer_size = (xr_strlen(msg) + 1 + 64 + 1) * sizeof(char);
+    const u32 buffer_size = (u32)((xr_strlen(msg) + 1 + 64 + 1) * sizeof(char));
     pstr buf = static_cast<pstr>(xr_alloca(buffer_size));
 
     xr_sprintf(buf, buffer_size, "%s %llu", msg, dop);
@@ -164,7 +164,7 @@ void Log(pcstr msg, float dop)
 {
     // actually, float string representation should be no more, than 40 characters,
     // but we will count with slight overhead
-    const u32 buffer_size = (xr_strlen(msg) + 1 + 64 + 1) * sizeof(char);
+    const u32 buffer_size = (u32)((xr_strlen(msg) + 1 + 64 + 1) * sizeof(char));
     pstr buf = static_cast<pstr>(xr_alloca(buffer_size));
 
     xr_sprintf(buf, buffer_size, "%s %f", msg, dop);
@@ -173,7 +173,7 @@ void Log(pcstr msg, float dop)
 
 void Log(pcstr msg, const Fvector& dop)
 {
-    const u32 buffer_size = (xr_strlen(msg) + 2 + 3 * (64 + 1) + 1) * sizeof(char);
+    const u32 buffer_size = (u32)((xr_strlen(msg) + 2 + 3 * (64 + 1) + 1) * sizeof(char));
     pstr buf = static_cast<pstr>(xr_alloca(buffer_size));
 
     xr_sprintf(buf, buffer_size, "%s (%f,%f,%f)", msg, VPUSH(dop));
@@ -182,7 +182,7 @@ void Log(pcstr msg, const Fvector& dop)
 
 void Log(pcstr msg, const Fmatrix& dop)
 {
-    const u32 buffer_size = (xr_strlen(msg) + 2 + 4 * (4 * (64 + 1) + 1) + 1) * sizeof(char);
+    const u32 buffer_size = (u32)((xr_strlen(msg) + 2 + 4 * (4 * (64 + 1) + 1) + 1) * sizeof(char));
     pstr buf = static_cast<pstr>(xr_alloca(buffer_size));
 
     xr_sprintf(buf, buffer_size, "%s:\n%f,%f,%f,%f\n%f,%f,%f,%f\n%f,%f,%f,%f\n%f,%f,%f,%f\n", msg, dop.i.x, dop.i.y,

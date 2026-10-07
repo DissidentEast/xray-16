@@ -42,7 +42,7 @@ struct logical_string_predicate
         VERIFY(buffer);
         VERIFY(buffer_size);
 
-        u32 cCharacters = xr_strlen(pszA) + 1;
+        u32 cCharacters = (u32)(xr_strlen(pszA) + 1);
         VERIFY(cCharacters * 2 <= buffer_size);
 
         if (MultiByteToWideChar(CP_ACP, 0, pszA, cCharacters, (LPOLESTR)buffer, cCharacters))
@@ -53,11 +53,11 @@ struct logical_string_predicate
 
     bool operator()(LPCSTR const& first, LPCSTR const& second) const
     {
-        u32 buffer_size0 = (xr_strlen(first) + 1) * 2;
+        u32 buffer_size0 = (u32)((xr_strlen(first) + 1) * 2);
         LPCWSTR buffer0 = (LPCWSTR)xr_alloca(buffer_size0);
         AnsiToUnicode(first, (LPVOID)buffer0, buffer_size0);
 
-        u32 buffer_size1 = (xr_strlen(second) + 1) * 2;
+        u32 buffer_size1 = (u32)((xr_strlen(second) + 1) * 2);
         LPCWSTR buffer1 = (LPCWSTR)xr_alloca(buffer_size1);
         AnsiToUnicode(second, (LPVOID)buffer1, buffer_size1);
 
@@ -66,11 +66,11 @@ struct logical_string_predicate
 
     bool operator()(shared_str const& first, shared_str const& second) const
     {
-        u32 buffer_size0 = (first.size() + 1) * 2;
+        u32 buffer_size0 = (u32)((first.size() + 1) * 2);
         LPCWSTR buffer0 = (LPCWSTR)xr_alloca(buffer_size0);
         AnsiToUnicode(first.c_str(), (LPVOID)buffer0, buffer_size0);
 
-        u32 buffer_size1 = (second.size() + 1) * 2;
+        u32 buffer_size1 = (u32)((second.size() + 1) * 2);
         LPCWSTR buffer1 = (LPCWSTR)xr_alloca(buffer_size1);
         AnsiToUnicode(second.c_str(), (LPVOID)buffer1, buffer_size1);
 
@@ -222,7 +222,7 @@ void CSE_ALifeTraderAbstract::FillProps(LPCSTR pref, PropItemVec& items)
     PHelper().CreateFlag32(items, PrepareKey(pref, base()->s_name.c_str(), "Trader" DELIMITER "Infinite ammo"),
         &m_trader_flags, eTraderFlagInfiniteAmmo);
     RListValue* value = PHelper().CreateRList(items, PrepareKey(pref, base()->s_name.c_str(), "npc profile"),
-        &m_sCharacterProfile, &*fp_data.character_profiles.begin(), fp_data.character_profiles.size());
+        &m_sCharacterProfile, &*fp_data.character_profiles.begin(), (u32)fp_data.character_profiles.size());
 
     value->OnChangeEvent.bind(this, &CSE_ALifeTraderAbstract::OnChangeProfile);
 }
@@ -279,15 +279,15 @@ void CSE_ALifeGraphPoint::UPDATE_Write(NET_Packet& /*tNetPacket*/) {}
 void CSE_ALifeGraphPoint::FillProps(LPCSTR pref, PropItemVec& items)
 {
     PHelper().CreateRToken8(items, PrepareKey(pref, s_name.c_str(), "Location" DELIMITER "1"), &m_tLocations[0],
-    &*fp_data.locations[0].begin(), fp_data.locations[0].size());
+    &*fp_data.locations[0].begin(), (u32)fp_data.locations[0].size());
     PHelper().CreateRToken8(items, PrepareKey(pref, s_name.c_str(), "Location" DELIMITER "2"), &m_tLocations[1],
-    &*fp_data.locations[1].begin(), fp_data.locations[1].size());
+    &*fp_data.locations[1].begin(), (u32)fp_data.locations[1].size());
     PHelper().CreateRToken8(items, PrepareKey(pref, s_name.c_str(), "Location" DELIMITER "3"), &m_tLocations[2],
-    &*fp_data.locations[2].begin(), fp_data.locations[2].size());
+    &*fp_data.locations[2].begin(), (u32)fp_data.locations[2].size());
     PHelper().CreateRToken8(items, PrepareKey(pref, s_name.c_str(), "Location" DELIMITER "4"), &m_tLocations[3],
-    &*fp_data.locations[3].begin(), fp_data.locations[3].size());
+    &*fp_data.locations[3].begin(), (u32)fp_data.locations[3].size());
     PHelper().CreateRList(items, PrepareKey(pref, s_name.c_str(), "Connection" DELIMITER "Level name"), &m_caConnectionLevelName,
-    &*fp_data.level_ids.begin(), fp_data.level_ids.size());
+    &*fp_data.level_ids.begin(), (u32)fp_data.level_ids.size());
     PHelper().CreateRText(items, PrepareKey(pref, s_name.c_str(), "Connection" DELIMITER "Point name"), &m_caConnectionPointName);
 }
 
@@ -479,9 +479,9 @@ void CSE_ALifeObject::FillProps(LPCSTR pref, PropItemVec& items)
     PHelper().CreateFlag32(items, PrepareKey(pref, s_name.c_str(), "ALife" DELIMITER "Interactive"), &m_flags, flInteractive);
     PHelper().CreateFlag32(items, PrepareKey(pref, s_name.c_str(), "ALife" DELIMITER "Used AI locations"), &m_flags, flUsedAI_Locations);
     PHelper().CreateRToken32(items, PrepareKey(pref, s_name.c_str(), "ALife" DELIMITER "Story ID"), &m_story_id,
-        &*fp_data.story_names.begin(), fp_data.story_names.size());
+        &*fp_data.story_names.begin(), (u32)fp_data.story_names.size());
     PHelper().CreateRToken32(items, PrepareKey(pref, s_name.c_str(), "ALife" DELIMITER "Spawn Story ID"), &m_spawn_story_id,
-        &*fp_data.spawn_story_names.begin(), fp_data.spawn_story_names.size());
+        &*fp_data.spawn_story_names.begin(), (u32)fp_data.spawn_story_names.size());
 }
 #endif // #ifndef MASTER_GOLD
 
@@ -812,7 +812,7 @@ void CSE_ALifeLevelChanger::FillProps(LPCSTR pref, PropItemVec& items)
     inherited::FillProps(pref, items);
 
     PHelper().CreateRList(items, PrepareKey(pref, s_name.c_str(), "Level to change"), &m_caLevelToChange,
-        &*fp_data.level_ids.begin(), fp_data.level_ids.size());
+        &*fp_data.level_ids.begin(), (u32)fp_data.level_ids.size());
     PHelper().CreateRText(items, PrepareKey(pref, s_name.c_str(), "Level point to change"), &m_caLevelPointToChange);
 
     PHelper().CreateBOOL(items, PrepareKey(pref, s_name.c_str(), "Silent mode"), &m_bSilentMode);

@@ -296,7 +296,7 @@ IReader* open_chunk(void* ptr, u32 ID, pcstr archiveName, size_t archiveSize, bo
         if ((dwType & ~CFS_CompressMark) == ID)
         {
             u8* src_data = xr_alloc<u8>(dwSize);
-            res = ReadFile(ptr, src_data, dwSize, &read_byte, nullptr);
+            res = ReadFile(ptr, src_data, (DWORD)dwSize, &read_byte, nullptr);
 
             VERIFY(res && (read_byte == dwSize));
             if (dwType & CFS_CompressMark)
@@ -305,15 +305,15 @@ IReader* open_chunk(void* ptr, u32 ID, pcstr archiveName, size_t archiveSize, bo
                 size_t dest_sz = 0;
 
                 if (shouldDecrypt) // Try WW key first
-                    g_trivial_encryptor.decode(src_data, dwSize, src_data);
+                    g_trivial_encryptor.decode(src_data, (u32)dwSize, src_data);
 
                 bool result = _decompressLZ(&dest, &dest_sz, src_data, dwSize, archiveSize);
 
                 if (!result && shouldDecrypt)
                 {
                     // Let's try to decode with RU key
-                    g_trivial_encryptor.encode(src_data, dwSize, src_data); // rollback
-                    g_trivial_encryptor.decode(src_data, dwSize, src_data, trivial_encryptor::key_flag::russian);
+                    g_trivial_encryptor.encode(src_data, (u32)dwSize, src_data); // rollback
+                    g_trivial_encryptor.decode(src_data, (u32)dwSize, src_data, trivial_encryptor::key_flag::russian);
                     result = _decompressLZ(&dest, &dest_sz, src_data, dwSize, archiveSize);
                 }
                 R_ASSERT3(result, "Can't decompress archive", archiveName);
@@ -324,7 +324,7 @@ IReader* open_chunk(void* ptr, u32 ID, pcstr archiveName, size_t archiveSize, bo
             return xr_new<CTempReader>(src_data, dwSize, 0);
         }
 
-        pt = SetFilePointer(ptr, dwSize, nullptr, FILE_CURRENT);
+        pt = SetFilePointer(ptr, (LONG)dwSize, nullptr, FILE_CURRENT);
         if (pt == INVALID_SET_FILE_POINTER)
             return nullptr;
     }
@@ -1450,7 +1450,7 @@ void CLocatorAPI::file_from_archive(IReader*& R, pcstr fname, const file& desc)
         end = A.size;
     const size_t sz = end - start;
 #if defined(XR_PLATFORM_WINDOWS)
-    u8* ptr = (u8*)MapViewOfFile(A.hSrcMap, FILE_MAP_READ, 0, start, sz);
+    u8* ptr = (u8*)MapViewOfFile(A.hSrcMap, FILE_MAP_READ, 0, (u32)start, sz);
     VERIFY3(ptr, "cannot create file mapping on file", fname);
 #elif defined(XR_PLATFORM_POSIX)
     u8* ptr = (u8*)::mmap(NULL, sz, PROT_READ, MAP_SHARED, A.hSrcFile, start);

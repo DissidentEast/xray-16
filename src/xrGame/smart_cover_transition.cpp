@@ -102,5 +102,5 @@ animation_action const& action::animation(MonsterSpace::EBodyState const& target
     return (**found);
 }
 
-animation_action const& action::animation() const { return (*m_animations[Random.randI(m_animations.size())]); }
+animation_action const& action::animation() const { return (*m_animations[Random.randI((s32)m_animations.size())]); }
 } // namespace smart_cover::transitions

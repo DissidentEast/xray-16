@@ -44,7 +44,7 @@ void CInfoPortion::load_shared(LPCSTR)
     THROW3(pNode, "info_portion id=", item_data->id.c_str());
 
     //список названий диалогов
-    const int dialogs_num = pXML->GetNodesNum(pNode, "dialog");
+    const int dialogs_num = (int)pXML->GetNodesNum(pNode, "dialog");
     info_data()->m_DialogNames.clear();
     for (int i = 0; i < dialogs_num; ++i)
     {
@@ -54,7 +54,7 @@ void CInfoPortion::load_shared(LPCSTR)
 
     //список названий порций информации, которые деактивируются,
     //после получения этой порции
-    const int disable_num = pXML->GetNodesNum(pNode, "disable");
+    const int disable_num = (int)pXML->GetNodesNum(pNode, "disable");
     info_data()->m_DisableInfo.clear();
     for (int i = 0; i < disable_num; ++i)
     {
@@ -67,7 +67,7 @@ void CInfoPortion::load_shared(LPCSTR)
 
     //индексы статей
     info_data()->m_Articles.clear();
-    int articles_num = pXML->GetNodesNum(pNode, "article");
+    int articles_num = (int)pXML->GetNodesNum(pNode, "article");
     for (int i = 0; i < articles_num; ++i)
     {
         cpcstr article_str_id = pXML->Read(pNode, "article", i, nullptr);
@@ -76,7 +76,7 @@ void CInfoPortion::load_shared(LPCSTR)
     }
 
     info_data()->m_ArticlesDisable.clear();
-    articles_num = pXML->GetNodesNum(pNode, "article_disable");
+    articles_num = (int)pXML->GetNodesNum(pNode, "article_disable");
     for (int i = 0; i < articles_num; ++i)
     {
         cpcstr article_str_id = pXML->Read(pNode, "article_disable", i, nullptr);
@@ -85,7 +85,7 @@ void CInfoPortion::load_shared(LPCSTR)
     }
 
     info_data()->m_GameTasks.clear();
-    const int task_num = pXML->GetNodesNum(pNode, "task");
+    const int task_num = (int)pXML->GetNodesNum(pNode, "task");
     for (int i = 0; i < task_num; ++i)
     {
         cpcstr task_str_id = pXML->Read(pNode, "task", i, nullptr);

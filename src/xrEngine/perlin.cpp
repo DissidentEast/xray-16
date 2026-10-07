@@ -33,7 +33,7 @@ void CPerlinNoise1D::init()
 
     for (i = 0; i < B; i++)
     {
-        p[i] = i;
+        p[i] = (int)i;
         g1[i] = (float)((rand() % (B + B)) - B) / B;
     }
 
@@ -121,7 +121,7 @@ void CPerlinNoise2D::init()
 
     for (i = 0; i < B; i++)
     {
-        p[i] = i;
+        p[i] = (int)i;
         for (j = 0; j < 2; j++)
             g2[i][j] = (float)((rand() % (B + B)) - B) / B;
         normalize(g2[i]);
@@ -223,7 +223,7 @@ void CPerlinNoise3D::init()
 
     for (i = 0; i < B; i++)
     {
-        p[i] = i;
+        p[i] = (int)i;
         for (j = 0; j < 3; j++)
             g3[i][j] = (float)((rand() % (B + B)) - B) / B;
         normalize(g3[i]);

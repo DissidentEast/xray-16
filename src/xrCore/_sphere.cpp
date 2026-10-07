@@ -181,7 +181,7 @@ float Miniball::max_excess(It t, It i, It& pivot) const
 
 Fvector Miniball::center() const { return *((Fvector*)B.center()); }
 float Miniball::squared_radius() const { return B.squared_radius(); }
-int Miniball::num_points() const { return L.size(); }
+int Miniball::num_points() const { return (int)L.size(); }
 Miniball::Cit Miniball::points_begin() const { return L.begin(); }
 Miniball::Cit Miniball::points_end() const { return L.end(); }
 int Miniball::nr_support_gVectors() const { return B.support_size(); }

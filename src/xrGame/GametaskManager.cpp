@@ -190,7 +190,7 @@ void CGameTaskManager::UpdateTasks()
     ZoneScoped;
     Level().MapManager().DisableAllPointers();
 
-    u32 task_count = GetGameTasks().size();
+    u32 task_count = (u32)GetGameTasks().size();
     if (0 == task_count)
         return;
 
@@ -376,7 +376,7 @@ u32 CGameTaskManager::GetTaskIndex(CGameTask* t, ETaskState state, ETaskType typ
     }
 
     vGameTasks& v = GetGameTasks();
-    u32 cnt = v.size();
+    u32 cnt = (u32)v.size();
     u32 res = 0;
     for (u32 i = 0; i < cnt; ++i)
     {
@@ -396,7 +396,7 @@ u32 CGameTaskManager::GetTaskIndex(CGameTask* t, ETaskState state, ETaskType typ
 u32 CGameTaskManager::GetTaskCount(ETaskState state, ETaskType type)
 {
     vGameTasks& v = GetGameTasks();
-    u32 cnt = v.size();
+    u32 cnt = (u32)v.size();
     u32 res = 0;
     for (u32 i = 0; i < cnt; ++i)
     {

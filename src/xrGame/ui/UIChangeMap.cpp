@@ -102,7 +102,7 @@ void CUIChangeMap::FillUpList()
     lst->Clear();
 
     const SGameTypeMaps& M = gMapListHelper.GetMapListFor((EGameIDs)GameID());
-    const u32 cnt = M.m_map_names.size();
+    const u32 cnt = (u32)M.m_map_names.size();
     for (u32 i = 0; i < cnt; ++i)
     {
         CUIListBoxItem* itm = lst->AddTextItem(StringTable().translate(M.m_map_names[i].map_name).c_str());

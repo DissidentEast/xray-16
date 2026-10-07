@@ -57,7 +57,7 @@ void NET_Packet::w_stringZ(const shared_str& p)
 {
     W_guard g(&w_allow);
     if (p.c_str())
-        w(p.c_str(), p.size() + 1);
+        w(p.c_str(), (u32)(p.size() + 1));
     else
     {
         IIniFileStream* tmp = inistream;
@@ -427,7 +427,7 @@ void NET_Packet::r_stringZ(shared_str& dest)
     if (!inistream)
     {
         dest = pcstr(&B.data[r_pos]);
-        r_advance(dest.size() + 1);
+        r_advance((u32)(dest.size() + 1));
     }
     else
     {
@@ -442,7 +442,7 @@ void NET_Packet::skip_stringZ()
     if (!inistream)
     {
         pcstr data = pcstr(&B.data[r_pos]);
-        u32 len = xr_strlen(data);
+        u32 len = (u32)xr_strlen(data);
         r_advance(len + 1);
     }
     else
@@ -479,7 +479,7 @@ void NET_Packet::r_stringZ_s(pstr string, u32 const size)
     }
 
     pcstr data = pcstr(B.data + r_pos);
-    u32 length = xr_strlen(data);
+    u32 length = (u32)xr_strlen(data);
     R_ASSERT2((length + 1) <= size, "buffer overrun");
     r(string, length + 1);
 }

@@ -46,7 +46,7 @@ s32 UIPlayerItem::CalculateCheckPoints(game_PlayerState const* ps) const
 void UIPlayerItem::InitTextParams(CUIXml& uiXml)
 {
     VERIFY(m_player_node_root);
-    int temp_number = uiXml.GetNodesNum(m_player_node_root, TEXTPARAM_NODE_NAME);
+    int temp_number = (int)uiXml.GetNodesNum(m_player_node_root, TEXTPARAM_NODE_NAME);
     for (int i = 0; i < temp_number; ++i)
     {
         XML_NODE text_param_node = uiXml.NavigateToNode(TEXTPARAM_NODE_NAME, i);
@@ -66,7 +66,7 @@ void UIPlayerItem::InitTextParams(CUIXml& uiXml)
 void UIPlayerItem::InitIconParams(CUIXml& uiXml)
 {
     VERIFY(m_player_node_root);
-    int temp_number = uiXml.GetNodesNum(m_player_node_root, ICONPARAM_NODE_NAME);
+    int temp_number = (int)uiXml.GetNodesNum(m_player_node_root, ICONPARAM_NODE_NAME);
     for (int i = 0; i < temp_number; ++i)
     {
         XML_NODE icon_param_node = uiXml.NavigateToNode(ICONPARAM_NODE_NAME, i);

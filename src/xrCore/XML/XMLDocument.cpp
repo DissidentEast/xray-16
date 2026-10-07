@@ -277,7 +277,7 @@ XML_NODE XMLDocument::NavigateToNode(pcstr path, const size_t node_index) const
 XML_NODE XMLDocument::NavigateToNodeWithAttribute(pcstr tag_name, pcstr attrib_name, pcstr attrib_value) const
 {
     CONST_XML_NODE root = GetLocalRoot() ? GetLocalRoot() : GetRoot();
-    int tabsCount = GetNodesNum(root, tag_name);
+    int tabsCount = (int)GetNodesNum(root, tag_name);
 
     for (int i = 0; i < tabsCount; ++i)
     {
@@ -552,7 +552,7 @@ pcstr XMLDocument::CheckUniqueAttrib(CONST_XML_NODE start_node, pcstr tag_name, 
 {
     m_AttribValues.clear();
 
-    int tags_num = GetNodesNum(start_node, tag_name);
+    int tags_num = (int)GetNodesNum(start_node, tag_name);
 
     for (int i = 0; i < tags_num; i++)
     {

@@ -50,7 +50,7 @@ public:
     void SetActiveTabByIndex(u32 index);
     bool SetNextActiveTab(bool next, bool loop);
 
-    u32 GetTabsCount() const { return m_TabsArr.size(); }
+    u32 GetTabsCount() const { return (u32)m_TabsArr.size(); }
 
     // Режим клавилатурных акселераторов (вкл/выкл)
     bool GetButtonsAcceleratorsMode() const { return m_bButtonsAcceleratorsEnable; }

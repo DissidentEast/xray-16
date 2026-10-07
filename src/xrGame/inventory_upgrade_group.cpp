@@ -26,7 +26,7 @@ void Group::construct(const shared_str& group_id, UpgradeBase& parent_upgrade, M
     LPCSTR upgrades_str = pSettings->r_string(m_id, "elements");
     R_ASSERT2_CURE(upgrades_str, make_string("in upgrade group <%s> elements are empty!", m_id.c_str()), { return; });
 
-    u32 const buffer_size = (xr_strlen(upgrades_str) + 1) * sizeof(char);
+    u32 const buffer_size = (u32)((xr_strlen(upgrades_str) + 1) * sizeof(char));
     PSTR temp = (PSTR)xr_alloca(buffer_size);
     for (int n = _GetItemCount(upgrades_str), i = 0; i < n; ++i)
     {

@@ -47,7 +47,7 @@ void CUIStatsPlayerList::Init(CUIXml& xml_doc, LPCSTR path)
     SetSpectator(m_bSpectator);
 
     // init item structure
-    int tabsCount = xml_doc.GetNodesNum(path, 0, "field");
+    int tabsCount = (int)xml_doc.GetNodesNum(path, 0, "field");
     XML_NODE tab_node = xml_doc.NavigateToNode(path, 0);
     xml_doc.SetLocalRoot(tab_node);
 
@@ -228,7 +228,7 @@ void CUIStatsPlayerList::Update()
             pl_frags += p->frags();
         }
     };
-    pl_count = items.size();
+    pl_count = (u32)items.size();
 
     if (GameID() == eGameIDArtefactHunt && !m_bSpectator)
     {
@@ -262,7 +262,7 @@ void CUIStatsPlayerList::Update()
     std::sort(items.begin(), items.end(), DM_Compare_Players);
 
     int n = (int)items.size();
-    n -= m_pad->GetChildWndList().size();
+    n -= (int)m_pad->GetChildWndList().size();
 
     if (n < 0)
     {

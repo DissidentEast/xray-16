@@ -60,7 +60,7 @@ private:
     {
         T middle;
         if constexpr (std::is_arithmetic_v<iterator>)
-            middle = other.m_begin + (other.size()) / 2u;
+            middle = other.m_begin + (T)((other.size()) / 2u);
         else
         {
             middle = std::next(other.m_begin, (other.size()) / 2u);

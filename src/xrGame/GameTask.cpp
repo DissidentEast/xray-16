@@ -98,7 +98,7 @@ void CGameTask::Load(const TASK_ID& id)
     }
 #endif
 
-    const int tag_num = gameTaskXml.GetNodesNum(gameTaskXml.GetLocalRoot(), "objective");
+    const int tag_num = (int)gameTaskXml.GetNodesNum(gameTaskXml.GetLocalRoot(), "objective");
     m_Objectives.clear();
     for (int i = 0; i < tag_num; i++)
     {
@@ -169,7 +169,7 @@ void CGameTask::Load(const TASK_ID& id)
 
         //------infoportion_complete
         {
-            const int info_num = gameTaskXml.GetNodesNum(l_root, "infoportion_complete");
+            const int info_num = (int)gameTaskXml.GetNodesNum(l_root, "infoportion_complete");
             objective.m_completeInfos.resize(info_num);
 
             for (int j = 0; j < info_num; ++j)
@@ -180,7 +180,7 @@ void CGameTask::Load(const TASK_ID& id)
 
         //------infoportion_fail
         {
-            const int info_num = gameTaskXml.GetNodesNum(l_root, "infoportion_fail");
+            const int info_num = (int)gameTaskXml.GetNodesNum(l_root, "infoportion_fail");
             objective.m_failInfos.resize(info_num);
 
             for (int j = 0; j < info_num; ++j)
@@ -191,7 +191,7 @@ void CGameTask::Load(const TASK_ID& id)
 
         //------infoportion_set_complete
         {
-            const int info_num = gameTaskXml.GetNodesNum(l_root, "infoportion_set_complete");
+            const int info_num = (int)gameTaskXml.GetNodesNum(l_root, "infoportion_set_complete");
             objective.m_infos_on_complete.resize(info_num);
             for (int j = 0; j < info_num; ++j)
             {
@@ -201,7 +201,7 @@ void CGameTask::Load(const TASK_ID& id)
 
         //------infoportion_set_fail
         {
-            const int info_num = gameTaskXml.GetNodesNum(l_root, "infoportion_set_fail");
+            const int info_num = (int)gameTaskXml.GetNodesNum(l_root, "infoportion_set_fail");
             objective.m_infos_on_fail.resize(info_num);
             for (int j = 0; j < info_num; ++j)
             {
@@ -211,7 +211,7 @@ void CGameTask::Load(const TASK_ID& id)
 
         //------function_complete
         {
-            const int info_num = gameTaskXml.GetNodesNum(l_root, "function_complete");
+            const int info_num = (int)gameTaskXml.GetNodesNum(l_root, "function_complete");
             objective.m_complete_lua_functions.resize(info_num);
             for (int j = 0; j < info_num; ++j)
             {
@@ -223,7 +223,7 @@ void CGameTask::Load(const TASK_ID& id)
 
         //------function_fail
         {
-            const int info_num = gameTaskXml.GetNodesNum(l_root, "function_fail");
+            const int info_num = (int)gameTaskXml.GetNodesNum(l_root, "function_fail");
             objective.m_fail_lua_functions.resize(info_num);
             for (int j = 0; j < info_num; ++j)
             {
@@ -235,7 +235,7 @@ void CGameTask::Load(const TASK_ID& id)
 
         //------function_on_complete
         {
-            const int info_num = gameTaskXml.GetNodesNum(l_root, "function_call_complete");
+            const int info_num = (int)gameTaskXml.GetNodesNum(l_root, "function_call_complete");
             objective.m_lua_functions_on_complete.resize(info_num);
             for (int i = 0; i < info_num; ++i)
             {
@@ -247,7 +247,7 @@ void CGameTask::Load(const TASK_ID& id)
 
         //------function_on_fail
         {
-            const int info_num = gameTaskXml.GetNodesNum(l_root, "function_call_fail");
+            const int info_num = (int)gameTaskXml.GetNodesNum(l_root, "function_call_fail");
             objective.m_lua_functions_on_fail.resize(info_num);
             for (int j = 0; j < info_num; ++j)
             {
@@ -317,7 +317,7 @@ void CGameTask::SetActiveObjective(TASK_OBJECTIVE_ID idx)
 
 TASK_OBJECTIVE_ID CGameTask::GetObjectivesCount(bool without_root /*= false*/) const
 {
-    const auto size = m_Objectives.size();
+    const auto size = (u16)m_Objectives.size();
     return without_root ? size
                         : size + 1; // plus task itself (root objective)
 }

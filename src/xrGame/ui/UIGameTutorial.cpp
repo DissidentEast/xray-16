@@ -35,7 +35,7 @@ void CUISequenceItem::Load(CUIXml* xml, int idx)
 {
     XML_NODE _stored_root = xml->GetLocalRoot();
     xml->SetLocalRoot(xml->NavigateToNode("item", idx));
-    int disabled_cnt = xml->GetNodesNum(xml->GetLocalRoot(), "disabled_key");
+    int disabled_cnt = (int)xml->GetNodesNum(xml->GetLocalRoot(), "disabled_key");
 
     for (int i = 0; i < disabled_cnt; ++i)
     {
@@ -44,12 +44,12 @@ void CUISequenceItem::Load(CUIXml* xml, int idx)
     }
 
     int j;
-    int f_num = xml->GetNodesNum(xml->GetLocalRoot(), "function_on_start");
+    int f_num = (int)xml->GetNodesNum(xml->GetLocalRoot(), "function_on_start");
     m_start_lua_functions.resize(f_num);
     for (j = 0; j < f_num; ++j)
         m_start_lua_functions[j] = xml->Read(xml->GetLocalRoot(), "function_on_start", j, NULL);
 
-    f_num = xml->GetNodesNum(xml->GetLocalRoot(), "function_on_stop");
+    f_num = (int)xml->GetNodesNum(xml->GetLocalRoot(), "function_on_stop");
     m_stop_lua_functions.resize(f_num);
     for (j = 0; j < f_num; ++j)
         m_stop_lua_functions[j] = xml->Read(xml->GetLocalRoot(), "function_on_stop", j, NULL);
@@ -108,7 +108,7 @@ bool CUISequencer::Start(LPCSTR tutor_name)
     CUIXml uiXml;
     uiXml.Load(CONFIG_PATH, UI_PATH, UI_PATH_DEFAULT, "game_tutorials.xml");
 
-    const int items_count = uiXml.GetNodesNum(tutor_name, 0, "item");
+    const int items_count = (int)uiXml.GetNodesNum(tutor_name, 0, "item");
     if (items_count <= 0)
     {
         Msg("! can't find tutorial [%s]", tutor_name);

@@ -163,7 +163,7 @@ str_value* str_container::dock(pcstr value) const
     str_value* sv = (str_value*)header;
     sv->dwReference = 0;
     sv->dwLength = static_cast<u32>(s_len);
-    sv->dwCRC = crc32(value, s_len);
+    sv->dwCRC = crc32(value, (u32)s_len);
 
     // search
     result = impl->find(sv, value);
@@ -285,7 +285,7 @@ str_value* str_container::dock(str_c value)
     str_value* result = 0;
 
     // calc len
-    u32 s_len = xr_strlen(value);
+    u32 s_len = (u32)xr_strlen(value);
     u32 s_len_with_zero = (u32)s_len + 1;
     VERIFY(sizeof(str_value) + s_len_with_zero < 4096);
 
@@ -294,7 +294,7 @@ str_value* str_container::dock(str_c value)
     str_value* sv = (str_value*)header;
     sv->dwReference = 0;
     sv->dwLength = s_len;
-    sv->dwCRC = crc32(value, s_len);
+    sv->dwCRC = crc32(value, (u32)s_len);
     sv->next = NULL;
 
     // search

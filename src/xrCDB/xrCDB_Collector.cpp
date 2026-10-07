@@ -14,7 +14,7 @@ u32 Collector::VPack(const Fvector& V, float eps)
             return u32(I - verts.begin());
 
     verts.emplace_back(V);
-    return verts.size() - 1;
+    return (u32)(verts.size() - 1);
 }
 
 void Collector::add_face_D(const Fvector& v0, const Fvector& v1, const Fvector& v2, // vertices
@@ -22,9 +22,9 @@ void Collector::add_face_D(const Fvector& v0, const Fvector& v1, const Fvector& 
     )
 {
     TRI T;
-    T.verts[0] = verts.size();
-    T.verts[1] = verts.size() + 1;
-    T.verts[2] = verts.size() + 2;
+    T.verts[0] = (u32)verts.size();
+    T.verts[1] = (u32)(verts.size() + 1);
+    T.verts[2] = (u32)(verts.size() + 2);
     T.dummy = dummy;
 
     verts.emplace_back(v0);
@@ -36,9 +36,9 @@ void Collector::add_face_D(const Fvector& v0, const Fvector& v1, const Fvector& 
 void Collector::add_face(const Fvector& v0, const Fvector& v1, const Fvector& v2, u16 material, u16 sector)
 {
     TRI T;
-    T.verts[0] = verts.size();
-    T.verts[1] = verts.size() + 1;
-    T.verts[2] = verts.size() + 2;
+    T.verts[0] = (u32)verts.size();
+    T.verts[1] = (u32)(verts.size() + 1);
+    T.verts[2] = (u32)(verts.size() + 2);
     T.material = material;
     T.sector = sector;
 
@@ -363,7 +363,7 @@ u32 CollectorPacked::VPack(const Fvector& V)
     }
     if (0xffffffff == P)
     {
-        P = verts.size();
+        P = (u32)verts.size();
         verts.emplace_back(V);
 
         VM[ix][iy][iz].emplace_back(P);

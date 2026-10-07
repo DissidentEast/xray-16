@@ -66,7 +66,7 @@ int CObjectSpace::GetNearest(xr_vector<ISpatial*>& q_spatial, xr_vector<IGameObj
             q_nearest.push_back(O);
     }
 
-    return q_nearest.size();
+    return (int)q_nearest.size();
 }
 
 //----------------------------------------------------------------------
@@ -114,7 +114,7 @@ void CObjectSpace::Load(IReader* F,
 
     static const bool use_cache = !strstr(Core.Params, "-no_cdb_cache");
     if (use_cache)
-        Static.set_model_crc32(crc32(F->pointer(), F->length()));
+        Static.set_model_crc32(crc32(F->pointer(), (u32)F->length()));
 
     hdrCFORM H;
     F->r(&H, sizeof(hdrCFORM));

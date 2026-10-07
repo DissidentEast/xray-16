@@ -105,7 +105,7 @@ void ide::InitBackend()
         {
             estimated_buffer_size += tool->estimate_settings_size();
         }
-        buffer->reserve(estimated_buffer_size);
+        buffer->reserve((int)estimated_buffer_size);
 
         for (const ide_tool* tool : self.m_tools)
         {

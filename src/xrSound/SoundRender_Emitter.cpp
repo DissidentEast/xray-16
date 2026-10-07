@@ -246,7 +246,7 @@ void CSoundRender_Emitter::fill_all_blocks()
 {
     current_block = 0;
     for (size_t i = 0; i < sdef_target_count_prefill; ++i)
-        fill_block(temp_buf[i].data(), temp_buf[i].size());
+        fill_block(temp_buf[i].data(), (u32)temp_buf[i].size());
     filled_blocks = sdef_target_count_prefill;
 }
 
@@ -264,7 +264,7 @@ void CSoundRender_Emitter::dispatch_prefill()
         {
             auto& block = temp_buf[next_block_to_fill];
 
-            fill_block(block.data(), block.size());
+            fill_block(block.data(), (u32)block.size());
 
             next_block_to_fill = (next_block_to_fill + 1) % sdef_target_count_prefill;
             filled_blocks++;

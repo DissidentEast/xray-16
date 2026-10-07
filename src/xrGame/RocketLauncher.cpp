@@ -100,4 +100,4 @@ CCustomRocket* CRocketLauncher::getCurrentRocket()
 }
 
 void CRocketLauncher::dropCurrentRocket() { m_rockets.pop_back(); }
-u32 CRocketLauncher::getRocketCount() { return m_rockets.size(); }
+u32 CRocketLauncher::getRocketCount() { return (u32)m_rockets.size(); }

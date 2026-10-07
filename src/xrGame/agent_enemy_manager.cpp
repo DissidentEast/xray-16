@@ -228,7 +228,7 @@ void CAgentEnemyManager::assign_enemies()
         (*I).m_probability *= 1.f - best;
 
         // recovering sort order
-        for (u32 i = 0, n = m_enemies.size() - 1; i < n; ++i)
+        for (u32 i = 0, n = (u32)m_enemies.size() - 1; i < n; ++i)
             if (m_enemies[i + 1] < m_enemies[i])
                 std::swap(m_enemies[i], m_enemies[i + 1]);
             else
@@ -428,7 +428,7 @@ void CAgentEnemyManager::assign_wounded()
 	VERIFY					(enemy_mask == object().member().combat_mask());
 #endif // DEBUG
 
-    u32 previous_wounded_count = m_wounded.size();
+    u32 previous_wounded_count = (u32)m_wounded.size();
     WOUNDED_ENEMY* previous_wounded = (WOUNDED_ENEMY*)xr_alloca(previous_wounded_count * sizeof(WOUNDED_ENEMY));
     std::copy(m_wounded.begin(), m_wounded.end(), previous_wounded);
     m_wounded.clear();

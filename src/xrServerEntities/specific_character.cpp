@@ -58,7 +58,7 @@ void CSpecificCharacter::load_shared(LPCSTR)
     else
         data()->m_StartDialog = nullptr;
 
-    int dialogs_num = pXML->GetNodesNum(pXML->GetLocalRoot(), "actor_dialog");
+    int dialogs_num = (int)pXML->GetNodesNum(pXML->GetLocalRoot(), "actor_dialog");
     data()->m_ActorDialogs.clear();
     for (int i = 0; i < dialogs_num; ++i)
     {
@@ -101,7 +101,7 @@ void CSpecificCharacter::load_shared(LPCSTR)
     data()->m_terrain_sect = pXML->Read("terrain_sect", 0, "");
 
     data()->m_Classes.clear();
-    int classes_num = pXML->GetNodesNum(pXML->GetLocalRoot(), "class");
+    int classes_num = (int)pXML->GetNodesNum(pXML->GetLocalRoot(), "class");
     for (int i = 0; i < classes_num; i++)
     {
         LPCSTR char_class = pXML->Read("class", 0, "");

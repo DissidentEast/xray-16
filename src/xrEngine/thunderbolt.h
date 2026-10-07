@@ -81,7 +81,7 @@ struct ENGINE_API SThunderboltCollection
     SThunderboltDesc* GetRandomDesc()
     {
         VERIFY(palette.size() > 0);
-        return palette[Random.randI(palette.size())];
+        return palette[Random.randI((int)palette.size())];
     }
 
     void ed_show_params(); // ImGui editor

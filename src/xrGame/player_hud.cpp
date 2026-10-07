@@ -431,7 +431,7 @@ u32 attachable_hud_item::anim_play(const shared_str& anm_name_b, BOOL bMixIn, co
 
     const float speed = CalcMotionSpeed(anm->m_base_name, anm->m_anim_speed);
 
-    rnd_idx = (u8)Random.randI(anm->m_animations.size());
+    rnd_idx = (u8)Random.randI((s32)anm->m_animations.size());
     const motion_descr& M = anm->m_animations[rnd_idx];
 
     IKinematicsAnimated* ka = smart_cast<IKinematicsAnimated*>(m_model);

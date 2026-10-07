@@ -19,7 +19,7 @@ void obstacles_query::set_intersection(const obstacles_query& query)
         return;
 
     // XXX: probably replace xr_alloca
-    const u32 n = m_obstacles.size();
+    const u32 n = (u32)m_obstacles.size();
     const u32 buffer_size = n * sizeof(OBSTACLES::value_type);
     OBSTACLES::value_type* temp = (OBSTACLES::value_type*)xr_alloca(buffer_size);
     memcpy(temp, &*obstacles().begin(), buffer_size);
@@ -36,8 +36,8 @@ void obstacles_query::set_intersection(const obstacles_query& query)
 void obstacles_query::merge(const AREA& object_area)
 {
     AREA temp(std::move(m_area));
-    const u32 area_size = temp.size();
-    const u32 destination_size = area_size + object_area.size();
+    const u32 area_size = (u32)temp.size();
+    const u32 destination_size = area_size + (u32)object_area.size();
     m_area.resize(destination_size);
     m_area.erase(
         std::set_union(temp.begin(), temp.end(), object_area.begin(), object_area.end(), m_area.begin()), m_area.end());

@@ -49,7 +49,7 @@ void CUIKeyBinding::FillUpList(CUIXml& xml_doc_ui, LPCSTR path_ui)
     CUIXml xml_doc;
     xml_doc.Load(CONFIG_PATH, UI_PATH, UI_PATH_DEFAULT, m_isGamepadBinds ? "ui_keybinding_gamepad.xml" : "ui_keybinding.xml");
 
-    int groupsCount = xml_doc.GetNodesNum("", 0, "group");
+    int groupsCount = (int)xml_doc.GetNodesNum("", 0, "group");
 
     for (int i = 0; i < groupsCount; ++i)
     {
@@ -63,7 +63,7 @@ void CUIKeyBinding::FillUpList(CUIXml& xml_doc_ui, LPCSTR path_ui)
         m_scroll_wnd->AddWindow(item, true);
 
         // add group items
-        int commandsCount = xml_doc.GetNodesNum("group", i, "command");
+        int commandsCount = (int)xml_doc.GetNodesNum("group", i, "command");
         XML_NODE tab_node = xml_doc.NavigateToNode("group", i);
         xml_doc.SetLocalRoot(tab_node);
 
@@ -174,12 +174,12 @@ void CUIKeyBinding::CheckStructure(CUIXml& xml_doc)
 bool CUIKeyBinding::IsActionExist(LPCSTR action, CUIXml& xml_doc)
 {
     bool ret = false;
-    int groupsCount = xml_doc.GetNodesNum("", 0, "group");
+    int groupsCount = (int)xml_doc.GetNodesNum("", 0, "group");
 
     for (int i = 0; i < groupsCount; ++i)
     {
         // add group items
-        int commandsCount = xml_doc.GetNodesNum("group", i, "command");
+        int commandsCount = (int)xml_doc.GetNodesNum("group", i, "command");
         XML_NODE tab_node = xml_doc.NavigateToNode("group", i);
         xml_doc.SetLocalRoot(tab_node);
 

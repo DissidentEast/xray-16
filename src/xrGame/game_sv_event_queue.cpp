@@ -105,7 +105,7 @@ GameEvent* GameEventQueue::Retreive()
     else
     {
         u32 tmp_time = CPU::GetTicks() - 60000;
-        u32 size = unused.size();
+        u32 size = (u32)unused.size();
         if ((LastTimeCreate < tmp_time) && (size > 32))
         {
             xr_delete(unused.back());
@@ -126,7 +126,7 @@ void GameEventQueue::Release()
     R_ASSERT(!ready.empty());
     //---------------------------------------------
     u32 tmp_time = CPU::GetTicks() - 60000;
-    u32 size = unused.size();
+    u32 size = (u32)unused.size();
     if ((LastTimeCreate < tmp_time) && (size > 32))
     {
         xr_delete(ready.front());
@@ -176,7 +176,7 @@ u32 GameEventQueue::EraseEvents(event_predicate to_del)
     {
         //-----
         u32 tmp_time = CPU::GetTicks() - 60000;
-        u32 size = unused.size();
+        u32 size = (u32)unused.size();
         if ((LastTimeCreate < tmp_time) && (size > 32))
         {
             xr_delete(*need_to_erase);

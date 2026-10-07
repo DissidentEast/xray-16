@@ -10,7 +10,7 @@ void CMMSound::Init(CUIXml& xml_doc, LPCSTR path)
     string256 _path;
     m_bRandom = xml_doc.ReadAttribInt(path, 0, "random") ? true : false;
 
-    int nodes_num = xml_doc.GetNodesNum(path, 0, "menu_music");
+    int nodes_num = (int)xml_doc.GetNodesNum(path, 0, "menu_music");
 
     XML_NODE tab_node = xml_doc.NavigateToNode(path, 0);
     xml_doc.SetLocalRoot(tab_node);
@@ -58,7 +58,7 @@ void CMMSound::music_Play()
     if (m_play_list.empty())
         return;
 
-    const int i = Random.randI(m_play_list.size());
+    const int i = Random.randI((s32)m_play_list.size());
 
     string_path stereo;
     strconcat(stereo, m_play_list[i].c_str(), ".ogg");

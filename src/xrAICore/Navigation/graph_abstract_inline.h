@@ -67,9 +67,9 @@ IC void CAbstractGraph::remove_edge(const _vertex_id_type& vertex_id0, const _ve
 }
 
 TEMPLATE_SPECIALIZATION
-IC u32 CAbstractGraph::vertex_count() const { return (m_vertices.size()); }
+IC u32 CAbstractGraph::vertex_count() const { return ((u32)m_vertices.size()); }
 TEMPLATE_SPECIALIZATION
-IC u32 CAbstractGraph::edge_count() const { return (m_edge_count); }
+IC u32 CAbstractGraph::edge_count() const { return ((u32)m_edge_count); }
 TEMPLATE_SPECIALIZATION
 IC bool CAbstractGraph::empty() const { return (m_vertices.empty()); }
 TEMPLATE_SPECIALIZATION
@@ -189,7 +189,7 @@ IC void CAbstractGraph::save(IWriter& stream)
     size_t index = 0;
     for (const auto& it : this->vertices())
     {
-        stream.open_chunk(index);
+        stream.open_chunk((u32)index);
         {
             stream.open_chunk(0);
             save_data(it.second->vertex_id(), stream);

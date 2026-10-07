@@ -75,7 +75,7 @@ public:
     virtual void on_render(CDUInterface* du, IServerEntityLEOwner* owner, bool bSelected,
         const Fmatrix& parent, int priority, bool strictB2F);
     virtual visual_data* visual_collection() const { return &*m_visuals.begin(); }
-    virtual u32 visual_collection_size() const { return m_visuals.size(); }
+    virtual u32 visual_collection_size() const { return (u32)m_visuals.size(); }
 #endif // !MASTER_GOLD
 
 private:

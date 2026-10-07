@@ -55,7 +55,7 @@ public:
         return item ? item->id : default_id;
     }
 
-    static int GetMaxIndex() { return m_pItemDataVector->size() - 1; }
+    static int GetMaxIndex() { return (int)(m_pItemDataVector->size() - 1); }
     //удаление статичекого массива
     static void DeleteIdToIndexData();
 };
@@ -146,7 +146,7 @@ void CSXML_IdToIndex::InitInternal(bool crashOnFail /*= true*/, bool ignoreMissi
         }
 
         //общий список
-        int items_num = uiXml->GetNodesNum(uiXml->GetRoot(), tag_name);
+        int items_num = (int)uiXml->GetNodesNum(uiXml->GetRoot(), tag_name);
 
         for (int i = 0; i < items_num; ++i)
         {

@@ -204,7 +204,7 @@ void CSpaceRestrictionManager::join_restrictions(shared_str& restrictions, share
     string4096 m_temp1;
     string4096 m_temp2;
     xr_strcpy(m_temp2, restrictions.c_str());
-    for (u32 i = 0, n = _GetItemCount(update.c_str()), count = xr_strlen(m_temp2); i < n; ++i)
+    for (u32 i = 0, n = _GetItemCount(update.c_str()), count = (u32)xr_strlen(m_temp2); i < n; ++i)
         if (!restriction_presented(m_temp2, _GetItem(update.c_str(), i, m_temp1)))
         {
             if (count)

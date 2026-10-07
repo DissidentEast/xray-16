@@ -101,7 +101,7 @@ void string_tupples::error_process() const
 
         if (overrun_string_index == (u32)-1)
         {
-            part_size += m_strings[i].second;
+            part_size += (u32)m_strings[i].second;
             if (part_size > MAX_CONCAT_RESULT_SIZE)
             {
                 overrun_string_index = i;

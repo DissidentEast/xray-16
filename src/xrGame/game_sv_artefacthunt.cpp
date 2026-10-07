@@ -380,7 +380,7 @@ void game_sv_ArtefactHunt::assign_RP(CSE_Abstract* E, game_PlayerState* ps_who)
 
     if (rpID.empty() && !rpIDEnemy.empty())
     {
-        u32 PointID = ::Random.randI(rpIDEnemy.size());
+        u32 PointID = ::Random.randI((s32)rpIDEnemy.size());
         ;
         RPoint& r = rps[rpIDEnemy[PointID]];
         SetRP(E, &r);
@@ -399,7 +399,7 @@ void game_sv_ArtefactHunt::assign_RP(CSE_Abstract* E, game_PlayerState* ps_who)
     else
     {
         R_ASSERT2(rpID.size() > 0, "No free Respawn Points!");
-        u32 PointID = ::Random.randI(rpID.size());
+        u32 PointID = ::Random.randI((s32)rpID.size());
         RPoint& r = rps[rpID[PointID]];
         SetRP(E, &r);
     }

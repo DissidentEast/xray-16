@@ -324,7 +324,7 @@ ALife::_OBJECT_ID CSE_ALifeOnlineOfflineGroup::commander_id()
 }
 
 CSE_ALifeOnlineOfflineGroup::MEMBERS const& CSE_ALifeOnlineOfflineGroup::squad_members() const { return m_members; }
-u32 CSE_ALifeOnlineOfflineGroup::npc_count() const { return m_members.size(); }
+u32 CSE_ALifeOnlineOfflineGroup::npc_count() const { return (u32)m_members.size(); }
 void CSE_ALifeOnlineOfflineGroup::clear_location_types()
 {
     m_tpaTerrain.clear();

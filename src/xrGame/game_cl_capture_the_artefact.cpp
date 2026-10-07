@@ -1238,7 +1238,7 @@ void game_cl_CaptureTheArtefact::OnVoteStart(NET_Packet& P)
     player[psize - 1] = 0;
 
     sscanf(command, "%s", cmd_name);
-    u32 cmd_len = xr_strlen(cmd_name);
+    u32 cmd_len = (u32)xr_strlen(cmd_name);
     u32 tcmd_len = cmd_len;
 
 #ifdef CLIENT_CTA_LOG
@@ -1266,7 +1266,7 @@ void game_cl_CaptureTheArtefact::OnVoteStart(NET_Packet& P)
         {
             pcstr ted_str = StringTable().translate(ttable[i][1]).c_str();
             VERIFY(ted_str);
-            tcmd_len = xr_strlen(ted_str) + 1;
+            tcmd_len = (u32)xr_strlen(ted_str) + 1;
             tcmd_name = static_cast<char*>(xr_alloca(tcmd_len));
             xr_strcpy(tcmd_name, tcmd_len, ted_str);
 #ifdef CLIENT_CTA_LOG
@@ -1289,7 +1289,7 @@ void game_cl_CaptureTheArtefact::OnVoteStart(NET_Packet& P)
     }
     pcstr t_vote_str = StringTable().translate("mp_voting_started").c_str();
     VERIFY(t_vote_str);
-    u32 fin_str_size = xr_strlen(t_vote_str) + vstr_size + xr_strlen(player) + 1;
+    u32 fin_str_size = (u32)(xr_strlen(t_vote_str) + vstr_size + xr_strlen(player) + 1);
     char* fin_str = static_cast<char*>(xr_alloca(fin_str_size));
 
 #ifdef CLIENT_CTA_LOG

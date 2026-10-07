@@ -101,7 +101,7 @@ void CUIActorInfoWnd::FillPointsInfo()
     UIMasterList->Clear();
 
 #ifndef PRIQUEL
-    const int items_num = uiXml.GetNodesNum("actor_stats_wnd", 0, "master_part");
+    const int items_num = (int)uiXml.GetNodesNum("actor_stats_wnd", 0, "master_part");
     uiXml.SetLocalRoot(uiXml.NavigateToNode("actor_stats_wnd", 0));
     string64 buff;
 
@@ -255,7 +255,7 @@ void CUIActorInfoWnd::Reset()
 void CUIActorInfoWnd::FillReputationDetails(CUIXml* xml, LPCSTR path)
 {
     const XML_NODE _list_node = xml->NavigateToNode("relation_communities_list", 0);
-    const int cnt = xml->GetNodesNum("relation_communities_list", 0, "r");
+    const int cnt = (int)xml->GetNodesNum("relation_communities_list", 0, "r");
 
     CHARACTER_COMMUNITY comm;
     CHARACTER_REPUTATION rep_actor, rep_neutral;

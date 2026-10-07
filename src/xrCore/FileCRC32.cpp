@@ -3,7 +3,7 @@
 
 void getFileCrc32(IReader* F, pcstr filePath, u32& outCrc, bool parseIncludes)
 {
-    outCrc = crc32(F->pointer(), F->length(), outCrc);
+    outCrc = crc32(F->pointer(), (u32)F->length(), outCrc);
     string4096 str;
     if (parseIncludes)
     {

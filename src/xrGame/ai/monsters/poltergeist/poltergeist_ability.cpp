@@ -119,7 +119,7 @@ void CPoltergeist::PhysicalImpulse(const Fvector& position)
     if (m_nearest.empty())
         return;
 
-    u32 index = Random.randI(m_nearest.size());
+    u32 index = Random.randI((int)m_nearest.size());
 
     CPhysicsShellHolder* obj = smart_cast<CPhysicsShellHolder*>(m_nearest[index]);
     if (!obj || !obj->m_pPhysicsShell)
@@ -161,7 +161,7 @@ void CPoltergeist::StrangeSounds(const Fvector& position)
                 {
                     // CLONE_MTL_SOUND(m_strange_sound, mtl_pair, CollideSounds);
                     VERIFY2(!mtl_pair->CollideSounds.empty(), mtl_pair->dbg_Name());
-                    ref_sound& randSound = mtl_pair->CollideSounds[Random.randI(mtl_pair->CollideSounds.size())];
+                    ref_sound& randSound = mtl_pair->CollideSounds[Random.randI((int)mtl_pair->CollideSounds.size())];
                     m_strange_sound.clone(randSound, st_Effect, sg_SourceType);
                     Fvector pos;
                     pos.mad(position, dir, ((l_rq.range - 0.1f > 0) ? l_rq.range - 0.1f : l_rq.range));

@@ -119,7 +119,7 @@ void CUITalkWnd::UpdateQuestions()
             //сказать (игрок сам не производит никаких действий)
             if (!m_pCurrentDialog->PhraseList().empty() && m_pCurrentDialog->allIsDummy())
             {
-                CPhrase* phrase = m_pCurrentDialog->PhraseList()[Random.randI(m_pCurrentDialog->PhraseList().size())];
+                CPhrase* phrase = m_pCurrentDialog->PhraseList()[Random.randI((s32)m_pCurrentDialog->PhraseList().size())];
                 SayPhrase(phrase->GetID());
             };
 
@@ -430,7 +430,7 @@ bool CUITalkWnd::OnControllerAction(int axis, const ControllerAxisState& state, 
 
 void CUITalkWnd::PlaySnd(LPCSTR text)
 {
-    u32 text_len = xr_strlen(text);
+    u32 text_len = (u32)xr_strlen(text);
     if (text_len == 0)
     {
         return;
@@ -440,7 +440,7 @@ void CUITalkWnd::PlaySnd(LPCSTR text)
 
     LPCSTR path = "characters_voice" DELIMITER "dialogs" DELIMITER;
     LPCSTR ext = ".ogg";
-    u32 tsize = sizeof(fn) - xr_strlen(path) - xr_strlen(ext) - 1;
+    u32 tsize = (u32)(sizeof(fn) - xr_strlen(path) - xr_strlen(ext) - 1);
     if (text_len > tsize)
     {
         text_len = tsize;

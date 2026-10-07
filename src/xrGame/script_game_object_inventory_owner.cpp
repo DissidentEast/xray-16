@@ -1902,7 +1902,7 @@ u32 CScriptGameObject::BeltSize() const
         return 0;
     }
 
-    return inventory_owner->inventory().m_belt.size();
+    return (u32)inventory_owner->inventory().m_belt.size();
 }
 
 float CScriptGameObject::GetActorMaxWeight() const

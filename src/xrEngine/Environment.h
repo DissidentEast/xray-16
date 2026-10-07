@@ -86,7 +86,7 @@ public:
         void load(const CInifile& config, pcstr sect, pcstr sectionToReadFrom = nullptr);
 
         [[nodiscard]]
-        ref_sound& get_rnd_sound() { return m_sounds[Random.randI(m_sounds.size())]; }
+        ref_sound& get_rnd_sound() { return m_sounds[Random.randI((int)m_sounds.size())]; }
 
         [[nodiscard]]
         u32 get_rnd_sound_time() const
@@ -128,7 +128,7 @@ public:
     const shared_str& get_ambients_config_filename() { return m_ambients_config_filename; }
     virtual void load(const CInifile& ambients_config, const CInifile& sound_channels_config,
         const CInifile& effects_config, const shared_str& section);
-    SEffect* get_rnd_effect() { return effects().empty() ? 0 : effects()[Random.randI(effects().size())]; }
+    SEffect* get_rnd_effect() { return effects().empty() ? 0 : effects()[Random.randI((int)effects().size())]; }
     u32 get_rnd_effect_time() { return Random.randI(m_effect_period.x, m_effect_period.y); }
     virtual SEffect* create_effect(const CInifile& config, pcstr id);
     virtual SSndChannel* create_sound_channel(const CInifile& config, pcstr id, pcstr sectionToReadFrom = nullptr);

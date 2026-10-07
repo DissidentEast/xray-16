@@ -259,7 +259,7 @@ public:
     // utilities
     virtual CSE_Abstract* entity_Create(pcstr name) override;
     virtual void entity_Destroy(CSE_Abstract*& P) override;
-    u32 GetEntitiesNum() { return entities.size(); };
+    u32 GetEntitiesNum() { return (u32)entities.size(); };
     CSE_Abstract* GetEntity(u32 Num);
     u32 const GetLastUpdatesSize() const { return m_last_updates_size; };
     xrClientData* ID_to_client(ClientID ID, bool ScanAll = false)

@@ -587,7 +587,7 @@ CUICellItem* CUIDragDropListEx::RemoveItem(CUICellItem* itm, bool force_root)
     return i;
 }
 
-u32 CUIDragDropListEx::ItemsCount() { return m_container->GetChildWndList().size(); }
+u32 CUIDragDropListEx::ItemsCount() { return (u32)m_container->GetChildWndList().size(); }
 bool CUIDragDropListEx::IsOwner(CUICellItem* itm) { return m_container->IsChild(itm); }
 CUICellItem* CUIDragDropListEx::GetItemIdx(u32 idx)
 {
@@ -924,7 +924,7 @@ u32 CUICellContainer::GetCellsInRange(const Irect& rect, UI_CELLS_VEC& res)
             res.push_back(GetCellAt(Ivector2().set(x, y)));
 
     res.erase(std::unique(res.begin(), res.end()), res.end());
-    return res.size();
+    return (u32)res.size();
 }
 
 void CUICellContainer::ReinitSize()

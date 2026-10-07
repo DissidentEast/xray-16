@@ -104,7 +104,7 @@ void CMaterialManager::update(float time_delta, float volume, float step_time, b
 
             if (snd_array.size() > 0)
             {
-                m_step_id = ::Random.randI(0, snd_array.size());
+                m_step_id = ::Random.randI(0, (s32)snd_array.size());
                 m_time_to_step = step_time;
 
                 m_step_sound[m_step_id] = snd_array[m_step_id];

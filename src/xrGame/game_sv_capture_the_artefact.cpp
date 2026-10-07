@@ -1010,7 +1010,7 @@ bool game_sv_CaptureTheArtefact::LoadAnomaliesItems(LPCSTR ini_set_id, TAnomalie
     if (!items_count)
         return false;
 
-    u32 const str_size = xr_strlen(anomaly_string);
+    u32 const str_size = (u32)xr_strlen(anomaly_string);
     u32 const buffer_size = (str_size + 1) * sizeof(char);
     PSTR temp_str = static_cast<PSTR>(xr_alloca(buffer_size));
     for (u32 i = 0; i < items_count; ++i)
@@ -1085,7 +1085,7 @@ void game_sv_CaptureTheArtefact::ReStartRandomAnomaly()
     TSAnomsSet::iterator started_ie = started_set.end();
     do
     {
-        to_start = ::Random.randI(m_AnomalySet.size());
+        to_start = ::Random.randI((s32)m_AnomalySet.size());
     } while (started_set.find(to_start) != started_ie);
     VERIFY(m_AnomalySet.size() > to_start);
 

@@ -253,7 +253,7 @@ void CObjectList::Update(bool bForce)
 #endif // ifdef DEBUG
 #endif
 
-            stats.Crows = m_primary_crows.size();
+            stats.Crows = (u32)m_primary_crows.size();
             Objects* workload;
             if (!psDeviceFlags.test(rsDisableObjectsAsCrows))
                 workload = &m_primary_crows;
@@ -264,10 +264,10 @@ void CObjectList::Update(bool bForce)
             }
 
             stats.Update.Begin();
-            stats.Active = objects_active.size();
-            stats.Total = objects_active.size() + objects_sleeping.size();
+            stats.Active = (u32)objects_active.size();
+            stats.Total = (u32)(objects_active.size() + objects_sleeping.size());
 
-            u32 const objects_count = workload->size();
+            u32 const objects_count = (u32)workload->size();
             IGameObject** objects = (IGameObject**)xr_alloca(objects_count * sizeof(IGameObject*));
             std::copy(workload->begin(), workload->end(), objects);
 
@@ -305,15 +305,15 @@ void CObjectList::Update(bool bForce)
 
         // Info
         for (Objects::iterator oit = objects_active.begin(); oit != objects_active.end(); ++oit)
-            for (int it = destroy_queue.size() - 1; it >= 0; it--)
+            for (int it = (int)(destroy_queue.size() - 1); it >= 0; it--)
             {
                 (*oit)->net_Relcase(destroy_queue[it]);
             }
         for (Objects::iterator oit = objects_sleeping.begin(); oit != objects_sleeping.end(); ++oit)
-            for (int it = destroy_queue.size() - 1; it >= 0; it--)
+            for (int it = (int)(destroy_queue.size() - 1); it >= 0; it--)
                 (*oit)->net_Relcase(destroy_queue[it]);
 
-        for (int it = destroy_queue.size() - 1; it >= 0; it--)
+        for (int it = (int)(destroy_queue.size() - 1); it >= 0; it--)
             g_pGameLevel->Sound->object_relcase(destroy_queue[it]);
 
         RELCASE_CALLBACK_VEC::iterator it = m_relcase_callbacks.begin();
@@ -334,7 +334,7 @@ void CObjectList::Update(bool bForce)
         }
 
         // Destroy
-        for (int it = destroy_queue.size() - 1; it >= 0; it--)
+        for (int it = (int)(destroy_queue.size() - 1); it >= 0; it--)
         {
             IGameObject* O = destroy_queue[it];
 // Msg ("Object [%x]", O);
@@ -558,7 +558,7 @@ void CObjectList::relcase_register(RELCASE_CALLBACK cb, int* ID)
     RELCASE_CALLBACK_VEC::iterator It = std::find(m_relcase_callbacks.begin(), m_relcase_callbacks.end(), cb);
     VERIFY(It == m_relcase_callbacks.end());
 #endif
-    *ID = m_relcase_callbacks.size();
+    *ID = (int)m_relcase_callbacks.size();
     m_relcase_callbacks.push_back(SRelcasePair(ID, cb));
 }
 

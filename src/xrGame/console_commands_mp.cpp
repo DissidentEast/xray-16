@@ -299,7 +299,7 @@ public:
             xr_strcpy(cdkey, arguments);
         }
 
-        u32 cdkey_len = xr_strlen(cdkey);
+        u32 cdkey_len = (u32)xr_strlen(cdkey);
         if ((cdkey_len > 0) && g_pGamePersistent && MainMenu())
         {
             if ((cdkey_len > 5) && cdkey[4] != '-')
@@ -392,7 +392,7 @@ public:
         if (!g_pGameLevel || !Level().Server || !Level().Server->GetGameState())
             return;
 
-        u32 len = xr_strlen(args);
+        u32 len = (u32)xr_strlen(args);
         if ((len == 0) || (len >= 128)) // one digit and raid:%u
             return;
         ClientID client_id(0);
@@ -484,7 +484,7 @@ public:
     {
         if (!g_pGameLevel || !Level().Server || !Level().Server->GetGameState())
             return;
-        u32 len = xr_strlen(args_);
+        u32 len = (u32)xr_strlen(args_);
         if ((len == 0) || (len >= 256)) // two digits and raid:%u
             return;
 
@@ -532,7 +532,7 @@ public:
     {
         if (!g_pGameLevel || !Level().Server || !Level().Server->GetGameState())
             return;
-        u32 len = xr_strlen(args_);
+        u32 len = (u32)xr_strlen(args_);
         if ((len == 0) || (len >= 256)) // two digits and raid:%u
             return;
 
@@ -885,7 +885,7 @@ public:
         if (!tmp_sv_game)
             return;
 
-        u32 len = xr_strlen(args_);
+        u32 len = (u32)xr_strlen(args_);
         if ((len == 0) || (len >= 256)) // two digits and raid:%u
             return;
 
@@ -950,7 +950,7 @@ public:
         if (!tmp_sv_game)
             return;
 
-        u32 len = xr_strlen(args_);
+        u32 len = (u32)xr_strlen(args_);
         if ((len == 0) || (len >= 256))
             return;
 
@@ -986,7 +986,7 @@ public:
         game_sv_mp* tmp_sv_game = smart_cast<game_sv_mp*>(Level().Server->GetGameState());
         if (!tmp_sv_game)
             return;
-        u32 len = xr_strlen(args_);
+        u32 len = (u32)xr_strlen(args_);
         if ((len == 0) || (len >= 64)) // one digit and raid:%u
             return;
 
@@ -1028,7 +1028,7 @@ public:
             return;
         string4096 buff;
         xr_strcpy(buff, args_);
-        u32 len = xr_strlen(buff);
+        u32 len = (u32)xr_strlen(buff);
 
         if (0 == len)
             return;
@@ -1096,7 +1096,7 @@ public:
         string4096 buff;
         exclude_raid_from_args(args_, buff, sizeof(buff)); // xr_strcpy(buff, args_);
 
-        u32 len = xr_strlen(buff);
+        u32 len = (u32)xr_strlen(buff);
         if (0 == len)
             return;
 
@@ -1353,7 +1353,7 @@ public:
         //-----------------------------------------
 
         const SGameTypeMaps& M = gMapListHelper.GetMapListFor(GameTypeID);
-        u32 cnt = M.m_map_names.size();
+        u32 cnt = (u32)M.m_map_names.size();
         bool bMapFound = false;
         for (u32 i = 0; i < cnt; ++i)
         {

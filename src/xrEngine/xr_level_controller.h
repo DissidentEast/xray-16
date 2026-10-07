@@ -267,7 +267,7 @@ void ForAllActionKeys(EGameActions action_id, Invocable&& invocable)
 {
     for (size_t i = 0; i < bindtypes_count; ++i)
     {
-        const int key = GetActionDik(action_id, i);
+        const int key = GetActionDik(action_id, (int)i);
         if (key == SDL_SCANCODE_UNKNOWN)
             continue;
 

@@ -560,9 +560,9 @@ void IGame_Persistent::OnFrame()
     if (!Device.Paused() || Device.dwPrecacheFrame)
         Environment().OnFrame();
 
-    stats.Starting = ps_needtoplay.size();
-    stats.Active = ps_active.size();
-    stats.Destroying = ps_destroy.size();
+    stats.Starting = (u32)ps_needtoplay.size();
+    stats.Active = (u32)ps_active.size();
+    stats.Destroying = (u32)ps_destroy.size();
     // Play req particle systems
     while (ps_needtoplay.size())
     {
@@ -611,7 +611,7 @@ void IGame_Persistent::destroy_particles(const bool& all_particles)
     }
     else
     {
-        u32 active_size = ps_active.size();
+        u32 active_size = (u32)ps_active.size();
         CPS_Instance** I = (CPS_Instance**)xr_alloca(active_size * sizeof(CPS_Instance*));
         std::copy(ps_active.begin(), ps_active.end(), I);
 

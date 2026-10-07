@@ -152,7 +152,7 @@ bool EFS_Utils::GetOpenNameInternal(
     ofn.hwndOwner = GetForegroundWindow();
     ofn.lpstrDefExt = P.m_DefExt;
     ofn.lpstrFile = buffer;
-    ofn.nMaxFile = sz_buf;
+    ofn.nMaxFile = (DWORD)sz_buf;
     ofn.lpstrFilter = flt;
     ofn.nFilterIndex = start_flt_ext + 2;
     ofn.lpstrTitle = "Open a File";

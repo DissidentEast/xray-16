@@ -250,7 +250,7 @@ void CInventory::ActivateNextGrenadeDeffered()
 
 PIItem CInventory::GetNextGrenade()
 {
-    int count_types = m_available_grenade_types.size();
+    int count_types = (int)m_available_grenade_types.size();
 
     if (count_types > 1)
     {

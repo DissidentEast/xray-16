@@ -248,7 +248,7 @@ public:
         //Msg("-S- Entering to csPlayers [%d]", Threading::GetCurrThreadId());
         csPlayers.Enter();
         //LogStackTrace(make_string("-S- Entered to csPlayers [%d]", Threading::GetCurrThreadId()).c_str());
-        u32 ret_count = net_Players.size();
+        u32 ret_count = (u32)net_Players.size();
         //Msg("-S- Leaving from csPlayers [%d]", Threading::GetCurrThreadId());
         csPlayers.Leave();
         return ret_count;

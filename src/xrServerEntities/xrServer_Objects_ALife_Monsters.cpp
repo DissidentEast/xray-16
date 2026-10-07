@@ -372,9 +372,9 @@ shared_str CSE_ALifeTraderAbstract::specific_character()
 
 #ifdef XRGAME_EXPORTS
         if (m_CheckedCharacters.empty())
-            char_info.m_SpecificCharacterId = m_DefaultCharacters[Random.randI(m_DefaultCharacters.size())];
+            char_info.m_SpecificCharacterId = m_DefaultCharacters[Random.randI((int)m_DefaultCharacters.size())];
         else
-            char_info.m_SpecificCharacterId = m_CheckedCharacters[Random.randI(m_CheckedCharacters.size())];
+            char_info.m_SpecificCharacterId = m_CheckedCharacters[Random.randI((int)m_CheckedCharacters.size())];
 #else
         char_info.m_SpecificCharacterId = m_DefaultCharacters[Random.randI(m_DefaultCharacters.size())];
 #endif
@@ -1914,7 +1914,7 @@ void CSE_ALifeOnlineOfflineGroup::STATE_Write(NET_Packet& tNetPacket)
     inherited1::STATE_Write(tNetPacket);
 
 #if 1
-    tNetPacket.w_u32(m_members.size());
+    tNetPacket.w_u32((u32)m_members.size());
 
     MEMBERS::iterator I = m_members.begin();
     MEMBERS::iterator E = m_members.end();

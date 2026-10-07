@@ -44,7 +44,7 @@ void UIMapLegend::init_from_xml(CUIXml& xml, LPCSTR path)
 
     UIMapLegendItem* list_item = NULL;
 
-    int cn = xml.GetNodesNum("legend_list", 0, "item");
+    int cn = (int)xml.GetNodesNum("legend_list", 0, "item");
     XML_NODE root2 = xml.NavigateToNode("legend_list", 0);
     xml.SetLocalRoot(root2);
 

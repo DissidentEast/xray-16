@@ -828,7 +828,7 @@ bool IPureServer::DisconnectClient(IClient* C, pcstr Reason)
     if (!C)
         return false;
 
-    HRESULT res = NET->DestroyClient(C->ID.value(), Reason, xr_strlen(Reason) + 1, 0);
+    HRESULT res = NET->DestroyClient(C->ID.value(), Reason, (u32)(xr_strlen(Reason) + 1), 0);
     CHK_DX(res);
     return true;
 }

@@ -1218,7 +1218,7 @@ bool CInventory::CanPutInRuck(PIItem pIItem) const
     return true;
 }
 
-u32 CInventory::dwfGetObjectCount() const { return (m_all.size()); }
+u32 CInventory::dwfGetObjectCount() const { return (u32)(m_all.size()); }
 
 CInventoryItem* CInventory::tpfGetObjectByIndex(int iIndex) const
 {
@@ -1245,7 +1245,7 @@ CInventoryItem* CInventory::GetItemFromInventory(LPCSTR caItemName) const
 {
     const TIItemContainer& l_list = m_all;
 
-    u32 crc = crc32(caItemName, xr_strlen(caItemName));
+    u32 crc = crc32(caItemName, (u32)xr_strlen(caItemName));
 
     for (auto l_it = l_list.cbegin(); l_list.cend() != l_it; ++l_it)
     {

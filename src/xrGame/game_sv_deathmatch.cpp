@@ -858,8 +858,8 @@ void game_sv_Deathmatch::assign_RP(CSE_Abstract* E, game_PlayerState* ps_who)
     }
     R_ASSERT(tmpPoints.size());
     std::sort(tmpPoints.begin(), tmpPoints.end());
-    u32 HalfList = tmpPoints.size() / (tmp_functor.pEnemies.empty() ? 1 : 2);
-    u32 NewPointID = (HalfList) ? (tmpPoints.size() - HalfList + ::Random.randI(HalfList)) : 0;
+    u32 HalfList = (u32)tmpPoints.size() / (tmp_functor.pEnemies.empty() ? 1 : 2);
+    u32 NewPointID = (HalfList) ? (u32)(tmpPoints.size() - HalfList + ::Random.randI(HalfList)) : 0;
     VERIFY2(NewPointID < tmpPoints.size(), "problem with random rpoints");
 
     m_dwLastRPoints[Team] = m_vFreeRPoints[Team][tmpPoints[NewPointID].PointID];
@@ -1175,7 +1175,7 @@ void game_sv_Deathmatch::SetSkin(CSE_Abstract* E, u16 Team, u16 ID)
     };
     xr_strcat(SkinName, ".ogf");
     Msg("* Skin - %s", SkinName);
-    int len = xr_strlen(SkinName);
+    int len = (int)xr_strlen(SkinName);
     R_ASSERT2(len < 64, "Skin Name is too LONG!!!");
     pV->set_visual(SkinName);
     //-------------------------------------------

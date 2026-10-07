@@ -156,7 +156,7 @@ void COMotion::DeleteKey(float t) const
     envs[ctRotationB]->DeleteKey(t);
 }
 
-int COMotion::KeyCount() const { return envs[ctPositionX]->keys.size(); }
+int COMotion::KeyCount() const { return (int)envs[ctPositionX]->keys.size(); }
 
 void COMotion::FindNearestKey(float t, float& mn, float& mx, float eps) const
 {
@@ -381,7 +381,7 @@ void CSMotion::Save(IWriter& F)
         for (size_t ch = 0; ch < ctMaxChannel; ch++)
             bm_it->envs[ch]->Save(F);
     }
-    const u32 sz = marks.size();
+    const u32 sz = (u32)marks.size();
     F.w_u32(sz);
     for (size_t i = 0; i < sz; ++i)
         marks[i].Save(&F);

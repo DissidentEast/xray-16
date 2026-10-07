@@ -110,7 +110,7 @@ IC size_t IReaderBase<T>::find_chunk(u32 ID, bool* bCompressed)
 
     if (m_last_pos != 0)
     {
-        impl().seek(m_last_pos);
+        impl().seek((int)m_last_pos);
         dwType = r_u32();
         dwSize = r_u32();
 
@@ -134,7 +134,7 @@ IC size_t IReaderBase<T>::find_chunk(u32 ID, bool* bCompressed)
             }
             else
             {
-                impl().advance(dwSize);
+                impl().advance((int)dwSize);
             }
         }
 

@@ -203,7 +203,7 @@ void CStepManager::update(bool b_hud_view)
             // Играть партиклы
             if (b_play && !mtl_pair->CollideParticles.empty())
             {
-                LPCSTR ps_name = mtl_pair->CollideParticles[::Random.randI(0, mtl_pair->CollideParticles.size())].c_str();
+                LPCSTR ps_name = mtl_pair->CollideParticles[::Random.randI(0, (s32)mtl_pair->CollideParticles.size())].c_str();
 
                 //отыграть партиклы столкновения материалов
                 CParticlesObject* ps = CParticlesObject::Create(ps_name, TRUE);
@@ -322,12 +322,12 @@ void CStepManager::material_sound::play_next(
 
     if (last_mtl_pair != mtl_pair || m_last_step_sound_played == u8(-1))
     {
-        m_last_step_sound_played = u8(Random.randI(mtl_pair->StepSounds.size()));
+        m_last_step_sound_played = u8(Random.randI((s32)mtl_pair->StepSounds.size()));
         last_mtl_pair = mtl_pair;
     }
     else
     {
-        u8 new_played = u8((m_last_step_sound_played + 1 + Random.randI(mtl_pair->StepSounds.size() - 1)) %
+        u8 new_played = u8((m_last_step_sound_played + 1 + Random.randI((s32)(mtl_pair->StepSounds.size() - 1))) %
             mtl_pair->StepSounds.size());
 
         m_last_step_sound_played = new_played;

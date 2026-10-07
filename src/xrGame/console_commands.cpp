@@ -608,7 +608,7 @@ void get_files_list(xr_vector<shared_str>& files, LPCSTR dir, LPCSTR file_ext)
 
     FS_FileSet files_set;
     FS.file_list(files_set, dir, FS_ListFiles, fext);
-    u32 len_str_ext = xr_strlen(file_ext);
+    u32 len_str_ext = (u32)xr_strlen(file_ext);
 
     auto itb = files_set.begin();
     auto ite = files_set.end();

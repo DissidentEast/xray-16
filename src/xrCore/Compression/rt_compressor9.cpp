@@ -33,7 +33,7 @@ void rtc9_initialize()
 
         R_ASSERT(reader);
 
-        _LZO_DictionarySize = reader->length();
+        _LZO_DictionarySize = (u32)reader->length();
         _LZO_Dictionary = (u8*)xr_malloc(_LZO_DictionarySize);
 
         reader->r(_LZO_Dictionary, _LZO_DictionarySize);

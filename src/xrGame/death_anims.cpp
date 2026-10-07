@@ -30,7 +30,7 @@ MotionID rnd_motion::motion() const
 {
     if (motions.empty())
         return MotionID();
-    return motions[::Random.randI(0, motions.size())];
+    return motions[::Random.randI(0, (s32)motions.size())];
 }
 
 void type_motion::clear()

@@ -543,7 +543,7 @@ void Encode(void) /* compression */
 {
     int i, c, r, s, last_match_length;
 
-    textsize = fs.InputSize();
+    textsize = (u32)fs.InputSize();
     fs.Init_Output(textsize);
     fs._putb((textsize & 0xff));
     fs._putb((textsize & 0xff00) >> 8);
@@ -665,7 +665,7 @@ size_t _writeLZ(int hf, void* d, size_t size)
     // Flush cache
     size_t size_out = fs.OutSize();
     if (size_out)
-        _write(hf, fs.OutPointer(), size_out);
+        _write(hf, fs.OutPointer(), (u32)size_out);
     fs.OutRelease();
     return size_out;
 }
@@ -684,7 +684,7 @@ bool _decompressLZ(u8** dest, size_t* dest_sz, void* src, size_t src_sz, size_t 
     u8* start = (u8*)src;
     fs.Init_Input(start, start + src_sz);
 
-    if (!Decode(total_size))
+    if (!Decode((int)total_size))
         return false;
 
     *dest = fs.OutPointer();
@@ -696,7 +696,7 @@ size_t _readLZ(int hf, void*& d, size_t size)
 {
     // Read file in memory
     u8* data = (u8*)xr_malloc(size);
-    _read(hf, data, size);
+    _read(hf, data, (u32)size);
 
     fs.Init_Input(data, data + size);
 

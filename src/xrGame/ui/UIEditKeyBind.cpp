@@ -49,7 +49,7 @@ u32 CutStringByLength(CGameFont* font, LPCSTR src, pstr dst, u32 dst_size, float
             UI().ClientToScreenScaledWidth(text_len);
         }
 
-        return xr_strlen(dst);
+        return (u32)xr_strlen(dst);
     }
 }
 

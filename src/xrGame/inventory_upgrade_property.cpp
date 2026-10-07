@@ -38,7 +38,7 @@ void Property::construct(shared_str const& property_id, Manager& manager_r)
     m_desc(); // test
 
     LPCSTR funct_params_str = pSettings->r_string(id(), "params");
-    u32 const buffer_size = (xr_strlen(funct_params_str) + 1) * sizeof(char);
+    u32 const buffer_size = (u32)((xr_strlen(funct_params_str) + 1) * sizeof(char));
     PSTR temp = (PSTR)xr_alloca(buffer_size);
     for (int n = _GetItemCount(funct_params_str), i = 0; i < n; ++i)
     {

@@ -162,7 +162,7 @@ void CUIMMShniaga::CreateList(xr_vector<CUIStatic*>& lst, CUIXml& xml_doc, LPCST
         return;
     }
 
-    int nodes_num = xml_doc.GetNodesNum(path, 0, "btn");
+    int nodes_num = (int)xml_doc.GetNodesNum(path, 0, "btn");
 
     XML_NODE tab_node = xml_doc.NavigateToNode(path, 0);
     xml_doc.SetLocalRoot(tab_node);
@@ -250,7 +250,7 @@ void CUIMMShniaga::ShowNetworkGame()
     m_page = epi_new_network_game;
     m_view->Clear();
 
-    for (u32 i = 0, count = m_buttons_new_network.size(); i < count; ++i)
+    for (u32 i = 0, count = (u32)m_buttons_new_network.size(); i < count; ++i)
     {
         m_view->AddWindow(m_buttons_new_network[i], false);
     }
@@ -267,7 +267,7 @@ bool CUIMMShniaga::IsButton(CUIWindow* st)
         if (m_buttons_new[i] == st)
             return true;
 
-    for (u32 i = 0, count = m_buttons_new_network.size(); i < count; ++i)
+    for (u32 i = 0, count = (u32)m_buttons_new_network.size(); i < count; ++i)
         if (m_buttons_new_network[i] == st)
             return true;
 

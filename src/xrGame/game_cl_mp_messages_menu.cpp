@@ -137,7 +137,7 @@ void game_cl_mp::OnMessageSelected(CUISpeechMenu* pMenu, u8 PhraseID)
     if (PhraseID >= pMMenu->m_aMessages.size())
         return;
     cl_Menu_Message* pMMessage = &(pMMenu->m_aMessages[PhraseID]);
-    u8 VariantID = (pMMessage->aVariants.size() <= 1) ? 0 : u8(::Random.randI(pMMessage->aVariants.size()) & 0xff);
+    u8 VariantID = (pMMessage->aVariants.size() <= 1) ? 0 : u8(::Random.randI((s32)pMMessage->aVariants.size()) & 0xff);
     //	Msg ("Variant %d from %d", VariantID, pMMessage->aVariants.size());
     //-------------------------------------------------------------------
     NET_Packet P;

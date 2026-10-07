@@ -130,7 +130,7 @@ void CSE_SmartCover::FillProps(LPCSTR pref, PropItemVec& items)
 {
     PHelper().CreateFloat(items, PrepareKey(pref, s_name.c_str(), "hold position time"), &m_hold_position_time, 0.f, 60.f);
     RListValue* value = PHelper().CreateRList(items, PrepareKey(pref, s_name.c_str(), "description"), &m_description,
-        &*fp_data.smart_covers.begin(), fp_data.smart_covers.size());
+        &*fp_data.smart_covers.begin(), (u32)fp_data.smart_covers.size());
     value->OnChangeEvent.bind(this, &CSE_SmartCover::OnChangeDescription);
 
     PHelper().CreateFloat(

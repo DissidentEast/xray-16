@@ -110,7 +110,7 @@ NET_Packet* INetQueue::Retreive()
     else
     {
         u32 tmp_time = CPU::GetTicks() - 60000;
-        u32 size = unused.size();
+        u32 size = (u32)unused.size();
         if ((LastTimeCreate < tmp_time) && (size > 32))
         {
             xr_delete(unused.back());
@@ -131,7 +131,7 @@ void INetQueue::Release()
     VERIFY(!ready.empty());
     //---------------------------------------------
     u32 tmp_time = CPU::GetTicks() - 60000;
-    u32 size = unused.size();
+    u32 size = (u32)unused.size();
     ready.front()->B.count = 0;
     if ((LastTimeCreate < tmp_time) && (size > 32))
     {
@@ -516,7 +516,7 @@ bool IPureClient::Connect(pcstr options)
             string64 EnumData;
             EnumData[0] = 0;
             xr_strcat(EnumData, "ToConnect");
-            u32 EnumSize = xr_strlen(EnumData) + 1;
+            u32 EnumSize = (u32)(xr_strlen(EnumData) + 1);
             // We now have the host address so lets enum
             u32 c_port = psCL_Port;
             HRESULT res = S_FALSE;

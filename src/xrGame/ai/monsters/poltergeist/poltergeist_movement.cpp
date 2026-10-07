@@ -91,7 +91,7 @@ void CPoltergeisMovementManager::move_along_path(
 
     if (dist_to_target < EPS_L)
     {
-        detail().m_current_travel_point = detail().path().size() - 1;
+        detail().m_current_travel_point = (u32)(detail().path().size() - 1);
         m_speed = 0.f;
         dest_position = CalculateRealPosition();
         return;

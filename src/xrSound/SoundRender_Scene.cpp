@@ -94,7 +94,7 @@ void CSoundRender_Scene::set_geometry_som(IReader* I)
 
     // Create AABB-tree
     geom_SOM = xr_new<CDB::MODEL>();
-    geom_SOM->build(CL.getV(), CL.getVS(), CL.getT(), CL.getTS());
+    geom_SOM->build(CL.getV(), (u32)CL.getVS(), CL.getT(), (u32)CL.getTS());
 }
 
 void CSoundRender_Scene::set_geometry_env(IReader* I)

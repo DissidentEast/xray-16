@@ -216,7 +216,7 @@ void CEnvAmbient::load(
     m_sound_channels.resize(cnt);
 
     for (size_t i = 0; i < cnt; ++i)
-        m_sound_channels[i] = create_sound_channel(sound_channels_config, _GetItem(channels, i, tmp),
+        m_sound_channels[i] = create_sound_channel(sound_channels_config, _GetItem(channels, (int)i, tmp),
             overrideReadingSection ? m_load_section.c_str() : nullptr);
 
     // effects
@@ -240,7 +240,7 @@ void CEnvAmbient::load(
 
         m_effects.resize(cnt);
         for (size_t k = 0; k < cnt; ++k)
-            m_effects[k] = create_effect(effects_config, _GetItem(effs, k, tmp));
+            m_effects[k] = create_effect(effects_config, _GetItem(effs, (int)k, tmp));
     }
 
     R_ASSERT(!m_sound_channels.empty() || !m_effects.empty());
@@ -708,7 +708,7 @@ void CEnvironment::mods_load()
         u32 ver = 0x0015;
         u32 sz;
 
-        while (0 != (sz = fs->find_chunk(id)))
+        while (0 != (sz = (u32)fs->find_chunk(id)))
         {
             if (id == 0 && sz == sizeof(u32))
             {

@@ -505,7 +505,7 @@ void CUIMainIngameWnd::InitFlashingIcons(CUIXml* node)
     ZoneScoped;
 
     const char* const flashingIconNodeName = "flashing_icon";
-    int staticsCount = node->GetNodesNum("", 0, flashingIconNodeName);
+    int staticsCount = (int)node->GetNodesNum("", 0, flashingIconNodeName);
 
     CUIStatic* pIcon = NULL;
     // Пробегаемся по всем нодам и инициализируем из них статики

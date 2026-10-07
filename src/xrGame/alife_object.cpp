@@ -64,7 +64,7 @@ void CSE_ALifeObject::spawn_supplies(LPCSTR ini_string)
 
         if (!spawnLoadouts.empty())
         {
-            s32 sel = Random.randI(0, spawnLoadouts.size());
+            s32 sel = Random.randI(0, (s32)spawnLoadouts.size());
             if (ini.r_line(loadoutSection, spawnLoadouts.at(sel), &itmSection, &V))
             {
                 VERIFY(xr_strlen(itmSection));
@@ -213,7 +213,7 @@ bool CSE_ALifeObject::keep_saved_data_anyway() const /* noexcept */ { return fal
 bool CSE_ALifeObject::is_spawn_supplies_flag_set(pcstr value, pcstr flag)
 {
     pcstr flagSubstring = strstr(value, flag);
-    int flagLength = strlen(flag);
+    int flagLength = (int)strlen(flag);
 
     if (flagSubstring != nullptr)
     {

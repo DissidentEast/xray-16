@@ -128,7 +128,7 @@ CUIArtefactDetectorElite::CUIArtefactDetectorElite(CEliteDetector* p)
         auto& S = m_palette[name];
         xr_delete(S); // prevent memory leak in cases of duplicated IDs
 
-        S = UIHelper::CreateStatic(uiXml, "palette", idx, m_wrk_area);
+        S = UIHelper::CreateStatic(uiXml, "palette", (int)idx, m_wrk_area);
         S->SetCustomDraw(true);
     }
 

@@ -43,7 +43,7 @@ void CUITextureMaster::ParseShTexInfo(pcstr xml_file)
         return;
     const shared_str file = xml.Read("file_name", 0, "");
 
-    const int num = xml.GetNodesNum("", 0, "texture");
+    const int num = (int)xml.GetNodesNum("", 0, "texture");
     for (int i = 0; i < num; i++)
     {
         TEX_INFO info;
@@ -65,7 +65,7 @@ void CUITextureMaster::ParseShTexInfo(pcstr xml_file)
 
 void CUITextureMaster::ParseShTexInfo(CUIXml& xml, bool override)
 {
-    const int files_num = xml.GetNodesNum("", 0, "file");
+    const int files_num = (int)xml.GetNodesNum("", 0, "file");
 
     for (int fi = 0; fi < files_num; ++fi)
     {
@@ -74,7 +74,7 @@ void CUITextureMaster::ParseShTexInfo(CUIXml& xml, bool override)
 
         XML_NODE node = xml.NavigateToNode("file", fi);
 
-        const int num = xml.GetNodesNum(node, "texture");
+        const int num = (int)xml.GetNodesNum(node, "texture");
         for (int i = 0; i < num; i++)
         {
             TEX_INFO info;

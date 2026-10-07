@@ -206,7 +206,7 @@ shared_str clear_brackets(LPCSTR src)
 
     string512 _original;
     xr_strcpy(_original, src);
-    u32 _len = xr_strlen(_original);
+    u32 _len = (u32)xr_strlen(_original);
     if (0 == _len)
         return shared_str("");
     if ('"' == _original[_len - 1])

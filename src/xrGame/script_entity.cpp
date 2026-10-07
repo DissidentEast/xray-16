@@ -659,7 +659,7 @@ bool CScriptEntity::bfScriptAnimation()
 }
 
 void CScriptEntity::UpdateCL() { bfScriptAnimation(); }
-u32 CScriptEntity::GetActionCount() const { return (m_tpActionQueue.size()); }
+u32 CScriptEntity::GetActionCount() const { return ((u32)m_tpActionQueue.size()); }
 const CScriptEntityAction* CScriptEntity::GetActionByIndex(u32 action_index) const
 {
     return (m_tpActionQueue[action_index]);

@@ -243,7 +243,7 @@ bool MODEL::deserialize(pcstr fileName, bool skipCrc32Check /*= false*/, deseria
         return false;
     }
 
-    const u32 actualModelCrc = skipCrc32Check ? modelCrc : crc32(integrityPointer, treeSize);
+    const u32 actualModelCrc = skipCrc32Check ? modelCrc : crc32(integrityPointer, (u32)treeSize);
     if (modelCrc != actualModelCrc)
     {
         FS.r_close(rstream);

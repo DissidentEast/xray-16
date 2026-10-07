@@ -115,8 +115,8 @@ void CSoundRender_Core::statistic(CSound_stats* dest, CSound_stats_ext* ext)
 
         for (CSoundRender_Scene* scene : m_scenes)
         {
-            dest->_simulated += scene->get_emitters().size();
-            dest->_events += scene->get_prev_events_count();
+            dest->_simulated += (u32)scene->get_emitters().size();
+            dest->_events += (u32)scene->get_prev_events_count();
         }
     }
     if (ext)
