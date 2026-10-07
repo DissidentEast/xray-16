@@ -136,7 +136,7 @@ void clientdata_proxy::save_proxy_screenshot()
     xr_string fname = clgame->generate_file_name(base_name);
 
     clgame->decompress_and_save_screenshot(
-        fname.c_str(), my_proxy_mem_file.pointer(), my_proxy_mem_file.size(), m_receiver->get_user_param());
+        fname.c_str(), my_proxy_mem_file.pointer(), (u32)my_proxy_mem_file.size(), m_receiver->get_user_param());
 }
 
 void clientdata_proxy::save_proxy_config()

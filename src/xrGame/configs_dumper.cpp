@@ -52,7 +52,7 @@ void configs_dumper::shedule_Update(u32 dt)
     R_ASSERT(m_state == ds_active);
     if (thread_result == WAIT_OBJECT_0)
     {
-        m_complete_cb(m_buffer_for_compress, m_buffer_for_compress_size, m_dump_result.size());
+        m_complete_cb(m_buffer_for_compress, m_buffer_for_compress_size, (u32)m_dump_result.size());
         m_state = ds_not_active;
         Engine.Sheduler.Unregister(this);
     }
@@ -174,7 +174,7 @@ void configs_dumper::sign_configs()
     LPCSTR add_str = NULL;
     STRCONCAT(add_str, tmp_player_name, tmp_cdkey_digest, current_time(creation_date));
 
-    u32 tmp_w_pos = m_dump_result.tell();
+    u32 tmp_w_pos = (u32)m_dump_result.tell();
     m_dump_result.w_stringZ(add_str);
 
     tmp_ini.w_string(cd_info_secion, cd_player_name_key, tmp_player_name);
@@ -185,11 +185,11 @@ void configs_dumper::sign_configs()
 
     if (m_yield_cb)
     {
-        tmp_dsign = m_dump_signer.sign_mt(m_dump_result.pointer(), m_dump_result.size(), m_yield_cb);
+        tmp_dsign = m_dump_signer.sign_mt(m_dump_result.pointer(), (u32)m_dump_result.size(), m_yield_cb);
     }
     else
     {
-        tmp_dsign = m_dump_signer.sign(m_dump_result.pointer(), m_dump_result.size());
+        tmp_dsign = m_dump_signer.sign(m_dump_result.pointer(), (u32)m_dump_result.size());
     }
 
     m_dump_result.seek(tmp_w_pos);
@@ -259,14 +259,14 @@ void configs_dumper::dump_config(complete_callback_t complete_cb)
 
 void configs_dumper::compress_configs()
 {
-    realloc_compress_buffer(m_dump_result.size());
+    realloc_compress_buffer((u32)m_dump_result.size());
     ppmd_yield_callback_t ts_cb;
     if (m_yield_cb)
     {
         ts_cb.bind(this, &configs_dumper::switch_thread);
     }
-    m_buffer_for_compress_size = ppmd_compress_mt(
-        m_buffer_for_compress, m_buffer_for_compress_capacity, m_dump_result.pointer(), m_dump_result.size(), ts_cb);
+    m_buffer_for_compress_size = ppmd_compress_mt(m_buffer_for_compress, m_buffer_for_compress_capacity,
+        m_dump_result.pointer(), (u32)m_dump_result.size(), ts_cb);
 }
 
 void configs_dumper::yield_cb(long progress)

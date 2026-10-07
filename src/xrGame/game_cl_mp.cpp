@@ -1518,7 +1518,7 @@ void game_cl_mp::SendCollectedData(u8 const* buffer, u32 buffer_size, u32 uncomp
     upload_memory_writer.w(buffer, buffer_size);
 
     Level().m_file_transfer->start_transfer_file(
-        upload_memory_writer.pointer(), upload_memory_writer.size(), sending_cb, uncompressed_size);
+        upload_memory_writer.pointer(), (u32)upload_memory_writer.size(), sending_cb, uncompressed_size);
 };
 
 xr_string game_cl_mp::generate_file_name(const xr_string& base_name, const time_t* date_time)
@@ -1656,13 +1656,13 @@ void game_cl_mp::fr_callback_binder::receiving_file_callback(
         case e_screenshot_response:
         {
             m_owner->decompress_and_save_screenshot(
-                m_file_name.c_str(), m_writer.pointer(), m_writer.size(), m_frnode->get_user_param());
+                m_file_name.c_str(), m_writer.pointer(), (u32)m_writer.size(), m_frnode->get_user_param());
         }
         break;
         case e_configs_response:
         {
             m_owner->decompress_and_process_config(
-                m_file_name.c_str(), m_writer.pointer(), m_writer.size(), m_frnode->get_user_param());
+                m_file_name.c_str(), m_writer.pointer(), (u32)m_writer.size(), m_frnode->get_user_param());
         }
         break;
         default: NODEFAULT;
@@ -1713,7 +1713,7 @@ void game_cl_mp::fr_callback_binder::receiving_serverinfo_callback(
         Msg("* serverinfo: download complete successfully !");
         R_ASSERT2(m_owner->m_game_ui_custom || GEnv.isDedicatedServer, "game ui not initialized");
         if (m_owner->m_game_ui_custom)
-            m_owner->extract_server_info(m_writer.pointer(), m_writer.size());
+            m_owner->extract_server_info(m_writer.pointer(), (u32)m_writer.size());
         m_active = false;
     }
     break;

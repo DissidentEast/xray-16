@@ -55,7 +55,7 @@ bool init_lzo(u8*& dest_wm, u8*& wm_buffer, lzo_dictionary_buffer& dest_dict)
     FS.r_close(reader);
 
     dest_dict.data = buffer;
-    dest_dict.size = buffer_size;
+    dest_dict.size = (u32)buffer_size;
 
     lzo_initialize();
     wm_buffer = static_cast<u8*>(xr_malloc(lzo_get_workmem_size() + 16));

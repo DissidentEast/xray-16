@@ -24,8 +24,8 @@ bool disk_file_reader::make_data_packet(NET_Packet& packet, u32 chunk_size)
 };
 
 bool disk_file_reader::is_first_packet() { return !m_reader->tell(); }
-u32 disk_file_reader::size() { return m_reader->length(); }
-u32 disk_file_reader::tell() { return m_reader->tell(); }
+u32 disk_file_reader::size() { return (u32)m_reader->length(); }
+u32 disk_file_reader::tell() { return (u32)m_reader->tell(); }
 bool disk_file_reader::opened() const { return (m_reader != NULL); }
 // memory reader
 memory_reader::memory_reader(u8* data_ptr, u32 data_size)
@@ -48,8 +48,8 @@ bool memory_reader::make_data_packet(NET_Packet& packet, u32 chunk_size)
 }
 
 bool memory_reader::is_first_packet() { return !m_reader->tell(); }
-u32 memory_reader::size() { return m_reader->length(); }
-u32 memory_reader::tell() { return m_reader->tell(); }
+u32 memory_reader::size() { return (u32)m_reader->length(); }
+u32 memory_reader::tell() { return (u32)m_reader->tell(); }
 bool memory_reader::opened() const { return (m_reader != NULL); }
 // buffers_vector reader
 
@@ -150,7 +150,7 @@ memory_writer_reader::memory_writer_reader(CMemoryWriter* src_writer, u32 const 
 memory_writer_reader::~memory_writer_reader() {}
 bool memory_writer_reader::make_data_packet(NET_Packet& packet, u32 chunk_size)
 {
-    u32 elapsed = m_writer_as_src->size() - m_writer_pointer;
+    u32 elapsed = (u32)(m_writer_as_src->size() - m_writer_pointer);
     // in case of very fast client (can be server client),
     // server can send all data stored in memory writer, while new data is not received
     // ready_to_send method will return true because tell() < size().

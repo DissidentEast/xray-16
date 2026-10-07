@@ -14,13 +14,13 @@ configs_verifyer::configs_verifyer()
     while (m_original_config.dump_one(m_orig_config_body))
     {
     };
-    m_orig_config_end_pos = m_orig_config_body.tell();
+    m_orig_config_end_pos = (u32)m_orig_config_body.tell();
 }
 
 configs_verifyer::~configs_verifyer() {}
 static char* search_info_section(u8* buffer, u32 buffer_size)
 {
-    u32 sstr_size = xr_strlen(cd_info_secion);
+    u32 sstr_size = (u32)xr_strlen(cd_info_secion);
     VERIFY(buffer_size >= sstr_size);
     u8* rbegin = buffer + (buffer_size - sstr_size);
     int r_size = static_cast<int>(buffer_size - sstr_size);
@@ -43,7 +43,7 @@ bool configs_verifyer::verify_dsign(u8* data, u32 data_size, crypto::xr_sha1::ha
         return false;
 
     --tmp_info_sect;
-    u32 tmp_info_sect_size = xr_strlen(tmp_info_sect);
+    u32 tmp_info_sect_size = (u32)xr_strlen(tmp_info_sect);
     IReader tmp_reader(tmp_info_sect, tmp_info_sect_size);
     CInifile tmp_ini(&tmp_reader);
 
@@ -67,7 +67,7 @@ bool configs_verifyer::verify_dsign(u8* data, u32 data_size, crypto::xr_sha1::ha
     shared_str tmp_dsign = tmp_ini.r_string(cd_info_secion, cd_digital_sign_key);
 
     xr_strcat(dst_buffer, dst_size, add_str);
-    src_data_size += xr_strlen(dst_buffer) + 1; // zero ending
+    src_data_size += (u32)xr_strlen(dst_buffer) + 1; // zero ending
 
     auto hash = m_verifyer.verify(data, src_data_size, tmp_dsign);
     if (!hash)
@@ -196,7 +196,7 @@ bool configs_verifyer::verify(u8* data, u32 data_size, string256& diff)
         tmp_ini.r_string(cd_info_secion, cd_player_digest_key), tmp_ini.r_string(cd_info_secion, cd_creation_date));
 
     m_orig_config_body.w_stringZ(add_str);
-    auto hash = crypto::xr_sha1::calculate(m_orig_config_body.pointer(), m_orig_config_body.tell());
+    auto hash = crypto::xr_sha1::calculate(m_orig_config_body.pointer(), (u32)m_orig_config_body.tell());
 
     crypto::xr_sha1::hash_t tmp_checksum;
     if (!verify_dsign(data, data_size, tmp_checksum))

@@ -94,7 +94,7 @@ demo_info::demo_info() {}
 demo_info::~demo_info() { delete_data(m_players); }
 void demo_info::read_from_file(CStreamReader* file_to_read)
 {
-    u32 old_pos = file_to_read->tell();
+    u32 old_pos = (u32)file_to_read->tell();
     file_to_read->r_stringZ(m_map_name);
     file_to_read->r_stringZ(m_map_version);
     file_to_read->r_stringZ(m_game_type);
@@ -125,7 +125,7 @@ void demo_info::write_to_file(IWriter* file_to_write) const
     file_to_write->w_stringZ(m_game_score);
     file_to_write->w_stringZ(m_author_name);
 
-    file_to_write->w_u32(m_players.size());
+    file_to_write->w_u32((u32)m_players.size());
     for (players_coll_t::const_iterator i = m_players.begin(), ie = m_players.end(); i != ie; ++i)
     {
         (*i)->write_to_file(file_to_write);

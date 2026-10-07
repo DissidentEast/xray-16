@@ -176,7 +176,7 @@ u32 item_respawn_manager::load_section_items(CInifile& ini, const char* section_
     {
         section_item temp_sect_item;
         xr_strcpy(item_value, ini.r_string(section_name, item_name));
-        if (!parse_string(item_value, xr_strlen(item_value), temp_sect_item))
+        if (!parse_string(item_value, (u32)xr_strlen(item_value), temp_sect_item))
         {
             Msg("! WARNING: failed to parse item [%s] in section [%s]", item_name, section_name);
         }
@@ -358,7 +358,7 @@ void item_respawn_manager::respawn_level_items()
         u32 S_id;
         for (IReader* S = SP->open_chunk_iterator(S_id); S; S = SP->open_chunk_iterator(S_id, S))
         {
-            P.B.count = S->length();
+            P.B.count = (u32)S->length();
             S->r(P.B.data, P.B.count);
 
             u16 ID;
