@@ -22,7 +22,7 @@ bool init_ppmd_trained_stream(ppmd_trained_stream*& dest)
     reader->r(buffer, buffer_size);
     FS.r_close(reader);
 
-    dest = xr_new<compression::ppmd::stream>(buffer, buffer_size);
+    dest = xr_new<compression::ppmd::stream>(buffer, (u32)buffer_size);
     return true;
 }
 

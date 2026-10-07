@@ -35,7 +35,7 @@ void UITeamPanels::Init(LPCSTR xmlName, LPCSTR panelsRootNode)
 
 void UITeamPanels::InitAllFrames(shared_str const& frame_node)
 {
-    int number_of_items = uiXml.GetNodesNum(uiXml.GetLocalRoot(), frame_node.c_str());
+    int number_of_items = (int)uiXml.GetNodesNum(uiXml.GetLocalRoot(), frame_node.c_str());
     for (int i = 0; i < number_of_items; ++i)
     {
         XML_NODE tempFrameNode = uiXml.NavigateToNode(frame_node.c_str(), i);
@@ -61,7 +61,7 @@ void UITeamPanels::InitAllFrames(shared_str const& frame_node)
 
 void UITeamPanels::InitAllTeams(shared_str const& team_node)
 {
-    int numberOfTeams = uiXml.GetNodesNum(uiXml.GetLocalRoot(), team_node.c_str());
+    int numberOfTeams = (int)uiXml.GetNodesNum(uiXml.GetLocalRoot(), team_node.c_str());
     for (int i = 0; i < numberOfTeams; ++i)
     {
         XML_NODE tempTeamNode = uiXml.NavigateToNode(team_node.c_str(), i);

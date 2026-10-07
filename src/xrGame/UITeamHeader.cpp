@@ -29,7 +29,7 @@ void UITeamHeader::Update()
 void UITeamHeader::InitColumnsStatics(CUIXml& uiXml)
 {
     VERIFY(m_team_header_root);
-    int tempNumber = uiXml.GetNodesNum(m_team_header_root, COLUMN_NODE_NAME);
+    int tempNumber = (int)uiXml.GetNodesNum(m_team_header_root, COLUMN_NODE_NAME);
     for (int i = 0; i < tempNumber; ++i)
     {
         XML_NODE tempColumnNode = uiXml.NavigateToNode(COLUMN_NODE_NAME, i);
@@ -50,7 +50,7 @@ void UITeamHeader::InitColumnsStatics(CUIXml& uiXml)
 void UITeamHeader::InitFieldsStatics(CUIXml& uiXml)
 {
     VERIFY(m_team_header_root);
-    int tempNumber = uiXml.GetNodesNum(m_team_header_root, FILED_NODE_NAME);
+    int tempNumber = (int)uiXml.GetNodesNum(m_team_header_root, FILED_NODE_NAME);
     for (int i = 0; i < tempNumber; ++i)
     {
         XML_NODE tempFieldNode = uiXml.NavigateToNode(FILED_NODE_NAME, i);

@@ -801,7 +801,7 @@ void CConsole::select_for_filter(pcstr filter_str, const vecTips& in_v, vecTipsE
             if (cpcstr fd_str = strstr(str.c_str(), filter_str))
             {
                 size_t fd_sz = str.size() - xr_strlen(fd_str);
-                out_v.emplace_back(str, fd_sz, fd_sz + filter_str_len);
+                out_v.emplace_back(str, (int)fd_sz, (int)(fd_sz + filter_str_len));
             }
         }
     } // for

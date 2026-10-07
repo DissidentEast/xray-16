@@ -116,7 +116,7 @@ int UITeamState::InitScrollPanels()
 
 inline UITeamState::TScrollPanels::size_type UITeamState::GetNeedScrollPanelIndex()
 {
-    int panels_count = m_scroll_panels.size();
+    int panels_count = (int)m_scroll_panels.size();
     VERIFY(panels_count);
 
     if (m_last_panel >= panels_count)
