@@ -212,7 +212,7 @@ void xrCore::Initialize(pcstr _ApplicationName, pcstr commandLine, bool init_fs,
 
         // application path
         GetModuleFileName(GetModuleHandle("xrCore"), fn, sizeof(fn));
-        _splitpath(fn, dr, di, nullptr, nullptr);
+        _splitpath_s(fn, dr, sizeof(dr), di, sizeof(di), nullptr, 0, nullptr, 0);
         strconcat(sizeof(ApplicationPath), ApplicationPath, dr, di);
 #elif defined(XR_PLATFORM_POSIX)
         char* base_path = SDL_GetBasePath();

@@ -110,7 +110,7 @@ void CPatternFunction::vfLoadEF(LPCSTR caFileName)
 
     ef_storage().m_fpaBaseFunctions[m_dwFunctionType] = this;
 
-    _splitpath(caPath, 0, 0, m_caName, 0);
+    _splitpath_s(caPath, 0, 0, 0, 0, m_caName, sizeof(m_caName), 0, 0);
 
     // Msg			("* Evaluation function \"%s\" is successfully loaded",m_caName);
 }

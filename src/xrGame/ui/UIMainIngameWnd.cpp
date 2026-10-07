@@ -192,7 +192,7 @@ void CUIMainIngameWnd::Init()
         for (u32 k = 0; k < count; ++k)
         {
             _GetItem(cfgRecord.c_str(), k, singleThreshold);
-            sscanf(singleThreshold, "%f", &f);
+            sscanf_s(singleThreshold, "%f", &f);
 
             m_Thresholds[j].push_back(f);
         }

@@ -459,14 +459,16 @@ void CSE_ALifeTraderAbstract::set_specific_character(shared_str new_spec_char)
         xr_string n = "name_";
         n += subset;
         n += "_";
-        n += xr_itoa(::Random.randI(name_cnt), S, 10);
+        _itoa_s(::Random.randI(name_cnt), S, sizeof(S), 10);
+        n += S;
         m_character_name = StringTable().translate(n.c_str()).c_str();
         m_character_name += " ";
 
         n = "lname_";
         n += subset;
         n += "_";
-        n += xr_itoa(::Random.randI(last_name_cnt), S, 10);
+        _itoa_s(::Random.randI(last_name_cnt), S, sizeof(S), 10);
+        n += S;
         m_character_name += StringTable().translate(n.c_str()).c_str();
     }
     u32 min_m = selected_char.MoneyDef().min_money;

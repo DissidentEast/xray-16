@@ -81,8 +81,9 @@ struct str_container_impl
             {
                 const auto crc = crc32(value->value, value->dwLength);
                 string32 crc_str;
+                _itoa_s(value->dwCRC, crc_str, sizeof(crc_str), 16);
                 R_ASSERT3(crc == value->dwCRC, "CorePanic: read-only memory corruption (shared_strings)",
-                    xr_itoa(value->dwCRC, crc_str, 16));
+                    crc_str);
                 R_ASSERT3(value->dwLength == xr_strlen(value->value),
                     "CorePanic: read-only memory corruption (shared_strings, internal structures)", value->value);
                 value = value->next;
@@ -219,7 +220,8 @@ void str_container::verify() const
 void str_container::dump() const
 {
     impl->cs.Enter();
-    FILE* F = fopen("d:\\$str_dump$.txt", "w");
+    FILE* F = nullptr;
+    fopen_s(&F, "d:\\$str_dump$.txt", "w");
     impl->dump(F);
     fclose(F);
     impl->cs.Leave();
@@ -388,8 +390,9 @@ void str_container::verify()
         str_value* sv = *it;
         u32 crc = crc32(sv->value, sv->dwLength);
         string32 crc_str;
+        _itoa_s(sv->dwCRC, crc_str, sizeof(crc_str), 16);
         R_ASSERT3(crc == sv->dwCRC,
-            "CorePanic: read-only memory corruption (shared_strings)", xr_itoa(sv->dwCRC, crc_str, 16));
+            "CorePanic: read-only memory corruption (shared_strings)", crc_str);
         R_ASSERT3(sv->dwLength == xr_strlen(sv->value),
             "CorePanic: read-only memory corruption (shared_strings, internal structures)", sv->value);
     }
@@ -401,7 +404,8 @@ void str_container::dump()
     impl->cs.Enter();
     str_container_impl::cdb::iterator it = impl->container.begin();
     str_container_impl::cdb::iterator end = impl->container.end();
-    FILE* F = fopen("d:\\$str_dump$.txt", "w");
+    FILE* F = nullptr;
+    fopen_s(&F, "d:\\$str_dump$.txt", "w");
     for (; it != end; it++)
         fprintf(
             F, "ref[%4d]-len[%3d]-crc[%8X] : %s\n", (*it)->dwReference, (*it)->dwLength, (*it)->dwCRC, (*it)->value);

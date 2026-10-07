@@ -248,7 +248,7 @@ IC void xr_strlwr(shared_str& src)
     if (src.c_str())
     {
         char* lp = xr_strdup(src.c_str());
-        xr_strlwr(lp);
+        _strlwr_s(lp, xr_strlen(lp) + 1);
         src = lp;
         xr_free(lp);
     }

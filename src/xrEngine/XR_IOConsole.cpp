@@ -458,7 +458,7 @@ void CConsole::ExecuteCommand(pcstr cmd_str, bool record_cmd)
         {
             if (cc->bLowerCaseArgs)
             {
-                xr_strlwr(last);
+                _strlwr_s(last, xr_strlen(last) + 1);
             }
             if (last[0] == 0)
             {

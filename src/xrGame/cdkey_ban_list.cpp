@@ -207,7 +207,7 @@ cdkey_ban_list::banned_client::banned_client()
 time_t get_time_from_string(LPCSTR str_time)
 {
     tm tmp_time;
-    int res_t = sscanf(str_time, "%02d.%02d.%d_%02d:%02d:%02d", &tmp_time.tm_mday, &tmp_time.tm_mon, &tmp_time.tm_year,
+    int res_t = sscanf_s(str_time, "%02d.%02d.%d_%02d:%02d:%02d", &tmp_time.tm_mday, &tmp_time.tm_mon, &tmp_time.tm_year,
         &tmp_time.tm_hour, &tmp_time.tm_min, &tmp_time.tm_sec);
     if (res_t != 6)
         return 0;

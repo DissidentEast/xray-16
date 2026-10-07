@@ -108,7 +108,7 @@ void CSpecificCharacter::load_shared(LPCSTR)
         if (char_class)
         {
             char* buf_str = xr_strdup(char_class);
-            xr_strlwr(buf_str);
+            _strlwr_s(buf_str, xr_strlen(buf_str) + 1);
             data()->m_Classes.push_back(buf_str);
             xr_free(buf_str);
         }
@@ -118,7 +118,7 @@ void CSpecificCharacter::load_shared(LPCSTR)
     R_ASSERT3(team != NULL, "'community' field not fulfiled for specific character", m_OwnId.c_str());
 
     char* buf_str = xr_strdup(team);
-    xr_strlwr(buf_str);
+    _strlwr_s(buf_str, xr_strlen(buf_str) + 1);
     data()->m_Community.set(buf_str);
     xr_free(buf_str);
 

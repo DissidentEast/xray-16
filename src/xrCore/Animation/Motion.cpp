@@ -404,7 +404,8 @@ bool CSMotion::Load(IReader& F)
         string64 temp_buf;
         for (auto bm_it = bone_mots.begin(); bm_it != bone_mots.end(); ++bm_it)
         {
-            bm_it->SetName(xr_itoa(int(bm_it - bone_mots.begin()), temp_buf, 10));
+            _itoa_s(int(bm_it - bone_mots.begin()), temp_buf, sizeof(temp_buf), 10);
+            bm_it->SetName(temp_buf);
             bm_it->m_Flags.assign((u8)F.r_u32());
             for (size_t ch = 0; ch < ctMaxChannel; ch++)
             {

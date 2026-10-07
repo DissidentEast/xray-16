@@ -114,7 +114,7 @@ pcstr FS_Path::_update(string_path& dest, pcstr src) const
     }
 #endif
 
-    xr_strlwr(temp);
+    _strlwr_s(temp, xr_strlen(temp) + 1);
     strconcat(sizeof(dest), dest, m_Path, temp);
     return xr_fs_strlwr(dest);
 }

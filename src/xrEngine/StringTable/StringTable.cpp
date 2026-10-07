@@ -62,7 +62,7 @@ void CStringTable::Init()
     xr_parallel_for_each(fset, [this](const FS_File& it)
     {
         string_path fn, ext;
-        _splitpath(it.name.c_str(), nullptr, nullptr, fn, ext);
+        _splitpath_s(it.name.c_str(), nullptr, 0, nullptr, 0, fn, sizeof(fn), ext, sizeof(ext));
         xr_strcat(fn, ext);
 
         Load(fn);

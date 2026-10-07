@@ -18,7 +18,8 @@ Image::~Image()
 
 void Image::SaveTGA(const char* name, ImageDataFormat format, bool align)
 {
-    FILE* file = std::fopen(name, "wb");
+    FILE* file = nullptr;
+    fopen_s(&file, name, "wb");
     auto writerFunc = [&](void* data, size_t dataSize) { std::fwrite(data, dataSize, 1, file); };
     SaveTGA(writerFunc, format, align);
     std::fclose(file);

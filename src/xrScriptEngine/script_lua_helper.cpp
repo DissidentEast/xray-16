@@ -239,7 +239,8 @@ void CDbgLuaHelper::DrawStackTrace()
                 xr_strcat(szDesc, " ");
             }
             char szTmp[6];
-            xr_strcat(szDesc, xr_itoa(ar.currentline, szTmp, 10));
+            _itoa_s(ar.currentline, szTmp, sizeof(szTmp), 10);
+            xr_strcat(szDesc, szTmp);
             xr_strcat(szDesc, " ");
             if (ar.short_src)
                 xr_strcat(szDesc, ar.short_src);

@@ -74,7 +74,8 @@ void CUISpinNum::OnBtnDownClick()
 void CUISpinNum::SetValue(int v)
 {
     string16 buff;
-    m_pLines->SetText(xr_itoa(v, buff, 10));
+    _itoa_s(v, buff, sizeof(buff), 10);
+    m_pLines->SetText(buff);
 }
 
 bool CUISpinNum::CanPressUp() { return m_iVal + m_iStep <= m_iMax; }

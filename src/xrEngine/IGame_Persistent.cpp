@@ -149,7 +149,8 @@ void gen_logo_name(string_path& dest, pcstr level_name, int num = -1)
 
     string16 buff;
     xr_strcat(dest, sizeof(dest), "_");
-    xr_strcat(dest, sizeof(dest), xr_itoa(num + 1, buff, 10));
+    _itoa_s(num + 1, buff, sizeof(buff), 10);
+    xr_strcat(dest, sizeof(dest), buff);
 }
 
 // Return true if logo exists

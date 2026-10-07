@@ -261,7 +261,7 @@ void UICore::ReadTextureInfo()
         for (const auto& file : files)
         {
             string_path path, name;
-            _splitpath(file.name.c_str(), nullptr, path, name, nullptr);
+            _splitpath_s(file.name.c_str(), nullptr, 0, path, sizeof(path), name, sizeof(name), nullptr, 0);
             xr_strcat(name, ".xml");
             path[xr_strlen(path) - 1] = '\0'; // cut the latest '\\'
 

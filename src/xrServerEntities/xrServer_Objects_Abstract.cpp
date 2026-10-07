@@ -23,7 +23,7 @@ CSE_Visual::CSE_Visual(LPCSTR name)
         xr_strcpy(tmp, name);
         if (strext(tmp))
             *strext(tmp) = 0;
-        xr_strlwr(tmp);
+        _strlwr_s(tmp, xr_strlen(tmp) + 1);
         visual_name = tmp;
     }
     else
@@ -40,7 +40,7 @@ void CSE_Visual::set_visual(LPCSTR name, bool load)
     xr_strcpy(tmp, name);
     if (strext(tmp))
         *strext(tmp) = 0;
-    xr_strlwr(tmp);
+    _strlwr_s(tmp, xr_strlen(tmp) + 1);
     visual_name = tmp;
 }
 

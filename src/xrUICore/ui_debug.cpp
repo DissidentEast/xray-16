@@ -218,27 +218,27 @@ void CUIDebugger::apply_setting(pcstr line)
     int i{};
     u32 color{};
 
-    if (sscanf(line, "ColoredRects=%d", &i) == 1)
+    if (sscanf_s(line, "ColoredRects=%d", &i) == 1)
         settings.coloredRects = i != 0;
-    else if (sscanf(line, "NormalColor=0x%X", &color) == 1)
+    else if (sscanf_s(line, "NormalColor=0x%X", &color) == 1)
         settings.colors.normal = color;
-    else if (sscanf(line, "NormalHoveredColor=0x%X", &color) == 1)
+    else if (sscanf_s(line, "NormalHoveredColor=0x%X", &color) == 1)
         settings.colors.normalHovered = color;
-    else if (sscanf(line, "ExaminedColor=0x%X", &color) == 1)
+    else if (sscanf_s(line, "ExaminedColor=0x%X", &color) == 1)
         settings.colors.examined = color;
-    else if (sscanf(line, "FocusedColor=0x%X", &color) == 1)
+    else if (sscanf_s(line, "FocusedColor=0x%X", &color) == 1)
         settings.colors.focused = color;
-    else if (sscanf(line, "FocusableValuableColor=0x%X", &color) == 1)
+    else if (sscanf_s(line, "FocusableValuableColor=0x%X", &color) == 1)
         settings.colors.focusableValuable = color;
-    else if (sscanf(line, "FocusableValuableHoveredColor=0x%X", &color) == 1)
+    else if (sscanf_s(line, "FocusableValuableHoveredColor=0x%X", &color) == 1)
         settings.colors.focusableValuableHovered = color;
-    else if (sscanf(line, "FocusableNonValuableColor=0x%X", &color) == 1)
+    else if (sscanf_s(line, "FocusableNonValuableColor=0x%X", &color) == 1)
         settings.colors.focusableNonValuable = color;
-    else if (sscanf(line, "FocusableNonValuableHoveredColor=0x%X", &color) == 1)
+    else if (sscanf_s(line, "FocusableNonValuableHoveredColor=0x%X", &color) == 1)
         settings.colors.focusableNonValuableHovered = color;
-    else if (sscanf(line, "DirectionArrowColor=0x%X", &color) == 1)
+    else if (sscanf_s(line, "DirectionArrowColor=0x%X", &color) == 1)
         settings.colors.directionArrow = color;
-    else if (sscanf(line, "DirectionTextColor=0x%X", &color) == 1)
+    else if (sscanf_s(line, "DirectionTextColor=0x%X", &color) == 1)
         settings.colors.directionText = color;
 }
 

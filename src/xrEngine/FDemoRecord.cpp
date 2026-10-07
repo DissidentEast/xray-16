@@ -321,10 +321,12 @@ void CDemoRecord::MakeCubeMapFace(Fvector& D, Fvector& N)
     case 5:
         N.set(cmNorm[m_Stage]);
         D.set(cmDir[m_Stage]);
-        GEnv.Render->Screenshot(IRender::SM_FOR_CUBEMAP, xr_itoa(m_Stage, buf, 10));
+        _itoa_s(m_Stage, buf, sizeof(buf), 10);
+        GEnv.Render->Screenshot(IRender::SM_FOR_CUBEMAP, buf);
         break;
     case 6:
-        GEnv.Render->Screenshot(IRender::SM_FOR_CUBEMAP, xr_itoa(m_Stage, buf, 10));
+        _itoa_s(m_Stage, buf, sizeof(buf), 10);
+        GEnv.Render->Screenshot(IRender::SM_FOR_CUBEMAP, buf);
         N.set(m_Camera.j);
         D.set(m_Camera.k);
         psHUD_Flags.assign(s_hud_flag);

@@ -354,7 +354,7 @@ public:
         else
             xr_strcpy(PlayerName, args);
 
-        xr_strlwr(PlayerName);
+        _strlwr_s(PlayerName, xr_strlen(PlayerName) + 1);
         IClient* tmp_client = Level().Server->FindClient(SearcherClientByName(PlayerName));
         if (tmp_client && (tmp_client != Level().Server->GetServerClient()))
         {
@@ -404,7 +404,7 @@ public:
         else
         {
             u32 tmp_client_id;
-            if (sscanf(args, "%u", &tmp_client_id) != 1)
+            if (sscanf_s(args, "%u", &tmp_client_id) != 1)
             {
                 Msg("! ERROR: bad command parameters.");
                 Msg("Kick player. Format: \"sv_kick_id <player session id | \'%s\'>\". To receive list of players ids "
@@ -496,7 +496,7 @@ public:
         else
         {
             u32 tmp_client_id;
-            if (sscanf(args_, "%u", &tmp_client_id) != 1)
+            if (sscanf_s(args_, "%u", &tmp_client_id) != 1)
             {
                 Msg("! ERROR: bad command parameters.");
                 Msg("Make screenshot. Format: \"make_screenshot <player session id | \'%s\'> <ban_time_in_sec>\". To "
@@ -544,7 +544,7 @@ public:
         else
         {
             u32 tmp_client_id;
-            if (sscanf(args_, "%u", &tmp_client_id) != 1)
+            if (sscanf_s(args_, "%u", &tmp_client_id) != 1)
             {
                 Msg("! ERROR: bad command parameters.");
                 Msg("Make screenshot. Format: \"make_config_dump <player session id | \'%s\'> <ban_time_in_sec>\". To "
@@ -584,7 +584,7 @@ public:
             return;
         }
         float new_speed;
-        sscanf(args, "%f", &new_speed);
+        sscanf_s(args, "%f", &new_speed);
         Level().SetDemoPlaySpeed(new_speed);
     };
 
@@ -894,7 +894,7 @@ public:
         if (!strncmp(args_, LAST_PRINTED_PLAYER_STR, sizeof(LAST_PRINTED_PLAYER_STR) - 1))
         {
             client_id = last_printed_player;
-            if (sscanf(args_ + sizeof(LAST_PRINTED_PLAYER_STR), "%d", &ban_time) != 1)
+            if (sscanf_s(args_ + sizeof(LAST_PRINTED_PLAYER_STR), "%d", &ban_time) != 1)
             {
                 Msg("! ERROR: bad command parameters.");
                 Msg("Ban player. Format: \"sv_banplayer <player session id | \'%s\'> <ban_time_in_sec>\". To receive "
@@ -907,7 +907,7 @@ public:
         else
         {
             u32 tmp_client_id;
-            if (sscanf(args_, "%u %d", &tmp_client_id, &ban_time) != 2)
+            if (sscanf_s(args_, "%u %d", &tmp_client_id, &ban_time) != 2)
             {
                 Msg("! ERROR: bad command parameters.");
                 Msg("Ban player. Format: \"sv_banplayer <player session id | \'%s\'> <ban_time_in_sec>\". To receive "
@@ -998,7 +998,7 @@ public:
         {
             // XXX: size_t ????? u32 maybe?
             size_t player_index = 0;
-            if (sscanf(args_, "%zu", &player_index) != 1)
+            if (sscanf_s(args_, "%zu", &player_index) != 1)
             {
                 Msg("! ERROR: bad command parameters.");
                 Msg(" Unban player. Format: \"sv_unbanplayer <banned player index | \'%s\'>. To receive list of banned "
@@ -1066,7 +1066,7 @@ public:
         else
             xr_strcpy(PlayerName, buff);
 
-        xr_strlwr(PlayerName);
+        _strlwr_s(PlayerName, xr_strlen(PlayerName) + 1);
 
         IClient* tmp_client = Level().Server->FindClient(SearcherClientByName(PlayerName));
         if (tmp_client && (tmp_client != Level().Server->GetServerClient()))
@@ -1688,7 +1688,7 @@ public:
     virtual void Execute(LPCSTR args)
     {
         u32 hours = 0, mins = 0, seconds = 0;
-        if (sscanf(args, "%d:%d:%d", &hours, &mins, &seconds) < 2)
+        if (sscanf_s(args, "%d:%d:%d", &hours, &mins, &seconds) < 2)
             return;
 
         u64 NewTime = generate_time(1, 1, 1, hours, mins, seconds, 0);
@@ -1840,7 +1840,7 @@ public:
         {
             u32 TeamID = 0;
             s32 TeamStartMoney = 0;
-            sscanf(args, "%i %i", &TeamID, &TeamStartMoney);
+            sscanf_s(args, "%i %i", &TeamID, &TeamStartMoney);
             TeamStruct* pTS = pGameMP->GetTeamData(TeamID);
             if (pTS)
                 pTS->m_iM_Start = TeamStartMoney;

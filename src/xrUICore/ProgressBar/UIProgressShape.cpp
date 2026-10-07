@@ -13,7 +13,8 @@ void CUIProgressShape::SetPos(int pos, int max)
     {
         CUIStatic* origin = m_pTexture ? m_pTexture : this;
         string256 buff;
-        origin->SetText(xr_itoa(pos, buff, 10));
+        _itoa_s(pos, buff, sizeof(buff), 10);
+        origin->SetText(buff);
     }
 }
 

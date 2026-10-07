@@ -72,7 +72,7 @@ public:
             for (int i = 0; i < n; ++i)
             {
                 _GetItem(cmd_line, i, m_params[i], '/');
-                xr_strlwr(m_params[i]);
+                _strlwr_s(m_params[i], xr_strlen(m_params[i]) + 1);
             }
         }
     };

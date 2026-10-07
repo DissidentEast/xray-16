@@ -63,7 +63,7 @@ u32 ip_filter::load()
 
         subnet_item* tmp_item = xr_new<subnet_item>();
         unsigned int parse_data[5];
-        unsigned int parsed_params = sscanf(
+        unsigned int parsed_params = sscanf_s(
             address, "%3u.%3u.%3u.%3u/%2u", &parse_data[0], &parse_data[1], &parse_data[2], &parse_data[3], &parse_data[4]);
         if ((parsed_params != 5) || (parse_data[0] > 255) || (parse_data[1] > 255) || (parse_data[2] > 255) ||
             (parse_data[3] > 255) || (parse_data[4] == 0))

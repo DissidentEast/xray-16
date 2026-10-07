@@ -112,7 +112,8 @@ void SFillPropData::load()
     {
         VERIFY(locations[i].empty());
         string256 caSection, T;
-        strconcat(sizeof(caSection), caSection, SECTION_HEADER, xr_itoa(i, T, 10));
+        _itoa_s(i, T, sizeof(T), 10);
+        strconcat(sizeof(caSection), caSection, SECTION_HEADER, T);
         R_ASSERT(Ini->section_exist(caSection));
         for (int k = 0; Ini->r_line(caSection, k, &N, &V); ++k)
             locations[i].emplace_back(V, atoi(N));
@@ -123,7 +124,7 @@ void SFillPropData::load()
         for (int k = 0; Ini->r_line("graph_points_draw_color_palette", k, &N, &V); ++k)
         {
             u32 color;
-            if (1 == sscanf(V, "%x", &color))
+            if (1 == sscanf_s(V, "%x", &color))
             {
                 location_colors[N] = color;
             }

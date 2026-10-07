@@ -17,21 +17,21 @@ xr_unique_ptr<EFS_Utils> xr_EFS;
 xr_string EFS_Utils::ExtractFileName(pcstr src)
 {
     string_path name;
-    _splitpath(src, 0, 0, name, 0);
+    _splitpath_s(src, nullptr, 0, nullptr, 0, name, sizeof(name), nullptr, 0);
     return xr_string(name);
 }
 
 xr_string EFS_Utils::ExtractFileExt(pcstr src)
 {
     string_path ext;
-    _splitpath(src, 0, 0, 0, ext);
+    _splitpath_s(src, nullptr, 0, nullptr, 0, nullptr, 0, ext, sizeof(ext));
     return xr_string(ext);
 }
 
 xr_string EFS_Utils::ExtractFilePath(pcstr src)
 {
     string_path drive, dir;
-    _splitpath(src, drive, dir, 0, 0);
+    _splitpath_s(src, drive, sizeof(drive), dir, sizeof(dir), nullptr, 0, nullptr, 0);
     return xr_string(drive) + dir;
 }
 
@@ -138,7 +138,7 @@ bool EFS_Utils::GetOpenNameInternal(
         string_path dr;
         if (!(buffer[0] == _DELIMITER && buffer[1] == _DELIMITER)) // if !network
         {
-            _splitpath(buffer, dr, 0, 0, 0);
+            _splitpath_s(buffer, dr, sizeof(dr), nullptr, 0, nullptr, 0, nullptr, 0);
 
             if (0 == dr[0])
             {
@@ -209,7 +209,7 @@ bool EFS_Utils::GetOpenNameInternal(
             xr_strcpy(buffer, sz_buf, fns);
         }
     }
-    xr_strlwr(buffer);
+    _strlwr_s(buffer, xr_strlen(buffer) + 1);
     return bRes;
 #else
     return true;
@@ -239,7 +239,7 @@ bool EFS_Utils::GetSaveName(pcstr initial, string_path& buffer, pcstr offset, in
         string_path dr;
         if (!(buffer[0] == _DELIMITER && buffer[1] == _DELIMITER)) // if !network
         {
-            _splitpath(buffer, dr, 0, 0, 0);
+            _splitpath_s(buffer, dr, sizeof(dr), nullptr, 0, nullptr, 0, nullptr, 0);
             if (0 == dr[0])
                 P._update(buffer, buffer);
         }
@@ -275,7 +275,7 @@ bool EFS_Utils::GetSaveName(pcstr initial, string_path& buffer, pcstr offset, in
         case FNERR_BUFFERTOOSMALL: Log("Too many file selected."); break;
         }
     }
-    xr_strlwr(buffer);
+    _strlwr_s(buffer, xr_strlen(buffer) + 1);
     return bRes;
 #else
     return true;

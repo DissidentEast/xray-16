@@ -122,7 +122,7 @@ void CControlAnimationBase::set_override_animation(pcstr name)
             pcstr const anim_index_string = name + anim_item->target_name.size();
 
             u32 anim_index = 0;
-            sscanf(anim_index_string, "%d", &anim_index);
+            sscanf_s(anim_index_string, "%d", &anim_index);
             set_override_animation((EMotionAnim)anim_type, anim_index);
 
             return;

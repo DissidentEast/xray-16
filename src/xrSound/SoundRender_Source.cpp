@@ -259,7 +259,7 @@ bool CSoundRender_Source::load(pcstr name)
     string_path fn, N;
     xr_strcpy(N, name);
 #ifdef XR_PLATFORM_WINDOWS
-    xr_strlwr(N);
+    _strlwr_s(N, xr_strlen(N) + 1);
 #endif
 
     if (strext(N))

@@ -210,7 +210,7 @@ void CLevel::PrefetchSound(LPCSTR name)
     // preprocess sound name
     string_path tmp;
     xr_strcpy(tmp, name);
-    xr_strlwr(tmp);
+    _strlwr_s(tmp, xr_strlen(tmp) + 1);
     if (strext(tmp))
         *strext(tmp) = 0;
     shared_str snd_name = tmp;
@@ -232,7 +232,7 @@ int CLevel::get_RPID(LPCSTR /**name**/)
     // Read data
     Fvector4	pos;
     int			team;
-    sscanf		(params,"%f,%f,%f,%d,%f",&pos.x,&pos.y,&pos.z,&team,&pos.w); pos.y += 0.1f;
+    sscanf_s		(params,"%f,%f,%f,%d,%f",&pos.x,&pos.y,&pos.z,&team,&pos.w); pos.y += 0.1f;
 
     // Search respawn point
     svector<Fvector4,maxRP>	&rp = Level().get_team(team).RespawnPoints;

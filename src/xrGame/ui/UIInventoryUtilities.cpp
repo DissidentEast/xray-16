@@ -434,7 +434,7 @@ void LoadStrings(CharInfoStrings* container, LPCSTR section, LPCSTR field)
 
         _GetItem(cfgRecord, k + 1, singleThreshold);
         if (k + 1 != count)
-            sscanf(singleThreshold, "%i", &upBoundThreshold);
+            sscanf_s(singleThreshold, "%i", &upBoundThreshold);
         else
             upBoundThreshold += 1;
 

@@ -39,7 +39,7 @@ CALifeMonsterBrain::CALifeMonsterBrain(object_type* object)
     m_movement_manager = xr_new<CALifeMonsterMovementManager>(object);
 
     u32 hours, minutes, seconds;
-    sscanf(pSettings->r_string(this->object().name(), "smart_terrain_choose_interval"), "%d:%d:%d", &hours, &minutes,
+    sscanf_s(pSettings->r_string(this->object().name(), "smart_terrain_choose_interval"), "%d:%d:%d", &hours, &minutes,
         &seconds);
     m_time_interval = (u32)generate_time(1, 1, 1, hours, minutes, seconds);
 

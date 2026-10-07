@@ -269,7 +269,7 @@ public:
         else
         {
             int id1 = -1, id2 = -1;
-            sscanf(args, "%d %d", &id1, &id2);
+            sscanf_s(args, "%d %d", &id1, &id2);
             if ((-1 != id1) && (-1 != id2))
                 if (_max(id1, id2) > (int)ai().game_graph().header().vertex_count() - 1)
                     Msg("! there are only %d vertexes!", ai().game_graph().header().vertex_count());
@@ -298,7 +298,7 @@ public:
     virtual void Execute(LPCSTR args)
     {
         float id1 = 0.0f;
-        sscanf(args, "%f", &id1);
+        sscanf_s(args, "%f", &id1);
         if (id1 < EPS_L)
             Msg("Invalid time factor! (%.4f)", id1);
         else
@@ -350,7 +350,7 @@ public:
         if ((GameID() == eGameIDSingle) && ai().get_alife())
         {
             float id1 = 0.0f;
-            sscanf(args, "%f", &id1);
+            sscanf_s(args, "%f", &id1);
             if (id1 < 2.0f)
                 Msg("Invalid online distance! (%.4f)", id1);
             else
@@ -377,7 +377,7 @@ public:
             game_sv_Single* tpGame = smart_cast<game_sv_Single*>(Level().Server->GetGameState());
             VERIFY(tpGame);
             int id1 = 0;
-            sscanf(args, "%d", &id1);
+            sscanf_s(args, "%d", &id1);
             if (id1 < 1)
                 Msg("Invalid process time! (%d)", id1);
             else
@@ -399,7 +399,7 @@ public:
             game_sv_Single* tpGame = smart_cast<game_sv_Single*>(Level().Server->GetGameState());
             VERIFY(tpGame);
             int id1 = 0;
-            sscanf(args, "%d", &id1);
+            sscanf_s(args, "%d", &id1);
             tpGame->alife().objects_per_update(id1);
         }
         else
@@ -418,7 +418,7 @@ public:
             game_sv_Single* tpGame = smart_cast<game_sv_Single*>(Level().Server->GetGameState());
             VERIFY(tpGame);
             float id1 = 0;
-            sscanf(args, "%f", &id1);
+            sscanf_s(args, "%f", &id1);
             clamp(id1, .1f, 1.f);
             tpGame->alife().set_switch_factor(id1);
         }
@@ -1109,8 +1109,8 @@ public:
         u32 value1;
         u32 value2;
 
-        sscanf(param1, "%u", &value1);
-        sscanf(param2, "%u", &value2);
+        sscanf_s(param1, "%u", &value1);
+        sscanf_s(param2, "%u", &value2);
 
         if ((value1 > 0) && (value2 > 0))
         {
@@ -1145,7 +1145,7 @@ public:
 
         u32 value2;
 
-        sscanf(param2, "%u", &value2);
+        sscanf_s(param2, "%u", &value2);
         monster->set_show_debug_info(u8(value2));
     }
 };
@@ -1538,7 +1538,7 @@ struct CCC_StartTimeSingle : public IConsole_Command
     virtual void Execute(LPCSTR args)
     {
         u32 year = 1, month = 1, day = 1, hours = 0, mins = 0, secs = 0, milisecs = 0;
-        sscanf(args, "%d.%d.%d %d:%d:%d.%d", &year, &month, &day, &hours, &mins, &secs, &milisecs);
+        sscanf_s(args, "%d.%d.%d %d:%d:%d.%d", &year, &month, &day, &hours, &mins, &secs, &milisecs);
         year = _max(year, 1);
         month = _max(month, 1);
         day = _max(day, 1);
@@ -1828,7 +1828,7 @@ public:
             return;
         }
         int d = 0;
-        sscanf(args, "%d", &d);
+        sscanf_s(args, "%d", &d);
         if (ui_game_sp->GetActorMenu().DropAllItemsFromRuck(d == 1))
         {
             Msg("- All items from ruck of Actor is dropping now.");
@@ -1859,7 +1859,7 @@ class CCC_GSCheckForUpdates : public IConsole_Command
         if (args && *args)
         {
             int bInfo = 1;
-            sscanf(args, "%d", &bInfo);
+            sscanf_s(args, "%d", &bInfo);
             m_informNoPatch = (bInfo != 0);
         }
     }

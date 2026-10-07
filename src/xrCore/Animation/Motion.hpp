@@ -70,7 +70,7 @@ public:
         if (n)
         {
             xr_strcpy(tmp, n);
-            xr_strlwr(tmp);
+            _strlwr_s(tmp, xr_strlen(tmp) + 1);
         }
         name = tmp;
     }

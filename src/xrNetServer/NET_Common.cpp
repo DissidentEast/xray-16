@@ -159,7 +159,8 @@ void MultipacketSender::_FlushSendBuffer(u32 timeout, Buffer* buf)
         if (strstr(Core.Params, "-dump_traffic"))
         {
             static bool first_time = true;
-            FILE* dump = fopen("raw-out-traffic.bins", (first_time) ? "wb" : "ab");
+            FILE* dump = nullptr;
+            fopen_s(&dump, "raw-out-traffic.bins", (first_time) ? "wb" : "ab");
 
             if (first_time)
             {
@@ -201,7 +202,8 @@ void MultipacketReciever::RecievePacket(const void* packet_data, u32 packet_sz, 
     if (strstr(Core.Params, "-dump_traffic"))
     {
         static bool first_time = true;
-        FILE* dump = fopen("raw-in-traffic.bins", (first_time) ? "wb" : "ab");
+            FILE* dump = nullptr;
+            fopen_s(&dump, "raw-in-traffic.bins", (first_time) ? "wb" : "ab");
 
         if (first_time)
         {

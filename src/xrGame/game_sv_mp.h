@@ -222,7 +222,7 @@ struct SearcherClientByName
     SearcherClientByName(pcstr name)
     {
         strncpy_s(player_name, sizeof(player_name), name, sizeof(player_name) - 1);
-        xr_strlwr(player_name);
+        _strlwr_s(player_name, xr_strlen(player_name) + 1);
     }
 
     bool operator()(IClient* client) const
@@ -233,7 +233,7 @@ struct SearcherClientByName
             return false;
 
         STRCONCAT(tmp_player, temp_client->ps->getName());
-        xr_strlwr(tmp_player);
+        _strlwr_s(tmp_player, xr_strlen(tmp_player) + 1);
 
         if (!xr_strcmp(player_name, tmp_player))
         {

@@ -48,18 +48,22 @@ struct FS_item
     u32 Size() { return size; }
     LPCSTR Modif()
     {
-        struct tm* newtime;
+        std::tm newtime_buf;
         time_t t = modif;
-        newtime = localtime(&t);
-        xr_strcpy(buff, asctime(newtime));
+        localtime_s(&newtime_buf, &t);
+        struct tm* newtime = &newtime_buf;
+        char asctime_buf[26];
+        asctime_s(asctime_buf, sizeof(asctime_buf), newtime);
+        xr_strcpy(buff, asctime_buf);
         return buff;
     }
 
     LPCSTR ModifDigitOnly()
     {
-        struct tm* newtime;
+        std::tm newtime_buf;
         time_t t = modif;
-        newtime = localtime(&t);
+        localtime_s(&newtime_buf, &t);
+        struct tm* newtime = &newtime_buf;
         xr_sprintf(buff, "%02d/%02d/%4d %02d:%02d", newtime->tm_mday, newtime->tm_mon + 1, newtime->tm_year + 1900,
             newtime->tm_hour, newtime->tm_min);
         return buff;

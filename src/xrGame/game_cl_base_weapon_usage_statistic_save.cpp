@@ -90,7 +90,8 @@ void WeaponUsageStatistic::SaveData()
 #endif
     //---------------------------------------------------------
     FS.update_path(mFileName, "$logs$", mFileName);
-    FILE* SFile = fopen(mFileName, "wb");
+    FILE* SFile = nullptr;
+    fopen_s(&SFile, mFileName, "wb");
     if (!SFile)
         return;
     //---------------------------------------------------------

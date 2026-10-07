@@ -457,7 +457,7 @@ void CInifile::Load(IReader* F, pcstr path, allow_include_func_t allow_include_f
             {
                 string_path fn, inc_path, folder;
                 strconcat(sizeof(fn), fn, path, inc_name);
-                _splitpath(fn, inc_path, folder, 0, 0);
+                _splitpath_s(fn, inc_path, sizeof(inc_path), folder, sizeof(folder), nullptr, 0, nullptr, 0);
                 xr_strcat(inc_path, sizeof(inc_path), folder);
 
                 const auto loadFile = [&](const string_path _fn, const string_path name)
@@ -539,7 +539,8 @@ void CInifile::Load(IReader* F, pcstr path, allow_include_func_t allow_include_f
                 }
             }
             *strchr(str, ']') = 0;
-            Current->Name = xr_strlwr(str + 1);
+            _strlwr_s(str + 1, xr_strlen(str + 1) + 1);
+            Current->Name = str + 1;
         }
         else // name = value
         {
@@ -748,7 +749,7 @@ CInifile::Sect& CInifile::r_section(pcstr S) const
 {
     char section[256];
     xr_strcpy(section, sizeof section, S);
-    xr_strlwr(section);
+    _strlwr_s(section, xr_strlen(section) + 1);
     auto I = std::lower_bound(DATA.cbegin(), DATA.cend(), section, sect_pred);
     if (I == DATA.cend())
         xrDebug::Fatal(DEBUG_INFO, "Can't find section '%s'.", S);
@@ -863,7 +864,7 @@ Fcolor CInifile::r_fcolor(pcstr S, pcstr L) const
 {
     pcstr C = r_string(S, L);
     Fcolor V = {0, 0, 0, 0};
-    sscanf(C, "%f,%f,%f,%f", &V.r, &V.g, &V.b, &V.a);
+    sscanf_s(C, "%f,%f,%f,%f", &V.r, &V.g, &V.b, &V.a);
     return V;
 }
 
@@ -871,7 +872,7 @@ u32 CInifile::r_color(pcstr S, pcstr L) const
 {
     pcstr C = r_string(S, L);
     u32 r = 0, g = 0, b = 0, a = 255;
-    sscanf(C, "%u,%u,%u,%u", &r, &g, &b, &a);
+    sscanf_s(C, "%u,%u,%u,%u", &r, &g, &b, &a);
     return color_rgba(r, g, b, a);
 }
 
@@ -879,7 +880,7 @@ Ivector2 CInifile::r_ivector2(pcstr S, pcstr L) const
 {
     pcstr C = r_string(S, L);
     Ivector2 V = {0, 0};
-    sscanf(C, "%d,%d", &V.x, &V.y);
+    sscanf_s(C, "%d,%d", &V.x, &V.y);
     return V;
 }
 
@@ -887,7 +888,7 @@ Ivector3 CInifile::r_ivector3(pcstr S, pcstr L) const
 {
     pcstr C = r_string(S, L);
     Ivector V = {0, 0, 0};
-    sscanf(C, "%d,%d,%d", &V.x, &V.y, &V.z);
+    sscanf_s(C, "%d,%d,%d", &V.x, &V.y, &V.z);
     return V;
 }
 
@@ -895,7 +896,7 @@ Ivector4 CInifile::r_ivector4(pcstr S, pcstr L) const
 {
     pcstr C = r_string(S, L);
     Ivector4 V = {0, 0, 0, 0};
-    sscanf(C, "%d,%d,%d,%d", &V.x, &V.y, &V.z, &V.w);
+    sscanf_s(C, "%d,%d,%d,%d", &V.x, &V.y, &V.z, &V.w);
     return V;
 }
 
@@ -903,7 +904,7 @@ Fvector2 CInifile::r_fvector2(pcstr S, pcstr L) const
 {
     pcstr C = r_string(S, L);
     Fvector2 V = {0.f, 0.f};
-    sscanf(C, "%f,%f", &V.x, &V.y);
+    sscanf_s(C, "%f,%f", &V.x, &V.y);
     return V;
 }
 
@@ -911,7 +912,7 @@ Fvector3 CInifile::r_fvector3(pcstr S, pcstr L) const
 {
     pcstr C = r_string(S, L);
     Fvector3 V = {0.f, 0.f, 0.f};
-    sscanf(C, "%f,%f,%f", &V.x, &V.y, &V.z);
+    sscanf_s(C, "%f,%f,%f", &V.x, &V.y, &V.z);
     return V;
 }
 
@@ -919,7 +920,7 @@ Fvector4 CInifile::r_fvector4(pcstr S, pcstr L) const
 {
     pcstr C = r_string(S, L);
     Fvector4 V = {0.f, 0.f, 0.f, 0.f};
-    sscanf(C, "%f,%f,%f,%f", &V.x, &V.y, &V.z, &V.w);
+    sscanf_s(C, "%f,%f,%f,%f", &V.x, &V.y, &V.z, &V.w);
     return V;
 }
 
@@ -930,7 +931,7 @@ bool CInifile::r_bool(pcstr S, pcstr L) const
     char B[8];
     xr_strcpy(B, 7, C);
     B[7] = 0;
-    xr_strlwr(B);
+    _strlwr_s(B, xr_strlen(B) + 1);
     return isBool(B);
 }
 
@@ -980,7 +981,7 @@ void CInifile::w_string(pcstr S, pcstr L, pcstr V, pcstr comment)
     // section
     string256 sect;
     _parse(sect, S);
-    xr_strlwr(sect);
+    _strlwr_s(sect, xr_strlen(sect) + 1);
 
     if (!section_exist(sect))
     {
@@ -1250,7 +1251,7 @@ template<>
 XRCORE_API bool CInifile::try_read(Ivector4& outValue, pcstr section, pcstr line) const
 {
     pcstr C = r_string(section, line);
-    return 4 == sscanf(C, "%d,%d,%d,%d", &outValue.x, &outValue.y, &outValue.z, &outValue.w);
+    return 4 == sscanf_s(C, "%d,%d,%d,%d", &outValue.x, &outValue.y, &outValue.z, &outValue.w);
 }
 
 template<>
@@ -1263,7 +1264,7 @@ template<>
 XRCORE_API bool CInifile::try_read(Fvector2& outValue, pcstr section, pcstr line) const
 {
     pcstr C = r_string(section, line);
-    return 2 == sscanf(C, "%f,%f", &outValue.x, &outValue.y);
+    return 2 == sscanf_s(C, "%f,%f", &outValue.x, &outValue.y);
 }
 
 template<>

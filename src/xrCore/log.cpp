@@ -217,7 +217,9 @@ void CreateLog(bool nl)
         using namespace std::chrono;
         const auto now = system_clock::now();
         const auto time = system_clock::to_time_t(now);
-        std::strftime(TimeBuf, sizeof(TimeBuf), "%d-%m-%y_%H-%M-%S", std::localtime(&time));
+        std::tm tm_buf{};
+        localtime_s(&tm_buf, &time);
+        std::strftime(TimeBuf, sizeof(TimeBuf), "%d-%m-%y_%H-%M-%S", &tm_buf);
         strconcat(log_file_name, Core.ApplicationName, "_", Core.UserName, "_", TimeBuf, ".log");
     }
     else

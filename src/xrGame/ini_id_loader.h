@@ -39,7 +39,7 @@ protected:
             string64 buf;
             LPCSTR id_str = _GetItem(cfgRecord, k, buf);
             char* id_str_lwr = xr_strdup(id_str); // not used?
-            xr_strlwr(id_str_lwr);
+            _strlwr_s(id_str_lwr, xr_strlen(id_str_lwr) + 1);
 
             if constexpr (!isNum)
             {

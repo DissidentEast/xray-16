@@ -28,7 +28,7 @@ XRNETSERVER_API ClientID BroadcastCID(0xffffffff);
 void ip_address::set(pcstr src_string)
 {
     u32 buff[4];
-    int cnt = sscanf(src_string, "%d.%d.%d.%d", &buff[0], &buff[1], &buff[2], &buff[3]);
+    int cnt = sscanf_s(src_string, "%d.%d.%d.%d", &buff[0], &buff[1], &buff[2], &buff[3]);
     if (cnt == 4)
     {
         m_data.a1 = u8(buff[0] & 0xff);
@@ -56,7 +56,7 @@ void IBannedClient::Load(CInifile& ini, const shared_str& sect)
 
     tm _tm_banned;
     const shared_str& time_to = ini.r_string(sect, "time_to");
-    int res_t = sscanf(time_to.c_str(), "%02d.%02d.%d_%02d:%02d:%02d", &_tm_banned.tm_mday, &_tm_banned.tm_mon,
+    int res_t = sscanf_s(time_to.c_str(), "%02d.%02d.%d_%02d:%02d:%02d", &_tm_banned.tm_mday, &_tm_banned.tm_mon,
         &_tm_banned.tm_year, &_tm_banned.tm_hour, &_tm_banned.tm_min, &_tm_banned.tm_sec);
     VERIFY(res_t == 6);
 

@@ -244,7 +244,7 @@ const CLocatorAPI::file* CLocatorAPI::Register(
     string_path folder;
     while (temp[0])
     {
-        _splitpath(temp, path, folder, nullptr, nullptr);
+        _splitpath_s(temp, path, sizeof(path), folder, sizeof(folder), nullptr, 0, nullptr, 0);
         xr_strcat(path, folder);
         if (!exist(path))
         {
@@ -1054,7 +1054,7 @@ void CLocatorAPI::_initialize(u32 flags, pcstr target_folder, pcstr fs_name)
             _GetItem(temp, 3, add, _delimiter);
             _GetItem(temp, 4, def, _delimiter);
             _GetItem(temp, 5, capt, _delimiter);
-            xr_strlwr(id);
+            _strlwr_s(id, xr_strlen(id) + 1);
 
             xr_fs_strlwr(root);
             lp_add = cnt >= 4 ? xr_fs_strlwr(add) : 0;
@@ -2037,8 +2037,8 @@ bool CLocatorAPI::can_write_to_folder(pcstr path)
         string_path temp;
         pcstr fn = "$!#%TEMP%#!$.$$$";
         strconcat(sizeof temp, temp, path, path[xr_strlen(path) - 1] != _DELIMITER ? DELIMITER : "", fn);
-        FILE* hf = fopen(temp, "wb");
-        if (hf == nullptr)
+        FILE* hf = nullptr;
+        if (fopen_s(&hf, temp, "wb") != 0 || !hf)
             return false;
         fclose(hf);
         xr_unlink(temp);
@@ -2056,8 +2056,8 @@ bool CLocatorAPI::can_write_to_alias(pcstr path)
 
 bool CLocatorAPI::can_modify_file(pcstr fname)
 {
-    FILE* hf = fopen(fname, "r+b");
-    if (hf)
+    FILE* hf = nullptr;
+    if (fopen_s(&hf, fname, "r+b") == 0 && hf)
     {
         fclose(hf);
         return true;

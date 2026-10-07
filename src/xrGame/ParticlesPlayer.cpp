@@ -87,7 +87,7 @@ void CParticlesPlayer::LoadParticles(IKinematics* K)
             u16 index = K->LL_BoneID(item.first.c_str());
             R_ASSERT3(index != BI_NONE, "Particles bone not found", item.first.c_str());
             Fvector offs;
-            sscanf(item.second.c_str(), "%f,%f,%f", &offs.x, &offs.y, &offs.z);
+            sscanf_s(item.second.c_str(), "%f,%f,%f", &offs.x, &offs.y, &offs.z);
             m_Bones.push_back(SBoneInfo(index, offs));
             bone_mask |= u64(1) << u64(index);
         }

@@ -252,7 +252,7 @@ class CCC_Start : public IConsole_Command
     {
         string4096 out;
         xr_strcpy(out, sizeof(out), str);
-        xr_strlwr(str);
+        _strlwr_s(str, xr_strlen(str) + 1);
 
         pcstr name_str = "name=";
         pcstr name1 = strstr(str, name_str);
@@ -295,7 +295,7 @@ public:
         parse(op_client, args, "client"); // 2. client
         parse(op_demo, args, "demo"); // 3. demo
 
-        xr_strlwr(op_server);
+        _strlwr_s(op_server, xr_strlen(op_server) + 1);
         protect_Name_strlwr(op_client);
 
         if (!op_client[0] && strstr(op_server, "single"))
@@ -362,7 +362,7 @@ public:
     void Execute(pcstr args) override
     {
         u32 w, h, r = 0;
-        const int cnt = sscanf(args, "%ux%u (%uHz)", &w, &h, &r);
+        const int cnt = sscanf_s(args, "%ux%u (%uHz)", &w, &h, &r);
         if (cnt >= 2)
         {
             psDeviceMode.Width = w;

@@ -230,7 +230,7 @@ void CGameObject::Load(LPCSTR section)
         xr_strcpy(tmp, pSettings->r_string(section, "visual"));
         if (strext(tmp))
             *strext(tmp) = 0;
-        xr_strlwr(tmp);
+        _strlwr_s(tmp, xr_strlen(tmp) + 1);
         cNameVisual_set(tmp);
     }
     setVisible(false);

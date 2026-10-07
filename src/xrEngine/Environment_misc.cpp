@@ -271,7 +271,7 @@ void CEnvDescriptor::load(CEnvironment& environment, const CInifile& config, pcs
     cpcstr identifier = section ? section : m_identifier.c_str();
 
     Ivector3 tm = {0, 0, 0};
-    const int result = sscanf(m_identifier.c_str(), "%d:%d:%d", &tm.x, &tm.y, &tm.z);
+    const int result = sscanf_s(m_identifier.c_str(), "%d:%d:%d", &tm.x, &tm.y, &tm.z);
     R_ASSERT3(result == 3 && (tm.x >= 0) && (tm.x < 24) && (tm.y >= 0) && (tm.y < 60) && (tm.z >= 0) && (tm.z < 60),
         "Incorrect weather time", m_identifier.c_str());
     exec_time = tm.x * 3600.f + tm.y * 60.f + tm.z;
@@ -288,7 +288,7 @@ void CEnvDescriptor::load(CEnvironment& environment, const CInifile& config, pcs
     pcstr cloudsColor = config.r_string(identifier, "clouds_color");
 
     float multiplier = 0, save = 0;
-    sscanf(cloudsColor, "%f,%f,%f,%f,%f", &clouds_color.x, &clouds_color.y, &clouds_color.z, &clouds_color.w, &multiplier);
+    sscanf_s(cloudsColor, "%f,%f,%f,%f,%f", &clouds_color.x, &clouds_color.y, &clouds_color.z, &clouds_color.w, &multiplier);
 
     save = clouds_color.w;
     clouds_color.mul(.5f * multiplier);

@@ -78,7 +78,7 @@ bool CLevel::net_Start(const char* op_server, const char* op_client)
         int save_demo = g_cl_save_demo;
         if (pdemosave != NULL)
         {
-            sscanf(pdemosave, "/mpdemosave=%d", &save_demo);
+            sscanf_s(pdemosave, "/mpdemosave=%d", &save_demo);
         }
         if (!is_single && save_demo)
         {

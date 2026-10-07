@@ -82,7 +82,8 @@ void smem_container::clean()
 void smem_container::dump()
 {
     ScopeLock scope(&lock);
-    FILE* F = fopen("x:\\$smem_dump$.txt", "w");
+    FILE* F = nullptr;
+    fopen_s(&F, "x:\\$smem_dump$.txt", "w");
     for (auto& v : container)
         fprintf(F, "%4u : crc[%6x], %u bytes\n", v->dwReference, v->dwCRC, v->dwLength);
     fclose(F);

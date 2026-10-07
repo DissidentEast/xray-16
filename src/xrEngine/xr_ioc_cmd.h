@@ -297,9 +297,9 @@ public:
     virtual void Execute(pcstr args)
     {
         Fvector v;
-        if (3 != sscanf(args, "%f,%f,%f", &v.x, &v.y, &v.z))
+        if (3 != sscanf_s(args, "%f,%f,%f", &v.x, &v.y, &v.z))
         {
-            if (3 != sscanf(args, "(%f,%f,%f)", &v.x, &v.y, &v.z))
+            if (3 != sscanf_s(args, "(%f,%f,%f)", &v.x, &v.y, &v.z))
             {
                 InvalidSyntax();
                 return;
@@ -351,9 +351,9 @@ public:
     void Execute(pcstr args) override
     {
         Fvector4 v;
-        if (4 != sscanf(args, "%f,%f,%f,%f", &v.x, &v.y, &v.z, &v.w))
+        if (4 != sscanf_s(args, "%f,%f,%f,%f", &v.x, &v.y, &v.z, &v.w))
         {
-            if (4 != sscanf(args, "(%f,%f,%f,%f)", &v.x, &v.y, &v.z, &v.w))
+            if (4 != sscanf_s(args, "(%f,%f,%f,%f)", &v.x, &v.y, &v.z, &v.w))
             {
                 InvalidSyntax();
                 return;
@@ -419,7 +419,7 @@ public:
         else
             *value = v;
     }
-    virtual void GetStatus(TStatus& S) { xr_itoa(*value, S, 10); }
+    virtual void GetStatus(TStatus& S) { _itoa_s(*value, S, sizeof(S), 10); }
     virtual void Info(TInfo& I) { xr_sprintf(I, sizeof(I), "integer value in range [%d,%d]", min, max); }
     virtual void fill_tips(vecTips& tips, u32 mode)
     {
