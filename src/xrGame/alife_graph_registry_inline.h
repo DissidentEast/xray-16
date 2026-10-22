@@ -19,17 +19,27 @@ IC void CALifeGraphRegistry::change(
 {
     VERIFY3(object->used_ai_locations() /** && (object->interactive() || object->m_bOnline)**/,
         object->s_name.c_str(), object->name_replace());
+
+    // a script may ask for a graph point which does not exist. Reject it before touching the
+    // registries: remove() would succeed, add() would bail out on the invalid point, and the
+    // object would end up in neither registry while m_tGraphID still names its old location.
+    // Keep the last valid location instead of poisoning object->m_tGraphID, everything else in
+    // ALife dereferences it blindly.
+    if (!ai().game_graph().valid_vertex_id(tNextGraphPointID))
+    {
+#ifndef MASTER_GOLD
+        Msg("! [ALife] graph registry: change [%s][%d] - invalid graph point %u, object left where it is",
+            object->name_replace(), object->ID, (u32)tNextGraphPointID);
+#endif
+        return;
+    }
+
     remove(object, tGraphPointID);
     add(object, tNextGraphPointID);
 
-    // a script may ask for a graph point which does not exist - keep the last valid location
-    // instead of poisoning object->m_tGraphID, everything else in ALife dereferences it blindly
-    if (ai().game_graph().valid_vertex_id(tNextGraphPointID))
-    {
-        object->m_tGraphID = tNextGraphPointID;
-        object->o_Position = ai().game_graph().vertex(object->m_tGraphID)->level_point();
-        object->m_tNodeID = ai().game_graph().vertex(object->m_tGraphID)->level_vertex_id();
-    }
+    object->m_tGraphID = tNextGraphPointID;
+    object->o_Position = ai().game_graph().vertex(object->m_tGraphID)->level_point();
+    object->m_tNodeID = ai().game_graph().vertex(object->m_tGraphID)->level_vertex_id();
 }
 
 IC u32 CALifeGraphRegistry::registered_vertex(const ALife::_OBJECT_ID& id) const
