@@ -46,11 +46,6 @@ enum class LuaMessageType : u32
     Info = 0,
     Error = 1,
     Message = 2,
-    HookCall = 3,
-    HookReturn = 4,
-    HookLine = 5,
-    HookCount = 6,
-    HookTailReturn = u32(-1),
 };
 
 extern XRSCRIPTENGINE_API Flags32 g_LuaDebug;
@@ -77,6 +72,9 @@ private:
     char* scriptBuffer = nullptr;
     size_t scriptBufferSize = 0;
     bool m_is_editor;
+
+    bool m_in_testing_mode{};
+    u32 m_number_of_errors{};
 
 protected:
     CScriptProcessStorage m_script_processes;
@@ -113,21 +111,6 @@ protected:
         case LuaMessageType::Message:
             return { "[LUA] ", "[MESSAGE]     " };
 
-        case LuaMessageType::HookCall:
-            return { "[LUA][HOOK_CALL] ", "[CALL]        " };
-
-        case LuaMessageType::HookReturn:
-            return { "[LUA][HOOK_RETURN] ", "[RETURN]      " };
-
-        case LuaMessageType::HookLine:
-            return { "[LUA][HOOK_LINE] ", "[LINE]        " };
-
-        case LuaMessageType::HookCount:
-            return { "[LUA][HOOK_COUNT] ", "[COUNT]       " };
-
-        case LuaMessageType::HookTailReturn:
-            return { "[LUA][HOOK_TAIL_RETURN] ", "[TAIL_RETURN] " };
-
         default:
             NODEFAULT;
             return {};
@@ -152,16 +135,6 @@ public:
     bool object(LPCSTR caIdentifier, int type);
     bool object(LPCSTR caNamespaceName, LPCSTR caIdentifier, int type);
     luabind::object name_space(LPCSTR namespace_name);
-
-    template<typename... Args>
-    int error_log(cpcstr format, Args... args)
-    {
-        string4096 log;
-        const int result = xr_sprintf(log, format, std::forward<Args>(args)...);
-        constexpr cpcstr header = "! [LUA][ERROR] ";
-        Log(header, log);
-        return result;
-    }
 
     template<typename... Args>
     int script_log(LuaMessageType message, cpcstr format, Args... args)
@@ -244,6 +217,12 @@ public:
     // This function is called from CScriptThread destructor
     void DestroyScriptThread(const CScriptThread* thread);
     bool is_editor();
+
+    [[nodiscard]]
+    bool IsInTestingMode() const { return m_in_testing_mode; }
+    [[nodiscard]]
+    u32 GetNumberOfErrors() const { return m_number_of_errors; }
+    u32 SwitchTestingMode(bool testing_enabled);
 
 private:
     DECLARE_SCRIPT_REGISTER_FUNCTION();
