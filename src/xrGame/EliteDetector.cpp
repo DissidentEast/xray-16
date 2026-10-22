@@ -44,6 +44,7 @@ void CEliteDetector::Scan()
         }
     }
 
+    m_zones.scan(detector_pos, this);
     for (const auto& [zone, _] : m_zones.m_ItemInfos)
     {
         ui().RegisterItemToDraw(zone->Position(), zone->cNameSect());
@@ -126,7 +127,12 @@ CUIArtefactDetectorElite::CUIArtefactDetectorElite(CEliteDetector* p)
             continue;
         }
         auto& S = m_palette[name];
-        xr_delete(S); // prevent memory leak in cases of duplicated IDs
+        if (S)
+        {
+            // prevent memory leak in cases of duplicated IDs
+            // Will be automatically freed due to auto delete
+            m_wrk_area->DetachChild(S);
+        }
 
         S = UIHelper::CreateStatic(uiXml, "palette", idx, m_wrk_area);
         S->SetCustomDraw(true);
