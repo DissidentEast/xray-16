@@ -22,3 +22,6 @@
 
 # exclude doxygen output
 doc/doxygen/html/*
+
+# local MSBuild logs
+src/build-release-*.log
