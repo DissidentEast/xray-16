@@ -14,7 +14,10 @@ IC CALifeLevelRegistry::CALifeLevelRegistry(const GameGraph::_LEVEL_ID& level_id
 IC GameGraph::_LEVEL_ID CALifeLevelRegistry::level_id() const { return (m_level_id); }
 IC void CALifeLevelRegistry::add(CSE_ALifeDynamicObject* object)
 {
-    if (ai().game_graph().vertex(object->m_tGraphID)->level_id() != level_id())
+    // an object which was never placed on the graph has no valid graph point, and scripts are
+    // free to ask for one which does not exist - do not dereference it blindly
+    if (!ai().game_graph().valid_vertex_id(object->m_tGraphID) ||
+        ai().game_graph().vertex(object->m_tGraphID)->level_id() != level_id())
         return;
 
 #ifdef DEBUG
@@ -23,7 +26,17 @@ IC void CALifeLevelRegistry::add(CSE_ALifeDynamicObject* object)
         Msg("[LSS] adding object [%s][%d] to current level", object->name_replace(), object->ID);
     }
 #endif
-    inherited::add(object->ID, object);
+    // the same object legitimately arrives more than once (registered, switched online,
+    // a squad member re-registered on death, ...), so insert idempotently and replace
+    // the entry only when the object id has been reused
+    const auto I = objects().find(object->ID);
+    if (I == objects().end())
+        inherited::add(object->ID, object);
+    else if (I->second != object)
+    {
+        inherited::remove(object->ID, true);
+        inherited::add(object->ID, object);
+    }
 }
 
 IC void CALifeLevelRegistry::remove(CSE_ALifeDynamicObject* object, bool no_assert)

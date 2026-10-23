@@ -19,6 +19,16 @@ void CALifeScheduleRegistry::add(CSE_ALifeDynamicObject* object)
     if (!schedulable->need_update(object))
         return;
 
+    // the same object can arrive twice (register_object() and unregister_member() both add
+    // it, and the teardown re-adds it without a paired remove()), so skip when it is already
+    // there and replace the entry only when the object id has been reused
+    CSE_ALifeSchedulable* const registered = this->object(object->ID, true);
+    if (registered == schedulable)
+        return;
+
+    if (registered)
+        inherited::remove(object->ID, true);
+
     inherited::add(object->ID, schedulable);
 }
 
