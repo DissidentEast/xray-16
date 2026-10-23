@@ -26,6 +26,19 @@ IC void CALifeGraphRegistry::change(
     object->m_tNodeID = ai().game_graph().vertex(object->m_tGraphID)->level_vertex_id();
 }
 
+IC u32 CALifeGraphRegistry::registered_vertex(const ALife::_OBJECT_ID& id) const
+{
+    return (id < m_object_vertex.size() ? m_object_vertex[id] : u32(-1));
+}
+
+IC void CALifeGraphRegistry::set_registered_vertex(const ALife::_OBJECT_ID& id, u32 vertex_id)
+{
+    if (id >= m_object_vertex.size())
+        m_object_vertex.resize(id + 1, u32(-1));
+    m_object_vertex[id] = vertex_id;
+}
+
+
 IC void CALifeGraphRegistry::assign(CSE_ALifeMonsterAbstract* monster)
 {
     monster->m_tNextGraphID = monster->m_tPrevGraphID = monster->m_tGraphID;
