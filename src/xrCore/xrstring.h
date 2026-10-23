@@ -19,12 +19,6 @@ struct XRCORE_API str_value
     char value[];
 };
 
-struct XRCORE_API str_value_cmp
-{
-    // less
-    IC bool operator()(const str_value* A, const str_value* B) const { return A->dwCRC < B->dwCRC; };
-};
-
 #pragma warning(pop)
 
 struct str_container_impl;
