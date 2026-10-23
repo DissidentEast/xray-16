@@ -132,9 +132,9 @@ public:
     [[nodiscard]]
     explicit operator bool() const { return p_ != nullptr; }
     [[nodiscard]]
-    char operator[](size_t id) { return p_->value[id]; }
+    char operator[](size_t id) { return p_ ? p_->value[id] : '\0'; }
     [[nodiscard]]
-    char operator[](size_t id) const { return p_->value[id]; }
+    char operator[](size_t id) const { return p_ ? p_->value[id] : '\0'; }
 
     [[nodiscard]]
     pcstr c_str() const { return p_ ? p_->value : nullptr; }
