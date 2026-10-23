@@ -17,6 +17,10 @@ CALifeGraphRegistry::CALifeGraphRegistry()
     m_level = 0;
     m_process_time = 0;
     m_actor = 0;
+#ifndef MASTER_GOLD
+    m_unregistered_removals = 0;
+    m_reported_removals = 0;
+#endif
 }
 
 CALifeGraphRegistry::~CALifeGraphRegistry() { xr_delete(m_level); }
@@ -196,6 +200,10 @@ void CALifeGraphRegistry::add(CSE_ALifeDynamicObject* object, GameGraph::_GRAPH_
         if (!ai().game_graph().valid_vertex_id(game_vertex_id))
         {
             // scripts may teleport to a graph point which does not exist
+#ifndef MASTER_GOLD
+            Msg("! [ALife] graph registry: add [%s][%d] - invalid graph point %u, object left where it is",
+                object->name_replace(), object->ID, game_vertex_id);
+#endif
             return;
         }
 
@@ -261,6 +269,41 @@ void CALifeGraphRegistry::remove(CSE_ALifeDynamicObject* object, GameGraph::_GRA
     // their members, spawn and save/load write it directly), so the registry index is the only
     // reliable source. Removing from a graph point the object is not in raises "Specified object
     // hasn't been found in the registry!" and kills the simulation.
+#ifndef MASTER_GOLD
+    if (object->used_ai_locations())
+    {
+        const u32 vertex_id = registered_vertex(object->ID);
+        if (vertex_id != u32(-1))
+        {
+            u8& reported = report_flags(object->ID);
+            if ((reported & report_mismatch) == 0 &&
+                (!ai().game_graph().valid_vertex_id(game_vertex_id) || vertex_id != (u32)game_vertex_id))
+            {
+                reported |= report_mismatch;
+                Msg("! [ALife] graph registry: object [%s][%d] is registered at graph point %u, not %u - fixed",
+                    object->name_replace(), object->ID, vertex_id, game_vertex_id);
+            }
+        }
+        else
+        {
+            // not an error: an object which is online, or which was saved with direct control
+            // switched off, was never registered in a graph point in the first place
+            ++m_unregistered_removals;
+            u8& reported = report_flags(object->ID);
+            if ((reported & report_unregistered) == 0 && m_reported_removals < 10)
+            {
+                reported |= report_unregistered;
+                ++m_reported_removals;
+                Msg("! [ALife] graph registry: remove [%s][%d] - not in the graph registry (graph point %u), "
+                    "this is expected for online objects",
+                    object->name_replace(), object->ID, game_vertex_id);
+            }
+            if (m_unregistered_removals % 100 == 0)
+                Msg("! [ALife] graph registry: %u objects removed so far which were not in the graph registry",
+                    m_unregistered_removals);
+        }
+    }
+#endif
 
     unregister_object(object);
 

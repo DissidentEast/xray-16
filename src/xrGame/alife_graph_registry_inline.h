@@ -27,6 +27,10 @@ IC void CALifeGraphRegistry::change(
     // ALife dereferences it blindly.
     if (!ai().game_graph().valid_vertex_id(tNextGraphPointID))
     {
+#ifndef MASTER_GOLD
+        Msg("! [ALife] graph registry: change [%s][%d] - invalid graph point %u, object left where it is",
+            object->name_replace(), object->ID, (u32)tNextGraphPointID);
+#endif
         return;
     }
 
@@ -50,6 +54,14 @@ IC void CALifeGraphRegistry::set_registered_vertex(const ALife::_OBJECT_ID& id, 
     m_object_vertex[id] = vertex_id;
 }
 
+#ifndef MASTER_GOLD
+IC u8& CALifeGraphRegistry::report_flags(const ALife::_OBJECT_ID& id)
+{
+    if (id >= m_reported.size())
+        m_reported.resize(id + 1, u8(0));
+    return (m_reported[id]);
+}
+#endif
 
 IC void CALifeGraphRegistry::assign(CSE_ALifeMonsterAbstract* monster)
 {
