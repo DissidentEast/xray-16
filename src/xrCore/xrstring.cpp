@@ -218,11 +218,16 @@ void str_container::verify() const
 
 void str_container::dump() const
 {
-    impl->cs.Enter();
     FILE* F = fopen("d:\\$str_dump$.txt", "w");
+    if (!F)
+    {
+        Msg("! str_container::dump: cannot open d:\\$str_dump$.txt for writing");
+        return;
+    }
+    impl->cs.Enter();
     impl->dump(F);
-    fclose(F);
     impl->cs.Leave();
+    fclose(F);
 }
 
 void str_container::dump(IWriter* W) const
