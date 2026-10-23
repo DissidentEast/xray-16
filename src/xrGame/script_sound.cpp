@@ -22,7 +22,10 @@ CScriptSound::CScriptSound(LPCSTR caSoundName, ESoundTypes sound_type)
     if (FS.exist(l_caFileName, "$game_sounds$", caSoundName, ".ogg"))
         m_sound.create(caSoundName, st_Effect, sound_type);
     else
+    {
+        m_bIsNoSound = true;
         GEnv.ScriptEngine->script_log(LuaMessageType::Error, "File not found \"%s\"!", l_caFileName);
+    }
 }
 
 CScriptSound::~CScriptSound()
