@@ -7,7 +7,6 @@
 
 #include <cstring>
 
-#pragma pack(push, 4)
 #pragma warning(push)
 #pragma warning(disable : 4200)
 struct XRCORE_API str_value
@@ -248,5 +247,4 @@ IC void xr_strlwr(shared_str& src)
     }
 }
 
-#pragma pack(pop)
 ////
