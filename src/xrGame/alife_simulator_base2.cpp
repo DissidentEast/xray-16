@@ -82,12 +82,6 @@ void CALifeSimulatorBase::unregister_object(CSE_ALifeDynamicObject* object, bool
     // release must never assert: the object can already be out of scheduled()
     // (switched online, debug-spawned base coming online, killed offline).
     scheduled().remove(object, true);
-    if (object->m_bOnline && object->ID_Parent == 0xffff)
-    {
-        // graph().remove() above already removed the level entry (tolerantly).
-        // This is only a backup for online objects, so never assert here.
-        graph().level().remove(object, true);
-    }
 }
 
 void CALifeSimulatorBase::on_death(CSE_Abstract* killed, CSE_Abstract* killer)
