@@ -205,7 +205,7 @@ void CRT::create(LPCSTR Name, u32 w, u32 h, D3DFORMAT f, u32 SampleCount /*= 1*/
 #endif
 
         dsv_per_slice.resize(n_slices);
-        for (int idx = 0; idx < n_slices; ++idx)
+        for (u32 idx = 0; idx < n_slices; ++idx)
         {
             if (SampleCount <= 1)
             {
@@ -221,7 +221,7 @@ void CRT::create(LPCSTR Name, u32 w, u32 h, D3DFORMAT f, u32 SampleCount /*= 1*/
 #ifdef DEBUG
             {
                 char name[128];
-                xr_sprintf(name, "%s:s%d", Name, idx);
+                xr_sprintf(name, "%s:s%u", Name, idx);
                 dsv_per_slice[idx]->SetPrivateData(WKPDID_D3DDebugObjectName, xr_strlen(name), name);
             }
 #endif

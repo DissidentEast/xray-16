@@ -975,7 +975,7 @@ inline SEE2_CONTEXT* PPM_CONTEXT::makeEscFreq2() const
     {
         t = Suffix->NumStats;
         psee2c = SEE2Cont[QTable[NumStats + 2] - 3] + (SummFreq > 11 * (NumStats + 1));
-        psee2c += 2 * (2 * NumStats < t + NumMasked) + Flags;
+        psee2c += 2 * (2u * NumStats < t + NumMasked) + Flags;
         SubRange.scale = psee2c->getMean();
     }
     else

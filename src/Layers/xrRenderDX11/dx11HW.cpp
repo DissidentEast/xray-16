@@ -451,7 +451,9 @@ void CHW::DestroyDevice()
     _RELEASE(m_pSwapChain);
 
     if (profiler_ctx)
+    {
         TracyD3D11Destroy(profiler_ctx);
+    }
 
     _RELEASE(pContext1);
     for (int id = 0; id < R__NUM_CONTEXTS; ++id)

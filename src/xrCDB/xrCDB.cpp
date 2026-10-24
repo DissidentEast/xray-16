@@ -237,7 +237,7 @@ bool MODEL::deserialize(pcstr fileName, bool skipCrc32Check /*= false*/, deseria
     const size_t vertsSize = static_cast<size_t>(verts_count) * sizeof(Fvector);
     const size_t trisSize = static_cast<size_t>(tris_count) * sizeof(TRI);
     const size_t treeSize = sizeof(verts_count) + sizeof(tris_count) + vertsSize + trisSize;
-    if (treeSize > rstream->elapsed())
+    if (treeSize > static_cast<size_t>(rstream->elapsed()))
     {
         FS.r_close(rstream);
         return false;

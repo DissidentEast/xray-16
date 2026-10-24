@@ -2,6 +2,7 @@
 
 // XXX: maybe update ODE to a newer version
 // The warning happens on lines 23-24 when assigning to -dInfinity
+#pragma warning(push)
 #pragma warning(disable : 4756)
 
 struct Triangle
