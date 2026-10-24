@@ -474,7 +474,7 @@ struct CSmartMatcher
     }
 
     template <>
-    IC static T1* smart_cast<Loki::NullType>(T2* p)
+    IC T1* smart_cast<Loki::NullType>(T2* p)
     {
 #ifdef SHOW_SMART_CAST_UNOPTIMIZED_CASES
 #pragma todo("Dima to all : this smart_cast is not optimized!")
@@ -496,7 +496,7 @@ struct CHelper1
     }
 
     template <>
-    IC static T1* smart_cast<true>(T2* p)
+    IC T1* smart_cast<true>(T2* p)
     {
         return (static_cast<T1*>(p));
     }
@@ -531,7 +531,7 @@ struct CHelper2
     }
 
     template <>
-    IC static void* smart_cast<void>(T2* p)
+    IC void* smart_cast<void>(T2* p)
     {
 #ifdef SHOW_SMART_CAST_UNOPTIMIZED_CASES
 #pragma todo("Dima to all : this smart_cast is not optimized!")

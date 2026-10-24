@@ -52,8 +52,8 @@ public:
     enum ResourceShaderType
     {
         rstPixel = 0,	//	Default texture offset
-        rstVertex = rstPixel + mtMaxPixelShaderTextures,
-        rstGeometry = rstVertex + mtMaxVertexShaderTextures,
+        rstVertex = rstPixel + int(mtMaxPixelShaderTextures),
+        rstGeometry = rstVertex + int(mtMaxVertexShaderTextures),
     };
 #else
 #   error No graphics API selected or enabled!

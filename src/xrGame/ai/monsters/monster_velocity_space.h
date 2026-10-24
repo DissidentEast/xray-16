@@ -56,8 +56,8 @@ enum EMovementParametersController
     eControllerVelocityParameterMoveFwd = eVelocityParameterCustom << 1,
     eControllerVelocityParameterMoveBkwd = eVelocityParameterCustom << 2,
 
-    eControllerVelocityParamsMoveFwd = eControllerVelocityParameterMoveFwd | eVelocityParameterStand,
-    eControllerVelocityParamsMoveBkwd = eControllerVelocityParameterMoveBkwd | eVelocityParameterStand,
+    eControllerVelocityParamsMoveFwd = eControllerVelocityParameterMoveFwd | u32(eVelocityParameterStand),
+    eControllerVelocityParamsMoveBkwd = eControllerVelocityParameterMoveBkwd | u32(eVelocityParameterStand),
 };
 
 enum EMovementParametersGiant
